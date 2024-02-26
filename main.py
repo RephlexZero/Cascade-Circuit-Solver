@@ -1,6 +1,7 @@
 import sys
 from net_parser import parse_net_file_to_circuit
 from circuit import *
+from circuit_matricies import *
 import numpy as np
 
 def main():
@@ -18,8 +19,9 @@ def main():
         sys.exit(1)
 
     Circuit = parse_net_file_to_circuit(input_file_path)
-    
-
+    Circuit.components = sorted(Circuit.components, key=lambda x: (x.n1, x.n2))
+    transition_matricies = [get_abcd_matrix(component) for component in Circuit.components]
+    print(multiply_matrices(transition_matricies))
 if __name__ == "__main__":
     main()
 
