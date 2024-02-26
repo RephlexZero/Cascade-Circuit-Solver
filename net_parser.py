@@ -14,36 +14,54 @@ def parse_net_file_to_circuit(file_path):
             match line:
                 case "<CIRCUIT>":
                     section = 'CIRCUIT'
-                case "</CIRCUIT>":
-                    section = None
+                    continue
                 case "<TERMS>":
                     section = 'TERMS'
-                case "</TERMS>":
-                    section = None
+                    continue
                 case "<OUTPUT>":
                     section = 'OUTPUT'
+                    continue
+
+                case "</CIRCUIT>":
+                    section = None
+                case "</TERMS>":
+                    section = None
                 case "</OUTPUT>":
                     section = None
-                case _ if section == 'CIRCUIT':
-                    component_matches = re.findall(r'(n1|n2|R|G|L|C)=([\d\.e+-]+)', line)
-                    for key, value in component_matches:
-                        if key in ['R', 'G', 'L', 'C']:
-                            component_type = key
-                            value = float(value)
-                        elif key == 'n1':
-                            n1 = int(value)
-                        elif key == 'n2':
-                            n2 = int(value)
-                    circuit.add_component(component_type, n1, n2, value)
-
-                case _ if section == 'TERMS':
-                    terms = re.findall(r'(\w+)=(\S+)', line)  # Find all term-value pairs on the line
-                    for term, value in terms:
-                        circuit.set_termination(term, float(value))
-
-                case _ if section == 'OUTPUT':
-                    name, *unit = line.split()
-                    unit = unit[0] if unit else None
-                    circuit.add_output(name, unit)
+                case _:
+                    pass
+                
+            match section:
+                case 'CIRCUIT':
+                    process_circuit_line(line, circuit)
+                case 'TERMS':
+                    process_terms_line(line, circuit)
+                case 'OUTPUT':
+                    process_output_line(line, circuit)
+                case _:
+                    continue
 
     return circuit
+
+def process_circuit_line(line, circuit):
+    component_matches = re.findall(r'(n1|n2|R|G|L|C)=([\d\.e+-]+)', line)
+    for key, value in component_matches:
+        if key == 'n1':
+            n1 = int(value)
+        elif key == 'n2':
+            n2 = int(value)
+        elif key in ['R', 'G', 'L', 'C']:
+            component_type = key
+            value = float(value)
+
+    circuit.add_component(component_type, n1, n2, value)
+
+def process_terms_line(line, circuit):
+    terms = re.findall(r'(\w+)=(\S+)', line)
+    for term, value in terms:
+        circuit.set_termination(term, float(value))
+
+def process_output_line(line, circuit):
+    name, *unit = line.split()
+    unit = unit[0] if unit else None
+    circuit.add_output(name, unit)
