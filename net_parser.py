@@ -14,14 +14,10 @@ def parse_net_file_to_circuit(file_path):
             match line:
                 case "<CIRCUIT>":
                     section = 'CIRCUIT'
-                    continue
                 case "<TERMS>":
                     section = 'TERMS'
-                    continue
                 case "<OUTPUT>":
                     section = 'OUTPUT'
-                    continue
-
                 case "</CIRCUIT>":
                     section = None
                 case "</TERMS>":
@@ -29,17 +25,15 @@ def parse_net_file_to_circuit(file_path):
                 case "</OUTPUT>":
                     section = None
                 case _:
-                    pass
-                
-            match section:
-                case 'CIRCUIT':
-                    process_circuit_line(line, circuit)
-                case 'TERMS':
-                    process_terms_line(line, circuit)
-                case 'OUTPUT':
-                    process_output_line(line, circuit)
-                case _:
-                    continue
+                    match section:
+                        case 'CIRCUIT':
+                            process_circuit_line(line, circuit)
+                        case 'TERMS':
+                            process_terms_line(line, circuit)
+                        case 'OUTPUT':
+                            process_output_line(line, circuit)
+                        case _:
+                            continue
 
     return circuit
 
