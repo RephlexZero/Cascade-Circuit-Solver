@@ -4,7 +4,7 @@ from circuit import *
 import numpy as np
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         print("Usage: python main.py <input.net> <output.csv>")
         sys.exit(1)
 
@@ -22,3 +22,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# TODO: Cascade analysis: group by node ingress, shunt, and egress
