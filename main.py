@@ -1,8 +1,8 @@
 import sys
 from net_parser import parse_net_file_to_circuit
 from circuit import *
-from circuit_matricies import *
 import numpy as np
+
 
 def main():
     if len(sys.argv) < 3:
@@ -20,9 +20,9 @@ def main():
 
     Circuit = parse_net_file_to_circuit(input_file_path)
     Circuit.components = sorted(Circuit.components, key=lambda x: (x.n1, x.n2))
-    transition_matricies = [get_abcd_matrix(component) for component in Circuit.components]
-    print(multiply_matrices(transition_matricies))
+    transition_matricies = [component.get_abcd_matrix() for component in Circuit.components]
+    for matrix in transition_matricies:
+        print(matrix)
+    print(custom_matmul(transition_matricies))
 if __name__ == "__main__":
     main()
-
-# TODO: Cascade analysis: group by node ingress, shunt, and egress
