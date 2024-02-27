@@ -53,7 +53,7 @@ def process_circuit_line(line, circuit):
 def process_terms_line(line, circuit):
     terms = re.findall(r'(\w+)=(\S+)', line)
     for term, value in terms:
-        circuit.set_termination(term, float(value))
+        setattr(circuit.terminations, term, float(value))
 
 def process_output_line(line, circuit):
     name, *unit = line.split()

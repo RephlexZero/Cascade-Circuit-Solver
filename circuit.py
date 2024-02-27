@@ -36,10 +36,38 @@ class Component:
                 raise ValueError("Unknown component type")
         return abcd
     
-class Termination:
-    def __init__(self, type, value):
-        self.type = type  # VT, RS, IN, GS, RL, Fstart, Fend, Nfreqs
-        self.value = value
+class Terminations:
+    def __init__(self):
+        self.ZI = None
+        self.ZO = None
+        self.VT = None
+        self.RS = None
+        self.RL = None
+        self.IN = None
+        self.GS = None
+        self.Fstart = None
+        self.Fend = None
+        self.Nfreqs = None
+        self.V1 = None
+        self.V2 = None
+        self.I1 = None
+        self.I2 = None
+    
+    def calculate_outputs(self, T):
+        A, B, C, D = T[0][0], T[0][1], T[1][0], T[1][1]
+        
+        self.ZI = (A * self.RL + B) / (C * self.RL + D)
+        self.ZO = (D * self.RS + B) / (C * self.RS + A)
+        
+        # Check that VT and RS are provided, or IN and GS are provided
+        if self.VT is not None and self.RS is not None:
+            self.I1 = self.VT/(self.RS + self.ZI)
+            self.V1 = self.VT - self.I1 * self.ZI
+        elif self.IN is not None and self.GS is not None:
+            self.V1 = self.IN * (self.ZI/(1+self.ZI*self.GS))
+            self.I1 = self.IN - self.V1 * self.GS
+        else:
+            raise ValueError("RL and either VT and RS or IN and GS must be provided")
 
 class Output:
     def __init__(self, name, unit=None):
@@ -49,17 +77,26 @@ class Output:
 class Circuit:
     def __init__(self):
         self.components = []
-        self.terminations = {}
         self.outputs = []
+        self.terminations = Terminations()
+
+        self.T = None
         
     def add_component(self, type, n1, n2, value):
         self.components.append(Component(type, n1, n2, value))
-
+        
     def set_termination(self, type, value):
-        self.terminations[type] = Termination(type, value)
+        setattr(self.terminations, type, value)
 
     def add_output(self, name, unit):
         self.outputs.append(Output(name, unit))
+
+    def resolve_matrix(self, s=0):
+        circuit_matricies = [component.get_abcd_matrix(s) for component in self.components]
+        self.T = custom_matmul(circuit_matricies)
+        
+    def sort_components(self):
+        self.components = sorted(self.components, key=lambda x: (x.n1, x.n2))
 
 def custom_matmul(matrices):
     # Filter or adjust matrices containing 'inf' before multiplication

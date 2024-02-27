@@ -19,10 +19,9 @@ def main():
         sys.exit(1)
 
     Circuit = parse_net_file_to_circuit(input_file_path)
-    Circuit.components = sorted(Circuit.components, key=lambda x: (x.n1, x.n2))
-    transition_matricies = [component.get_abcd_matrix() for component in Circuit.components]
-    for matrix in transition_matricies:
-        print(matrix)
-    print(custom_matmul(transition_matricies))
+    Circuit.sort_components()
+    Circuit.resolve_matrix()
+    print(Circuit.T)
+    
 if __name__ == "__main__":
     main()
