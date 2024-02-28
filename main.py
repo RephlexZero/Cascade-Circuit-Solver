@@ -20,8 +20,10 @@ def main():
 
     Circuit = parse_net_file_to_circuit(input_file_path)
     Circuit.sort_components()
-    Circuit.resolve_matrix()
-    print(Circuit.T)
-    
+    fstart = Circuit.terminations.Fstart
+    fend = Circuit.terminations.Fend
+    nfreqs = int(Circuit.terminations.Nfreqs)
+    for s in 1j*2*np.pi*np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
+        Circuit.solve(s)
 if __name__ == "__main__":
     main()

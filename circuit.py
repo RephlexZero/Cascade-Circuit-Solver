@@ -40,18 +40,23 @@ class Terminations:
     def __init__(self):
         self.ZI = None
         self.ZO = None
-        self.VT = None
-        self.RS = None
-        self.RL = None
-        self.IN = None
-        self.GS = None
-        self.Fstart = None
-        self.Fend = None
-        self.Nfreqs = None
+        
         self.V1 = None
         self.V2 = None
         self.I1 = None
         self.I2 = None
+        
+        self.VT = None
+        self.RS = None
+        
+        self.IN = None
+        self.GS = None
+        
+        self.RL = None
+
+        self.Fstart = None
+        self.Fend = None
+        self.Nfreqs = None
     
     def calculate_outputs(self, T):
         A, B, C, D = T[0][0], T[0][1], T[1][0], T[1][1]
@@ -68,6 +73,11 @@ class Terminations:
             self.I1 = self.IN - self.V1 * self.GS
         else:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
+        
+        input_vector = np.array([[self.V1], [self.I1]])
+        output_vector = np.matmul(np.linalg.inv(T), input_vector)
+        
+        self.V2, self.I2 = output_vector[0], output_vector[1]
 
 class Output:
     def __init__(self, name, unit=None):
@@ -81,6 +91,11 @@ class Circuit:
         self.terminations = Terminations()
 
         self.T = None
+        
+    def solve(self, s=0):
+        self.resolve_matrix(s)
+        self.terminations.calculate_outputs(self.T)
+        return self.terminations
         
     def add_component(self, type, n1, n2, value):
         self.components.append(Component(type, n1, n2, value))
