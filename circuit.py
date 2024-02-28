@@ -15,33 +15,37 @@ class Component:
         # Use a match-case statement to handle different component types.
         match self.type:
             case 'R':  # Resistor
-                impedance = self.value
+                Z = self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [1 / impedance, 1]])
+                    abcd_matrix = np.array([[1, 0],
+                                            [1/Z, 1]])
                 else:
-                    abcd_matrix = np.array([[1, impedance], [0, 1]])
-                    
+                    abcd_matrix = np.array([[1, Z],
+                                            [0, 1]])
             case 'L':  # Inductor
-                impedance = s * self.value  # sL for inductive impedance
+                sL = s * self.value  # sL for inductive impedance
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [1 / impedance, 1]])
+                    abcd_matrix = np.array([[1, 0],
+                                            [1/sL, 1]])
                 else:
-                    abcd_matrix = np.array([[1, impedance], [0, 1]])
-                    
+                    abcd_matrix = np.array([[1, sL],
+                                            [0, 1]])
             case 'C':  # Capacitor
-                admittance = s * self.value  # sC for capacitive admittance, inverse of impedance
+                sC = s * self.value  # sC for capacitive admittance, inverse of impedance
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 1 / admittance], [0, 1]])
+                    abcd_matrix = np.array([[1, 0],
+                                            [sC, 1]])
                 else:
-                    abcd_matrix = np.array([[1, 0], [admittance, 1]])
-                    
+                    abcd_matrix = np.array([[1, 1/sC],
+                                            [0, 1]])
             case 'G':  # Conductance
-                admittance = self.value
+                Y = self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [admittance, 1]])
+                    abcd_matrix = np.array([[1, 0],
+                                            [Y, 1]])
                 else:
-                    abcd_matrix = np.array([[1, 1 / admittance], [0, 1]])
-                    
+                    abcd_matrix = np.array([[1, 1/Y],
+                                            [0, 1]])
             case _:  # Unknown component type
                 raise ValueError(f"Unknown component type: {self.type}")
 
@@ -70,26 +74,26 @@ class Terminations:
         self.Fend = None
         self.Nfreqs = None
     
-    def calculate_outputs(self, T):
-        A, B, C, D = T[0][0], T[0][1], T[1][0], T[1][1]
-        
+    def calculate_outputs(self, ABCD):
+        A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
-        self.ZO = (D * self.RS + B) / (C * self.RS + A)
         
         # Check that VT and RS are provided, or IN and GS are provided
         if self.VT is not None and self.RS is not None:
+            self.ZO = (D * self.RS + B) / (C * self.RS + A)
             self.I1 = self.VT/(self.RS + self.ZI)
             self.V1 = self.VT - self.I1 * self.ZI
         elif self.IN is not None and self.GS is not None:
+            self.Z0 = (C + self.GS * A) / (D + self.GS * B)
             self.V1 = self.IN * (self.ZI/(1+self.ZI*self.GS))
             self.I1 = self.IN - self.V1 * self.GS
         else:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
         
         input_vector = np.array([[self.V1], [self.I1]])
-        output_vector = np.matmul(np.linalg.inv(T), input_vector)
-        
-        self.V2, self.I2 = output_vector[0], output_vector[1]
+        ABCD_inv = np.linalg.inv(ABCD)
+        output_vector = ABCD_inv @ input_vector
+        self.V2, self.I2 = output_vector.flatten()
 
 class Output:
     def __init__(self, name, unit=None):
@@ -102,11 +106,11 @@ class Circuit:
         self.outputs = []
         self.terminations = Terminations()
 
-        self.T = None
+        self.ABCD = None
         
     def solve(self, s=0):
         self.resolve_matrix(s)
-        self.terminations.calculate_outputs(self.T)
+        self.terminations.calculate_outputs(self.ABCD)
         return self.terminations
         
     def add_component(self, type, n1, n2, value):
@@ -121,7 +125,7 @@ class Circuit:
     def resolve_matrix(self, s=0):
         circuit_matricies = [component.get_abcd_matrix(s) for component in self.components]
         # Multiply all the matrices together to get the total ABCD matrix
-        self.T = np.linalg.multi_dot(circuit_matricies)
+        self.ABCD = np.linalg.multi_dot(circuit_matricies)
         
     def sort_components(self):
         self.components = sorted(self.components, key=lambda x: (x.n1, x.n2))

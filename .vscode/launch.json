@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Debug main.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "args": [
+                "./a_Test_Circuit_1.net",
+                "test.csv"
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}

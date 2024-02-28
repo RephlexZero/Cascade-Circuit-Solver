@@ -23,7 +23,8 @@ def main():
     fstart = Circuit.terminations.Fstart
     fend = Circuit.terminations.Fend
     nfreqs = int(Circuit.terminations.Nfreqs)
-    for s in 1j*2*np.pi*np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
+    for f in np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
+        s = 2j * np.pi * f
         Circuit.solve(s)
 if __name__ == "__main__":
     main()
