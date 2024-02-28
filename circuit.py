@@ -9,32 +9,44 @@ class Component:
         self.value = value  # Value of the component
 
     def get_abcd_matrix(self, s=0):
-        is_shunt = 0 in [self.n1, self.n2]  # Check if the component is in shunt configuration with ground
-        
+        # Determine if the component is in shunt configuration with the ground.
+        is_shunt = self.n1 == 0 or self.n2 == 0
+
+        # Use a match-case statement to handle different component types.
         match self.type:
-            case 'R':
-                if not is_shunt:
-                    abcd = np.array([[1, self.value], [0, 1]])  
+            case 'R':  # Resistor
+                impedance = self.value
+                if is_shunt:
+                    abcd_matrix = np.array([[1, 0], [1 / impedance, 1]])
                 else:
-                    abcd = np.array([[1, 0], [1 / self.value, 1]])
-            case 'L':
-                if not is_shunt:
-                    abcd = np.array([[1, 0], [s * self.value, 1]]) if s != 0 else np.array([[1, 0], [0, 1]])
+                    abcd_matrix = np.array([[1, impedance], [0, 1]])
+                    
+            case 'L':  # Inductor
+                impedance = s * self.value  # sL for inductive impedance
+                if is_shunt:
+                    abcd_matrix = np.array([[1, 0], [1 / impedance, 1]])
                 else:
-                    abcd = np.array([[1, 0], [1 / (s * self.value), 1]]) if s != 0 else np.array([[1, 0], [np.inf, 1]])
-            case 'C':
-                if not is_shunt:
-                    abcd = np.array([[1, 1 / (s * self.value)], [0, 1]]) if s != 0 else np.array([[1, np.inf], [0, 1]])
+                    abcd_matrix = np.array([[1, impedance], [0, 1]])
+                    
+            case 'C':  # Capacitor
+                admittance = s * self.value  # sC for capacitive admittance, inverse of impedance
+                if is_shunt:
+                    abcd_matrix = np.array([[1, 1 / admittance], [0, 1]])
                 else:
-                    abcd = np.array([[1, 0], [s * self.value, 1]]) if s != 0 else np.array([[1, 0], [0, 1]])
-            case 'G':
-                if not is_shunt:
-                    abcd = np.array([[1, 1 / self.value], [0, 1]])
+                    abcd_matrix = np.array([[1, 0], [admittance, 1]])
+                    
+            case 'G':  # Conductance
+                admittance = self.value
+                if is_shunt:
+                    abcd_matrix = np.array([[1, 0], [admittance, 1]])
                 else:
-                    abcd = np.array([[1, 0], [self.value, 1]])
-            case _:
-                raise ValueError("Unknown component type")
-        return abcd
+                    abcd_matrix = np.array([[1, 1 / admittance], [0, 1]])
+                    
+            case _:  # Unknown component type
+                raise ValueError(f"Unknown component type: {self.type}")
+
+        return abcd_matrix
+
     
 class Terminations:
     def __init__(self):
@@ -108,19 +120,9 @@ class Circuit:
 
     def resolve_matrix(self, s=0):
         circuit_matricies = [component.get_abcd_matrix(s) for component in self.components]
-        self.T = custom_matmul(circuit_matricies)
+        # Multiply all the matrices together to get the total ABCD matrix
+        self.T = np.linalg.multi_dot(circuit_matricies)
         
     def sort_components(self):
         self.components = sorted(self.components, key=lambda x: (x.n1, x.n2))
-
-def custom_matmul(matrices):
-    # Filter or adjust matrices containing 'inf' before multiplication
-    filtered_matrices = [mat for mat in matrices if not np.isinf(mat).any()]
-    
-    # If filtering results in an empty list, handle accordingly
-    if not filtered_matrices:
-        return None  # or an appropriate default matrix, depending on your application
-    
-    # Perform multiplication with the filtered/adjusted list
-    result = reduce(np.matmul, filtered_matrices)
-    return result
+        
