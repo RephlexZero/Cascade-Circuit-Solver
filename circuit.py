@@ -51,54 +51,61 @@ class Component:
 
         return abcd_matrix
 
-    
+
 class Terminations:
     def __init__(self):
         self.ZI = None
         self.ZO = None
-        
+
         self.V1 = None
         self.V2 = None
         self.I1 = None
         self.I2 = None
-        
+
         self.VT = None
         self.RS = None
-        
+
         self.IN = None
         self.GS = None
-        
+
         self.RL = None
 
         self.Fstart = None
         self.Fend = None
         self.Nfreqs = None
-    
+
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
+
+        # Check if the ABCD matrix is invertible. If not, raise an error.
+        if np.linalg.det(ABCD) == 0:
+            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.")
+
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
-        
-        # Check that VT and RS are provided, or IN and GS are provided
+
+        # Check that VT and RS are provided, or IN and GS are provided.
         if self.VT is not None and self.RS is not None:
             self.ZO = (D * self.RS + B) / (C * self.RS + A)
-            self.I1 = self.VT/(self.RS + self.ZI)
+            self.I1 = self.VT / (self.RS + self.ZI)
             self.V1 = self.VT - self.I1 * self.ZI
         elif self.IN is not None and self.GS is not None:
-            self.Z0 = (C + self.GS * A) / (D + self.GS * B)
-            self.V1 = self.IN * (self.ZI/(1+self.ZI*self.GS))
+            self.ZO = (C + self.GS * A) / (D + self.GS * B)
+            self.V1 = self.IN * (self.ZI / (1 + self.ZI * self.GS))
             self.I1 = self.IN - self.V1 * self.GS
         else:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
-        
+
         input_vector = np.array([[self.V1], [self.I1]])
         ABCD_inv = np.linalg.inv(ABCD)
         output_vector = ABCD_inv @ input_vector
-        self.V2, self.I2 = output_vector.flatten()
+        self.V2, self.I2 = np.real(output_vector.flatten())
+
 
 class Output:
     def __init__(self, name, unit=None):
         self.name = name  # Output parameter name, e.g., Vin, Vout, etc.
         self.unit = unit  # Unit of the parameter, e.g., V (Volts), A (Amps), etc.
+
 
 class Circuit:
     def __init__(self):
@@ -107,15 +114,15 @@ class Circuit:
         self.terminations = Terminations()
 
         self.ABCD = None
-        
+
     def solve(self, s=0):
         self.resolve_matrix(s)
         self.terminations.calculate_outputs(self.ABCD)
         return self.terminations
-        
+
     def add_component(self, type, n1, n2, value):
         self.components.append(Component(type, n1, n2, value))
-        
+
     def set_termination(self, type, value):
         setattr(self.terminations, type, value)
 
@@ -125,8 +132,7 @@ class Circuit:
     def resolve_matrix(self, s=0):
         circuit_matricies = [component.get_abcd_matrix(s) for component in self.components]
         # Multiply all the matrices together to get the total ABCD matrix
-        self.ABCD = np.linalg.multi_dot(circuit_matricies)
-        
+        self.ABCD = reduce(lambda x, y: x @ y, circuit_matricies)
+
     def sort_components(self):
         self.components = sorted(self.components, key=lambda x: (x.n1, x.n2))
-        
