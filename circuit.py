@@ -130,8 +130,7 @@ class Circuit:
         self.outputs.append(Output(name, unit))
 
     def resolve_matrix(self, s=0):
-        circuit_matricies = [component.get_abcd_matrix(s) for component in self.components]
-        # Multiply all the matrices together to get the total ABCD matrix
+        circuit_matricies = np.array([component.get_abcd_matrix(s) for component in self.components])
         self.ABCD = reduce(lambda x, y: x @ y, circuit_matricies)
 
     def sort_components(self):

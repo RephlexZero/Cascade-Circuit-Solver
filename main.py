@@ -27,6 +27,5 @@ def main():
     for f in np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
         s = 2j * np.pi * f
         Circuit.solve(s)
-        results.append(Circuit.terminations)
 if __name__ == "__main__":
     main()
