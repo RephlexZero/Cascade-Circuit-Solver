@@ -2,6 +2,8 @@ import sys
 from net_parser import parse_net_file_to_circuit
 from circuit import *
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 
 def main():
@@ -23,9 +25,21 @@ def main():
     fstart = Circuit.terminations.Fstart
     fend = Circuit.terminations.Fend
     nfreqs = int(Circuit.terminations.Nfreqs)
-    results = []
+    result = []
+    frequency = []
     for f in np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
         s = 2j * np.pi * f
         Circuit.solve(s)
+        frequency.append(f)
+        result.append(Circuit.terminations.V2)
+
+    # Plot V2 against frequency with log scale
+    plt.plot(frequency, result, 'r')
+    plt.xscale('log')
+    plt.yscale('symlog')  # Use symlog scale for y-axis to display negative voltages
+    plt.xlabel('Frequency')
+    plt.ylabel('V2')
+    plt.title('V2 vs Frequency (Log Scale)')
+    plt.savefig('V2_vs_Frequency.png')
 if __name__ == "__main__":
     main()

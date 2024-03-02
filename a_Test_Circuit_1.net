@@ -27,7 +27,7 @@ VT=5 RS=50
 # Load connected between last node (6 in this case) and the implicit common (0)
 RL=75
 # Frequency range and number of frequencies to evaluate at. 
-Fstart=10.0 Fend=10e+6 Nfreqs=10
+Fstart=10.0 Fend=10e+6 Nfreqs=1000
 </TERMS>
 
 # define the outputs between <OUTPUT> and </OUTPUT> delimiters
