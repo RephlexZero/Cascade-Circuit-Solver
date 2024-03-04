@@ -98,7 +98,9 @@ class Terminations:
         input_vector = np.array([[self.V1], [self.I1]])
         ABCD_inv = np.linalg.inv(ABCD)
         output_vector = ABCD_inv @ input_vector
-        self.V2, self.I2 = np.real(output_vector.flatten())
+        self.V2, self.I2 = output_vector.flatten()
+        
+        # TODO: Move calculate_outputs to the output class
 
 
 class Output:
