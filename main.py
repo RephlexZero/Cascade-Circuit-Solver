@@ -51,7 +51,6 @@ def main():
   
     results = []
     for f in frequencies:
-        print(f)
         Circuit.solve(f)
         
     for result in results:

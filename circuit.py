@@ -77,6 +77,8 @@ class Terminations:
         self.LFend = None
         
         self.Nfreqs = None
+        
+        # TODO: Change vars to a dictionary
 
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]

@@ -95,18 +95,31 @@ def process_circuit_line(line, circuit):
         circuit.add_component(**component_data) 
 
 def process_terms_line(line, circuit):
-    # Using verbose pattern for readability
-    terms_pattern = re.compile(r"""
-        (\w+)                    # Term name (alphanumeric and underscore)
-        \s*                       # Zero or more whitespaces (optional)
-        =                         # Equals sign
-        \s*                       # Zero or more whitespaces (optional)
-        (\S+)                    # Non-whitespace value
-    """, re.VERBOSE)
     
-    terms = terms_pattern.findall(line)
-    for term, value in terms:
-        setattr(circuit.terminations, term, float(value))
+    magnitude_multipliers = {
+        '': 1,   # Base case, no magnitude prefix
+        'k': 1e3, 'M': 1e6, 'G': 1e9, 
+        'm': 1e-3, 'u': 1e-6, 'n': 1e-9
+    }
+    
+    terms_pattern = re.compile(r"""
+        (?P<term>\w+)       # Term name (alphanumeric and underscore)
+        \s*=\s*             # Equals sign with optional whitespace
+        (?P<value>(-?)\d+\.?\d*(?:[eE][+-]?\d+)?)  # Value (includes scientific notation)
+        \s*
+        (?P<magnitude>[kmunµGM]?)  # Optional magnitude prefix
+    """, re.VERBOSE)
+
+    matches = terms_pattern.finditer(line)
+
+    for match in matches:
+        term = match.group('term')
+        value = float(match.group('value')) * magnitude_multipliers.get(match.group('magnitude'), 1)
+        print(term, value)
+        setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
+
+
+
 
 def process_output_line(line, circuit):
     # Updated regex pattern to accurately parse the input lines
