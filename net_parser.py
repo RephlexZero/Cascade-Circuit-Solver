@@ -139,7 +139,7 @@ def process_output_line(line, circuit):
         name = match.group('name')
         is_db = bool(match.group('is_db'))
         magnitude = match.group('magnitude') if match.group('magnitude') else ''
-        unit = match.group('unit') if match.group('unit') else None
+        unit = match.group('unit') if match.group('unit') else ''
 
         circuit.add_output(name, unit, magnitude, is_db) 
     else:

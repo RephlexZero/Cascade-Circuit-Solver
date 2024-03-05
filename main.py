@@ -3,6 +3,8 @@ from net_parser import parse_net_file_to_circuit
 from circuit import *
 import numpy as np
 import matplotlib.pyplot as plt
+import copy
+from csv_writer import *
 
 
 
@@ -47,10 +49,16 @@ def main():
     else:
         # Handle cases where the necessary variables are not available or are invalid
         raise ValueError("Required variables for either linear or logarithmic frequency steps are not properly defined.")
-  
-    results = []
-    for f in frequencies:
-        Circuit.solve(f)
-        
+    # Initialise np array to the length of the frequencies
+    results = [copy.deepcopy(Circuit.solve(f)) for f in frequencies]
+    for result in results:
+        for output in result:
+            print(output.__dict__)
+            
+    with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
+        write_header(Circuit, csvfile)  # Pass the open file object
+        write_data(frequencies, results, csvfile)
+        csvfile.close()
+
 if __name__ == "__main__":
     main()

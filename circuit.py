@@ -112,9 +112,10 @@ class Terminations:
 class Output:
     def __init__(self, name, unit, magnitude, is_db):
         self.name = name  # Output parameter name, e.g., Vin, Vout, etc.
+        self.value = None  # Value of the output parameter (calculated later)
         self.unit = unit  # Unit of the parameter, e.g., V (Volts), A (Amps), etc.
-        self.magnitude = None  # Magnitude of the output parameter
-        self.is_db = False  # Whether the output parameter is in dB
+        self.magnitude = magnitude  # Magnitude prefix, e.g., k (kilo), m (milli), etc.
+        self.is_db = is_db  # Boolean indicating if the output is in dB
 
 
 class Circuit:
@@ -133,7 +134,36 @@ class Circuit:
         self.s = 2j * np.pi * self.frequency
         self.resolve_matrix(self.s)
         self.terminations.calculate_outputs(self.ABCD)
-        return self.terminations
+        
+        for output in self.outputs:
+            match output.name:
+                case 'Zin':
+                    output.value = self.terminations.ZI
+                case 'Zout':
+                    output.value = self.terminations.ZO
+                case 'Vin':
+                    output.value = self.terminations.V1
+                case 'Vout':
+                    output.value = self.terminations.V2
+                case 'Iin':
+                    output.value = self.terminations.I1
+                case 'Iout':
+                    output.value = self.terminations.I2
+                case 'Pin':
+                    output.value = self.terminations.V1 * self.terminations.I1
+                case 'Pout':
+                    output.value = self.terminations.V2 * self.terminations.I2
+                case 'Zin':
+                    output.value = self.terminations.ZI
+                case 'Zout':
+                    output.value = self.terminations.ZO
+                case 'Av':
+                    output.value = self.terminations.V2 / self.terminations.V1
+                case 'Ai':
+                    output.value = self.terminations.I2 / self.terminations.I1
+                case _:
+                    raise ValueError(f"Unknown output parameter: {output.name}")
+        return self.outputs
 
     def add_component(self, component, n1, n2, value):
         self.components.append(Component(component, n1, n2, value))
@@ -141,7 +171,7 @@ class Circuit:
     def set_termination(self, type, value):
         setattr(self.terminations, type, value)
 
-    def add_output(self, name, unit, magnitude=None, is_db=False):
+    def add_output(self, name, unit, magnitude, is_db):
         self.outputs.append(Output(name, unit, magnitude, is_db))
 
     def resolve_matrix(self, s=0):
