@@ -91,6 +91,7 @@ def process_circuit_line(line, circuit):
             (?:\.\d*)?)         # Optional decimal part
             (?:[eE][+-]?\d+)?   # Optional exponent part
         )                       # End of the 'value' capture group
+        \s*                     # Optional whitespace
         (?P<magnitude>[kmunµGM]?)   # Capture magnitude prefix, if present
         \b                      # Word boundary to ensure a full match
     )                           # End of lookahead
