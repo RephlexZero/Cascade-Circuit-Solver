@@ -166,6 +166,7 @@ class Circuit:
         return self.outputs
 
     def add_component(self, component, n1, n2, value):
+        print(f"Adding component: {component} {n1} {n2} {value}")
         self.components.append(Component(component, n1, n2, value))
 
     def set_termination(self, type, value):

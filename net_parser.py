@@ -74,8 +74,9 @@ def process_circuit_line(line, circuit):
             | n2\s*=\s*(?P<n2>\d+)\s+
             | (?P<component>[RLCG])\s*= 
         ){3} 
-        (?P<value>\d+\.?\d*)\s*
-        (?P<magnitude>[kmunµG]?)
+        (?P<value>(-?)\d+\.?\d*(?:[eE][+-]?\d+)?)  # Value (includes scientific notation)
+        \s*
+        (?P<magnitude>[kmunµGM]?)  # Optional magnitude prefix
     """
     regex = re.compile(pattern, re.VERBOSE)
 
