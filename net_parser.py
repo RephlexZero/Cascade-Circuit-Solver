@@ -62,27 +62,82 @@ def parse_net_file_to_circuit(file_path):
     return circuit
 
 def process_circuit_line(line, circuit):
-    component_matches = re.findall(r'(n1|n2|R|G|L|C)=([\d\.e+-]+)', line)
-    n1, n2, type, value = None, None, None, None
-    for key, value in component_matches:
-        if key == 'n1':
-            n1 = int(value)
-        elif key == 'n2':
-            n2 = int(value)
-        elif key in ['R', 'G', 'L', 'C']:
-            type = key
-            value = float(value)
-    if None not in [n1, n2, type, value]:
-        circuit.add_component(type, n1, n2, value)
-    else:
-        raise ValueError(f"Invalid component line: {line}")
+    magnitude_multiplier = {
+        '': 1, 'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9,
+        'k': 1e3, 'M': 1e6, 'G': 1e9
+    }
+
+    pattern = r"""
+        (?: 
+            n1\s*=\s*(?P<n1>\d+)\s+ 
+            | n2\s*=\s*(?P<n2>\d+)\s+
+            | (?P<component>[RLCG])\s*= 
+        ){3} 
+        (?P<value>\d+\.?\d*)\s*
+        (?P<magnitude>[kmunµG]?)
+    """
+    regex = re.compile(pattern, re.VERBOSE)
+
+    match = regex.search(line)
+    if match:
+        data = {k: match.group(k) for k in ('n1', 'n2', 'component', 'value', 'magnitude')}
+
+        # Convert and adjust values
+        data['n1'] = int(data['n1'])
+        data['n2'] = int(data['n2'])
+        data['value'] = float(data['value'])
+        data['value'] *= magnitude_multiplier.get(data['magnitude'], 1)
+
+        # Extract only the necessary components
+        component_data = {k: data[k] for k in ('component', 'n1', 'n2', 'value')}
+
+        # Call the circuit function
+        circuit.add_component(**component_data) 
 
 def process_terms_line(line, circuit):
-    terms = re.findall(r'(\w+)=(\S+)', line)
+    # Using verbose pattern for readability
+    terms_pattern = re.compile(r"""
+        (\w+)                    # Term name (alphanumeric and underscore)
+        \s*                       # Zero or more whitespaces (optional)
+        =                         # Equals sign
+        \s*                       # Zero or more whitespaces (optional)
+        (\S+)                    # Non-whitespace value
+    """, re.VERBOSE)
+    
+    terms = terms_pattern.findall(line)
     for term, value in terms:
         setattr(circuit.terminations, term, float(value))
 
 def process_output_line(line, circuit):
-    name, *unit = line.split()
-    unit = unit[0] if unit else None
-    circuit.add_output(name, unit)
+    # Updated regex pattern to accurately parse the input lines
+    pattern = r"""
+        ^                   # Start of the line
+        (?P<name>\w+)       # Capture the name (parameter)
+        \s*                 # Optional whitespace
+        (?P<is_db>dB)?      # Optional dB indicator
+        (?P<magnitude>[mkMGuµn])? # Optional magnitude prefix
+        (?P<unit>[AVWOhms]*) # Capture the unit
+        $                   # End of the line
+    """
+    
+    # Compile the regex with VERBOSE flag to allow whitespace and comments
+    regex = re.compile(pattern, re.VERBOSE)
+    match = regex.match(line)
+    
+    if match:
+        name = match.group('name')
+        is_db = bool(match.group('is_db'))
+        magnitude = match.group('magnitude') if match.group('magnitude') else ''
+        unit = match.group('unit')
+        
+        # Lookup table for magnitude multipliers
+        magnitude_multiplier = {
+            '': 1,    # No prefix
+            'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9,
+            'k': 1e3, 'M': 1e6, 'G': 1e9,
+        }.get(magnitude, 1)  # Default to no multiplier if prefix is unknown
+
+        # Assuming circuit.add_output() accepts these parameters
+        circuit.add_output(name, unit, magnitude_multiplier, is_db) 
+    else:
+        raise ValueError(f"Invalid output line: {line}")

@@ -72,6 +72,10 @@ class Terminations:
 
         self.Fstart = None
         self.Fend = None
+        
+        self.LFstart = None
+        self.LFend = None
+        
         self.Nfreqs = None
 
     def calculate_outputs(self, ABCD):
@@ -79,7 +83,7 @@ class Terminations:
 
         # Check if the ABCD matrix is invertible. If not, raise an error.
         if np.linalg.det(ABCD) == 0:
-            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.")
+            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.", ABCD)
 
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
 
@@ -104,9 +108,11 @@ class Terminations:
 
 
 class Output:
-    def __init__(self, name, unit=None):
+    def __init__(self, name, unit, magnitude, is_db):
         self.name = name  # Output parameter name, e.g., Vin, Vout, etc.
         self.unit = unit  # Unit of the parameter, e.g., V (Volts), A (Amps), etc.
+        self.magnitude = None  # Magnitude of the output parameter
+        self.is_db = False  # Whether the output parameter is in dB
 
 
 class Circuit:
@@ -114,22 +120,27 @@ class Circuit:
         self.components = []
         self.outputs = []
         self.terminations = Terminations()
+        
+        self.frequency = None
+        self.s = None
 
         self.ABCD = None
 
-    def solve(self, s=0):
-        self.resolve_matrix(s)
+    def solve(self, f):
+        self.frequency = f
+        self.s = 2j * np.pi * self.frequency
+        self.resolve_matrix(self.s)
         self.terminations.calculate_outputs(self.ABCD)
         return self.terminations
 
-    def add_component(self, type, n1, n2, value):
-        self.components.append(Component(type, n1, n2, value))
+    def add_component(self, component, n1, n2, value):
+        self.components.append(Component(component, n1, n2, value))
 
     def set_termination(self, type, value):
         setattr(self.terminations, type, value)
 
-    def add_output(self, name, unit):
-        self.outputs.append(Output(name, unit))
+    def add_output(self, name, unit, magnitude=None, is_db=False):
+        self.outputs.append(Output(name, unit, magnitude, is_db))
 
     def resolve_matrix(self, s=0):
         circuit_matricies = np.array([component.get_abcd_matrix(s) for component in self.components])

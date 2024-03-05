@@ -22,24 +22,39 @@ def main():
 
     Circuit = parse_net_file_to_circuit(input_file_path)
     Circuit.sort_components()
-    fstart = Circuit.terminations.Fstart
-    fend = Circuit.terminations.Fend
-    nfreqs = int(Circuit.terminations.Nfreqs)
-    result = []
-    frequency = []
-    for f in np.logspace(np.log10(fstart), np.log10(fend), num=nfreqs):
-        s = 2j * np.pi * f
-        Circuit.solve(s)
-        frequency.append(f)
-        result.append(Circuit.terminations.V2)
 
-    # Plot V2 against frequency with log scale
-    plt.plot(frequency, result, 'r')
-    plt.xscale('log')
-    plt.yscale('symlog')  # Use symlog scale for y-axis to display negative voltages
-    plt.xlabel('Frequency')
-    plt.ylabel('V2')
-    plt.title('V2 vs Frequency (Log Scale)')
-    plt.savefig('V2_vs_Frequency.png')
+    # Attempt to retrieve linear frequency start and end
+    fstart = getattr(Circuit.terminations, 'Fstart', None)
+    fend = getattr(Circuit.terminations, 'Fend', None)
+
+    # Attempt to retrieve logarithmic frequency start and end
+    Lfstart = getattr(Circuit.terminations, 'LFstart', None)
+    Lfend = getattr(Circuit.terminations, 'LFend', None)
+
+    # Attempt to convert nfreqs to int if it exists
+    nfreqs = getattr(Circuit.terminations, 'Nfreqs', None)
+    if nfreqs is not None:
+        nfreqs = int(nfreqs)
+    else:
+        raise ValueError("Nfreqs is not defined.")
+    print(fstart, fend, Lfstart, Lfend, nfreqs)
+    # Check conditions and decide which function to call
+    if all([fstart, fend, nfreqs]) and all(x > 0 for x in [fstart, fend, nfreqs]):
+        # Linear frequency variables are available and valid
+        frequencies = np.linspace(fstart, fend, nfreqs)
+    elif all([Lfstart, Lfend, nfreqs]) and all(x > 0 for x in [Lfstart, Lfend, nfreqs]):
+        # Logarithmic frequency variables are available and valid
+        frequencies = np.logspace(np.log10(Lfstart), np.log10(Lfend), nfreqs)
+    else:
+        # Handle cases where the necessary variables are not available or are invalid
+        raise ValueError("Required variables for either linear or logarithmic frequency steps are not properly defined.")
+  
+    results = []
+    for f in frequencies:
+        print(f)
+        Circuit.solve(f)
+        
+    for result in results:
+        print(result.frequency)
 if __name__ == "__main__":
     main()
