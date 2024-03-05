@@ -63,7 +63,7 @@ def parse_net_file_to_circuit(file_path):
 
 def process_circuit_line(line, circuit):
     magnitude_multiplier = {
-        '': 1, 'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9,
+        '': 1, 'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
         'k': 1e3, 'M': 1e6, 'G': 1e9
     }
 
@@ -90,8 +90,6 @@ def process_circuit_line(line, circuit):
 
         # Extract only the necessary components
         component_data = {k: data[k] for k in ('component', 'n1', 'n2', 'value')}
-
-        # Call the circuit function
         circuit.add_component(**component_data) 
 
 def process_terms_line(line, circuit):
@@ -141,12 +139,12 @@ def process_output_line(line, circuit):
         name = match.group('name')
         is_db = bool(match.group('is_db'))
         magnitude = match.group('magnitude') if match.group('magnitude') else ''
-        unit = match.group('unit')
+        unit = match.group('unit') if match.group('unit') else None
         
         # Lookup table for magnitude multipliers
         magnitude_multiplier = {
             '': 1,    # No prefix
-            'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9,
+            'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
             'k': 1e3, 'M': 1e6, 'G': 1e9,
         }.get(magnitude, 1)  # Default to no multiplier if prefix is unknown
 
