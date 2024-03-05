@@ -32,18 +32,18 @@ def write_data(frequencies, results, csv_file):
     writer = csv.writer(csv_file)
 
     for i, f in enumerate(frequencies):
-        row = ['{:.3E}'.format(f)]
+        row = ['{:.3e}'.format(f)]
         for output in results[i]:  # Assuming 'outputs' is a key in the dict
             output.value = output.value * magnitude_multipliers.get(output.magnitude, 1)
             # Convert the value to scientific notation (3dp)
             if output.is_db:
                 mag, phase = (20 * np.log10(np.abs(output.value))), (np.angle(output.value))
-                row.append('{:.3E}'.format(mag))  # Format using 'E' for scientific notation
-                row.append('{:.3E}'.format(phase))
+                row.append('{:.3e}'.format(mag))  # Format using 'E' for scientific notation
+                row.append('{:.3e}'.format(phase))
             else:
                 value = output.value  # Extract the value
-                row.append('{:.3E}'.format(np.real(value)))  # Format using 'E' for scientific notation
-                row.append('{:.3E}'.format(np.imag(value)))
+                row.append('{:.3e}'.format(np.real(value)))  # Format using 'E' for scientific notation
+                row.append('{:.3e}'.format(np.imag(value)))
 
         writer.writerow(row)
     csv_file.flush() 
