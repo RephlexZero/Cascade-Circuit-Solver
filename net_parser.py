@@ -63,7 +63,8 @@ def parse_net_file_to_circuit(file_path):
 
 def process_circuit_line(line, circuit):
     magnitude_multiplier = {
-        '': 1, 'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
+        '': 1,
+        'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
         'k': 1e3, 'M': 1e6, 'G': 1e9
     }
 
@@ -113,7 +114,6 @@ def process_terms_line(line, circuit):
     for match in matches:
         term = match.group('term')
         value = float(match.group('value')) * magnitude_multipliers.get(match.group('magnitude'), 1)
-        print(term, value)
         setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
 
 
@@ -140,15 +140,7 @@ def process_output_line(line, circuit):
         is_db = bool(match.group('is_db'))
         magnitude = match.group('magnitude') if match.group('magnitude') else ''
         unit = match.group('unit') if match.group('unit') else None
-        
-        # Lookup table for magnitude multipliers
-        magnitude_multiplier = {
-            '': 1,    # No prefix
-            'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
-            'k': 1e3, 'M': 1e6, 'G': 1e9,
-        }.get(magnitude, 1)  # Default to no multiplier if prefix is unknown
 
-        # Assuming circuit.add_output() accepts these parameters
         circuit.add_output(name, unit, magnitude, is_db) 
     else:
         raise ValueError(f"Invalid output line: {line}")

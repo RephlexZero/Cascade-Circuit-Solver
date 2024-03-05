@@ -37,7 +37,6 @@ def main():
         nfreqs = int(nfreqs)
     else:
         raise ValueError("Nfreqs is not defined.")
-    print(fstart, fend, Lfstart, Lfend, nfreqs)
     # Check conditions and decide which function to call
     if all([fstart, fend, nfreqs]) and all(x > 0 for x in [fstart, fend, nfreqs]):
         # Linear frequency variables are available and valid
@@ -53,7 +52,5 @@ def main():
     for f in frequencies:
         Circuit.solve(f)
         
-    for result in results:
-        print(result.frequency)
 if __name__ == "__main__":
     main()
