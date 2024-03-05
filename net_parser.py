@@ -69,15 +69,34 @@ def process_circuit_line(line, circuit):
     }
 
     pattern = r"""
-        (?: 
-            n1\s*=\s*(?P<n1>\d+)\s+ 
-            | n2\s*=\s*(?P<n2>\d+)\s+
-            | (?P<component>[RLCG])\s*= 
-        ){3} 
-        (?P<value>(-?)\d+\.?\d*(?:[eE][+-]?\d+)?)  # Value (includes scientific notation)
-        \s*
-        (?P<magnitude>[kmunµGM]?)  # Optional magnitude prefix
-    """
+    ^                           # Start of the string
+    (?=                         # Start of a positive lookahead for 'n1'
+        .*                      # Any character, any number of times
+        \bn1\s*=\s*             # 'n1' with optional whitespace around '='
+        (?P<n1>\d+)             # Capture one or more digits as 'n1'
+        \b                      # Word boundary to ensure a full match
+    )
+    (?=                         # Start of a positive lookahead for 'n2'
+        .*                      # Any character, any number of times
+        \bn2\s*=\s*             # 'n2' with optional whitespace around '='
+        (?P<n2>\d+)             # Capture one or more digits as 'n2'
+        \b                      # Word boundary to ensure a full match
+    )
+    (?=                         # Start of a positive lookahead for component
+        .*                      # Any character, any number of times
+        (?P<component>[RLCG])    # Capture 'R', 'L', 'C' or 'G' as component
+        \s*=\s*                 # Optional whitespace around '='
+        (?P<value>              # Start of the 'value' capture group
+            (?:-?\d+            # Optional '-' followed by one or more digits
+            (?:\.\d*)?)         # Optional decimal part
+            (?:[eE][+-]?\d+)?   # Optional exponent part
+        )                       # End of the 'value' capture group
+        (?P<magnitude>[kmunµGM]?)   # Capture magnitude prefix, if present
+        \b                      # Word boundary to ensure a full match
+    )                           # End of lookahead
+    .+                          # Ensure the entire string is matched
+    """                         # End of the pattern
+    
     regex = re.compile(pattern, re.VERBOSE)
 
     match = regex.search(line)
@@ -104,10 +123,18 @@ def process_terms_line(line, circuit):
     
     terms_pattern = re.compile(r"""
         (?P<term>\w+)       # Term name (alphanumeric and underscore)
-        \s*=\s*             # Equals sign with optional whitespace
-        (?P<value>(-?)\d+\.?\d*(?:[eE][+-]?\d+)?)  # Value (includes scientific notation)
-        \s*
-        (?P<magnitude>[kmunµGM]?)  # Optional magnitude prefix
+        \s*=\s*             # Equals sign with optional whitespace on both sides
+        (?P<value>          # Start of value capture group
+            (-?)            # Optional sign (negative)
+            \d+             # One or more digits before the decimal point
+            \.?             # Optional decimal point
+            \d*             # Zero or more digits after the decimal point
+            (?:[eE][+-]?\d+)? # Optional scientific notation (e.g., e+10, E-10)
+        )                   # End of value capture group
+        \s*                 # Optional whitespace
+        (?P<magnitude>      # Start of magnitude prefix capture group
+            [kmunµGM]?      # Optional single character for magnitude prefix (k, m, u, n, µ, G, M)
+        )                   # End of magnitude prefix capture group
     """, re.VERBOSE)
 
     matches = terms_pattern.finditer(line)
@@ -117,9 +144,6 @@ def process_terms_line(line, circuit):
         value = float(match.group('value')) * magnitude_multipliers.get(match.group('magnitude'), 1)
         setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
 
-
-
-
 def process_output_line(line, circuit):
     # Updated regex pattern to accurately parse the input lines
     pattern = r"""
@@ -127,7 +151,9 @@ def process_output_line(line, circuit):
         (?P<name>\w+)       # Capture the name (parameter)
         \s*                 # Optional whitespace
         (?P<is_db>dB)?      # Optional dB indicator
+        \s*             # Equals sign with optional whitespace on both sides
         (?P<magnitude>[mkMGuµn])? # Optional magnitude prefix
+        \s*                 # Optional whitespace
         (?P<unit>[AVWOhms]*) # Capture the unit
         $                   # End of the line
     """
