@@ -1,6 +1,13 @@
 import csv
 import numpy as np
 
+magnitude_multiplier = {
+    '': 1, 'k': 1e3, 
+    'M': 1e6, 'G': 1e9, 
+    'm': 1e-3, 'u': 1e-6,
+    'µ': 1e-6, 'n': 1e-9
+}
+
 def write_header(Circuit, csv_file):
     writer = csv.writer(csv_file)
 
@@ -23,11 +30,6 @@ def write_header(Circuit, csv_file):
     csv_file.flush()
 
 def write_data(frequencies, results, csv_file):
-    magnitude_multipliers = {
-        '': 1,   # Base case, no magnitude prefix
-        'k': 1e3, 'M': 1e6, 'G': 1e9, 
-        'm': 1e-3, 'u': 1e-6, 'n': 1e-9
-    }
     
     writer = csv.writer(csv_file)
 

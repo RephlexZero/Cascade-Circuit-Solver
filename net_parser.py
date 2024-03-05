@@ -4,6 +4,8 @@ from circuit import Circuit
 class MalformedInputError(Exception):
     pass
 
+
+
 def parse_net_file_to_circuit(file_path):
     circuit = Circuit()
     section_open = None
@@ -62,11 +64,6 @@ def parse_net_file_to_circuit(file_path):
     return circuit
 
 def process_circuit_line(line, circuit):
-    magnitude_multiplier = {
-        '': 1,
-        'm': 1e-3, 'u': 1e-6, 'n': 1e-9,
-        'k': 1e3, 'M': 1e6, 'G': 1e9
-    }
 
     pattern = r"""
     ^                           # Start of the string
@@ -115,13 +112,6 @@ def process_circuit_line(line, circuit):
         circuit.add_component(**component_data) 
 
 def process_terms_line(line, circuit):
-    
-    magnitude_multipliers = {
-        '': 1,   # Base case, no magnitude prefix
-        'k': 1e3, 'M': 1e6, 'G': 1e9, 
-        'm': 1e-3, 'u': 1e-6, 'n': 1e-9
-    }
-    
     terms_pattern = re.compile(r"""
         (?P<term>\w+)       # Term name (alphanumeric and underscore)
         \s*=\s*             # Equals sign with optional whitespace on both sides
@@ -142,7 +132,8 @@ def process_terms_line(line, circuit):
 
     for match in matches:
         term = match.group('term')
-        value = float(match.group('value')) * magnitude_multipliers.get(match.group('magnitude'), 1)
+        magnitude = match.group('magnitude')
+        value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
         setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
 
 def process_output_line(line, circuit):
