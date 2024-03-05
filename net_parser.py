@@ -4,7 +4,12 @@ from circuit import Circuit
 class MalformedInputError(Exception):
     pass
 
-
+magnitude_multiplier = {
+    '': 1, 'k': 1e3, 
+    'M': 1e6, 'G': 1e9, 
+    'm': 1e-3, 'u': 1e-6,
+    'µ': 1e-6, 'n': 1e-9
+}
 
 def parse_net_file_to_circuit(file_path):
     circuit = Circuit()

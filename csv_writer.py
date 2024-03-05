@@ -36,7 +36,7 @@ def write_data(frequencies, results, csv_file):
     for i, f in enumerate(frequencies):
         row = ['{:.3e}'.format(f)]
         for output in results[i]:  # Assuming 'outputs' is a key in the dict
-            output.value = output.value / magnitude_multipliers.get(output.magnitude, 1)
+            output.value = output.value / magnitude_multiplier.get(output.magnitude, 1)
             # Convert the value to scientific notation (3dp)
             if output.is_db:
                 mag, phase = (20 * np.log10(np.abs(output.value))), (np.angle(output.value))
