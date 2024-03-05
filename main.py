@@ -51,9 +51,6 @@ def main():
         raise ValueError("Required variables for either linear or logarithmic frequency steps are not properly defined.")
     # Initialise np array to the length of the frequencies
     results = [copy.deepcopy(Circuit.solve(f)) for f in frequencies]
-    for result in results:
-        for output in result:
-            print(output.__dict__)
             
     with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
         write_header(Circuit, csvfile)  # Pass the open file object
