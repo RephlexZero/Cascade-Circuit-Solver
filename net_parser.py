@@ -151,6 +151,6 @@ def process_output_line(line, circuit):
         }.get(magnitude, 1)  # Default to no multiplier if prefix is unknown
 
         # Assuming circuit.add_output() accepts these parameters
-        circuit.add_output(name, unit, magnitude_multiplier, is_db) 
+        circuit.add_output(name, unit, magnitude, is_db) 
     else:
         raise ValueError(f"Invalid output line: {line}")
