@@ -49,3 +49,7 @@ def write_data(frequencies, results, csv_file):
 
         writer.writerow(row)
     csv_file.flush() 
+
+def write_empty_csv(output_file_path):
+    with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
+        csvfile.close()

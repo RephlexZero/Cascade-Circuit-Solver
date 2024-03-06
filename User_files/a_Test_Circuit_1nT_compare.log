@@ -1,0 +1,3 @@
+Command is:python main.py ./User_files/a_Test_Circuit_1nT.net ./User_files/a_Test_Circuit_1nT.csv >./User_files/a_Test_Circuit_1nT_run.log 2>&1
+OS returns 256 from execution of command
+For files ./Model_files/a_Test_Circuit_1nT_model.csv and ./User_files/a_Test_Circuit_1nT.csv filecmp returns same=True

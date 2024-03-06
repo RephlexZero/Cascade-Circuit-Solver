@@ -5,12 +5,14 @@
             "name": "Python: Debug main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/main.py",
+            "program": "${workspaceFolder}/AutoTest_08.py",
             "args": [
-                "./a_Test_Circuit_1.net",
-                "test.csv"
+                "main.py",
+                "1",
+                "1"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python"
         }
     ]
 }

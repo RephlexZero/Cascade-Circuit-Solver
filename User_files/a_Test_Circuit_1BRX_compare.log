@@ -1,0 +1,5 @@
+Command is:python main.py ./User_files/a_Test_Circuit_1BRX.net ./User_files/a_Test_Circuit_1BRX.csv >./User_files/a_Test_Circuit_1BRX_run.log 2>&1
+OS returns 0 from execution of command
+For files ./Model_files/a_Test_Circuit_1BRX_model.csv and ./User_files/a_Test_Circuit_1BRX.csv filecmp returns same=False
+			Detailed testing:
+Files have different number of lines, model has 0 lines, user has 12 lines
