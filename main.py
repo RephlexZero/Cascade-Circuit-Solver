@@ -24,15 +24,15 @@ def main():
     Lfend = getattr(Circuit.terminations, 'LFend', None)
 
     # Attempt to convert nfreqs to int if it exists
-    nfreqs = int(getattr(Circuit.terminations, 'Nfreqs', None))
+    nfreqs = getattr(Circuit.terminations, 'Nfreqs', None)
 
     # Check conditions and decide which function to call
     if all([fstart, fend, nfreqs]) and all(x > 0 for x in [fstart, fend, nfreqs]):
         # Linear frequency variables are available and valid
-        frequencies = np.linspace(fstart, fend, nfreqs)
+        frequencies = np.linspace(fstart, fend, int(nfreqs))
     elif all([Lfstart, Lfend, nfreqs]) and all(x > 0 for x in [Lfstart, Lfend, nfreqs]):
         # Logarithmic frequency variables are available and valid
-        frequencies = np.logspace(np.log10(Lfstart), np.log10(Lfend), nfreqs)
+        frequencies = np.logspace(np.log10(Lfstart), np.log10(Lfend), int(nfreqs))
     else:
         write_empty_csv(output_file_path)
         raise ValueError("Invalid or missing frequency parameters")
