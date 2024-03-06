@@ -82,11 +82,7 @@ class Terminations:
 
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
-
-        # Check if the ABCD matrix is invertible. If not, raise an error.
-        if np.linalg.det(ABCD) == 0:
-            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.", ABCD)
-
+        
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
 
         # Check that VT and RS are provided, or IN and GS are provided.
@@ -102,7 +98,13 @@ class Terminations:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
 
         input_vector = np.array([[self.V1], [self.I1]])
-        ABCD_inv = np.linalg.inv(ABCD)
+        
+        # Check if the ABCD matrix is invertible. If not, raise an error.
+        if np.linalg.det(ABCD) == 0:
+            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.", ABCD)
+        else:
+            ABCD_inv = np.linalg.inv(ABCD)
+            
         output_vector = ABCD_inv @ input_vector
         self.V2, self.I2 = output_vector.flatten()
         
