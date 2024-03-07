@@ -1,6 +1,6 @@
 Traceback (most recent call last):
-  File "/home/jake/Documents/EEE/Cascade-Circuit-Solver/main.py", line 68, in <module>
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 68, in <module>
     main()
-  File "/home/jake/Documents/EEE/Cascade-Circuit-Solver/main.py", line 38, in main
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 38, in main
     raise ValueError("Invalid or missing frequency parameters")
 ValueError: Invalid or missing frequency parameters

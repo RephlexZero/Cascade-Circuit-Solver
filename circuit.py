@@ -89,7 +89,7 @@ class Terminations:
         if self.VT is not None and self.RS is not None:
             self.ZO = (D * self.RS + B) / (C * self.RS + A)
             self.I1 = self.VT / (self.RS + self.ZI)
-            self.V1 = self.VT - self.I1 * self.ZI
+            self.V1 = self.VT - self.I1 * self.RS
         elif self.IN is not None and self.GS is not None:
             self.ZO = (C + self.GS * A) / (D + self.GS * B)
             self.V1 = self.IN * (self.ZI / (1 + self.ZI * self.GS))
@@ -163,7 +163,9 @@ class Circuit:
                     output.value = self.terminations.V2 / self.terminations.V1
                 case 'Ai':
                     output.value = self.terminations.I2 / self.terminations.I1
-                case _:
+                case 'Ap':
+                    output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(self.terminations.I2/self.terminations.I1)
+                    # TODO: Fix power calculations
                     raise ValueError(f"Unknown output parameter: {output.name}")
         return self.outputs
 

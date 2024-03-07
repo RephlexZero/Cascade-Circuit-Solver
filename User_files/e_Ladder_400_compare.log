@@ -3,305 +3,305 @@ OS returns 0 from execution of command
 For files ./Model_files/e_Ladder_400_model.csv and ./User_files/e_Ladder_400.csv filecmp returns same=False
 			Detailed testing:
 Working on 152 lines
-Line length differs, model file line has 250 character while user file has 168
-Line length differs, model file line has 250 character while user file has 50
+Line length differs, model file line has 241 character while user file has 168
+Line length differs, model file line has 234 character while user file has 50
 Line 3 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 216
 Line 4 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 5 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 6 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 7 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 8 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 9 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 10 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 213
 Line 11 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 12 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 13 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 220
 Line 14 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 15 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 217
 Line 16 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 17 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 18 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 214
 Line 19 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 20 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 220
 Line 21 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 22 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 23 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 216
 Line 24 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 25 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 217
 Line 26 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 27 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 220
 Line 28 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 29 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 217
 Line 30 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 31 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 32 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 214
 Line 33 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 34 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 216
 Line 35 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 36 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 219
 Line 37 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 38 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 211
+Line length differs, model file line has 245 character while user file has 212
 Line 39 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 40 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 41 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 42 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 220
 Line 43 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 44 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 220
 Line 45 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 46 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 216
 Line 47 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 48 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 213
 Line 49 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 217
 Line 50 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 51 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 220
 Line 52 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 53 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 220
 Line 54 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 55 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 56 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 211
+Line length differs, model file line has 245 character while user file has 212
 Line 57 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 58 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 214
 Line 59 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 60 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 61 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 217
 Line 62 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 220
 Line 63 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 64 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 221
 Line 65 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 66 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 219
 Line 67 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 217
 Line 68 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 69 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 216
 Line 70 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 213
+Line length differs, model file line has 245 character while user file has 212
 Line 71 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 72 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 73 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 213
+Line length differs, model file line has 245 character while user file has 213
 Line 74 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 75 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 76 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 77 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 78 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 79 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 217
 Line 80 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 81 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 82 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 83 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 84 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 85 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 217
 Line 86 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 87 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 88 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 89 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 90 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 91 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 214
 Line 92 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 93 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 213
 Line 94 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 216
 Line 95 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 96 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 219
 Line 97 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 98 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 99 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 100 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 217
 Line 101 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 102 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 103 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 104 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 217
 Line 105 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 106 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 219
+Line length differs, model file line has 245 character while user file has 221
 Line 107 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 108 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 109 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 110 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 219
 Line 111 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 112 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 113 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 114 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 217
 Line 115 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 116 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 117 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 118 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 119 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 216
+Line length differs, model file line has 245 character while user file has 217
 Line 120 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 121 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 122 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 123 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 220
+Line length differs, model file line has 245 character while user file has 217
 Line 124 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 216
 Line 125 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 213
 Line 126 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 127 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 213
 Line 128 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 221
 Line 129 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 215
 Line 130 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 215
+Line length differs, model file line has 245 character while user file has 217
 Line 131 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 132 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 133 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 134 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 135 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 218
+Line length differs, model file line has 245 character while user file has 216
 Line 136 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 137 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 138 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 139 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 140 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 141 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 142 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 214
+Line length differs, model file line has 245 character while user file has 213
 Line 143 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 144 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 145 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 146 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 215
 Line 147 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 214
 Line 148 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 219
 Line 149 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 150 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 217
+Line length differs, model file line has 245 character while user file has 217
 Line 151 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
 Line 152 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 221
+Line length differs, model file line has 245 character while user file has 220
