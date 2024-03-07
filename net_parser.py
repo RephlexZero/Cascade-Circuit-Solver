@@ -105,7 +105,6 @@ def process_circuit_line(line, circuit):
     match = regex.search(line)
     if match:
         data = {k: match.group(k) for k in ('n1', 'n2', 'component', 'value', 'magnitude')}
-
         # Convert and adjust values
         data['n1'] = int(data['n1'])
         data['n2'] = int(data['n2'])
@@ -115,6 +114,8 @@ def process_circuit_line(line, circuit):
         # Extract only the necessary components
         component_data = {k: data[k] for k in ('component', 'n1', 'n2', 'value')}
         circuit.add_component(**component_data) 
+    else:
+        raise MalformedInputError(f"Invalid circuit line: {line}")
 
 def process_terms_line(line, circuit):
     terms_pattern = re.compile(r"""
@@ -134,12 +135,14 @@ def process_terms_line(line, circuit):
     """, re.VERBOSE)
 
     matches = terms_pattern.finditer(line)
-
-    for match in matches:
-        term = match.group('term')
-        magnitude = match.group('magnitude')
-        value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
-        setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
+    if matches:
+        for match in matches:
+            term = match.group('term')
+            magnitude = match.group('magnitude')
+            value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
+            setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
+    else:
+        raise MalformedInputError(f"Invalid terms line: {line}")
 
 def process_output_line(line, circuit):
     # Updated regex pattern to accurately parse the input lines
@@ -167,4 +170,4 @@ def process_output_line(line, circuit):
 
         circuit.add_output(name, unit, magnitude, is_db) 
     else:
-        raise ValueError(f"Invalid output line: {line}")
+        raise MalformedInputError(f"Invalid output line: {line}")

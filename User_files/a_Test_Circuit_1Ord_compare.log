@@ -1,0 +1,17 @@
+Command is:python main.py ./User_files/a_Test_Circuit_1Ord.net ./User_files/a_Test_Circuit_1Ord.csv >./User_files/a_Test_Circuit_1Ord_run.log 2>&1
+OS returns 0 from execution of command
+For files ./Model_files/a_Test_Circuit_1Ord_model.csv and ./User_files/a_Test_Circuit_1Ord.csv filecmp returns same=False
+			Detailed testing:
+Working on 12 lines
+Line 1 is OK
+Line 2 is OK
+Line 3 is OK
+Line 4 is OK
+Line 5 is OK
+Line 6 is OK
+Line 7 is OK
+Line 8 is OK
+Line 9 is OK
+Line 10 is OK
+Line 11 is OK
+Line 12 is OK

@@ -99,11 +99,8 @@ class Terminations:
 
         input_vector = np.array([[self.V1], [self.I1]])
         
-        # Check if the ABCD matrix is invertible. If not, raise an error.
-        if np.linalg.det(ABCD) == 0:
-            raise ValueError("ABCD matrix is not invertible. Cannot calculate outputs.", ABCD)
-        else:
-            ABCD_inv = np.linalg.inv(ABCD)
+
+        ABCD_inv = np.linalg.inv(ABCD)
             
         output_vector = ABCD_inv @ input_vector
         self.V2, self.I2 = output_vector.flatten()
