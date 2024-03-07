@@ -140,7 +140,7 @@ def process_terms_line(line, circuit):
             term = match.group('term')
             magnitude = match.group('magnitude')
             value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
-            setattr(circuit.terminations, term, value)  # Assuming 'terminations' is correct 
+            setattr(circuit.terminations, term, value)
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
 
@@ -168,6 +168,6 @@ def process_output_line(line, circuit):
         magnitude = match.group('magnitude') if match.group('magnitude') else ''
         unit = match.group('unit') if match.group('unit') else ''
 
-        circuit.add_output(name, unit, magnitude, is_db) 
+        circuit.add_output(name, unit, magnitude, is_db)
     else:
         raise MalformedInputError(f"Invalid output line: {line}")

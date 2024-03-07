@@ -77,14 +77,12 @@ class Terminations:
         self.LFend = None
         
         self.Nfreqs = None
-        
-        # TODO: Change vars to a dictionary
 
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
         
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
-
+        
         # Check that VT and RS are provided, or IN and GS are provided.
         if self.VT is not None and self.RS is not None:
             self.ZO = (D * self.RS + B) / (C * self.RS + A)
@@ -122,7 +120,7 @@ class Circuit:
         self.components = []
         self.outputs = []
         self.terminations = Terminations()
-        
+
         self.frequency = None
         self.s = None
 
@@ -133,7 +131,7 @@ class Circuit:
         self.s = 2j * np.pi * self.frequency
         self.resolve_matrix(self.s)
         self.terminations.calculate_outputs(self.ABCD)
-        
+
         for output in self.outputs:
             match output.name:
                 case 'Zin':
@@ -165,15 +163,15 @@ class Circuit:
                 case 'Ap':
                     output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(self.terminations.I2/self.terminations.I1)
                     output.unit = 'L'
-                    # TODO: Fix power calculations
+                case _:
                     raise ValueError(f"Unknown output parameter: {output.name}")
         return self.outputs
 
     def add_component(self, component, n1, n2, value):
         self.components.append(Component(component, n1, n2, value))
 
-    def set_termination(self, type, value):
-        setattr(self.terminations, type, value)
+    def set_termination(self, name, value):
+        setattr(self.terminations, name, value)
 
     def add_output(self, name, unit, magnitude, is_db):
         self.outputs.append(Output(name, unit, magnitude, is_db))

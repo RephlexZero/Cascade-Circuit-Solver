@@ -1,54 +1,54 @@
 import sys
-from net_parser import parse_net_file_to_circuit, MalformedInputError
-from circuit import Circuit
-import numpy as np
 import copy
+import numpy as np
+
 from csv_writer import write_header, write_data, write_empty_csv, align_and_overwrite_csv
+from net_parser import parse_net_file_to_circuit, MalformedInputError
 
 def main():
     try:
-        Circuit = parse_net_file_to_circuit(input_file_path)
+        circuit = parse_net_file_to_circuit(input_file_path)
     except MalformedInputError as e:
         write_empty_csv(output_file_path)
         print(f"Error parsing input file: {e}")
         sys.exit(1)
-    
-    Circuit.sort_components()
+
+    circuit.sort_components()
 
     # Attempt to retrieve linear frequency start and end
-    fstart = getattr(Circuit.terminations, 'Fstart', None)
-    fend = getattr(Circuit.terminations, 'Fend', None)
+    fstart = getattr(circuit.terminations, 'Fstart', None)
+    fend = getattr(circuit.terminations, 'Fend', None)
 
     # Attempt to retrieve logarithmic frequency start and end
-    Lfstart = getattr(Circuit.terminations, 'LFstart', None)
-    Lfend = getattr(Circuit.terminations, 'LFend', None)
+    lfstart = getattr(circuit.terminations, 'LFstart', None)
+    lfend = getattr(circuit.terminations, 'LFend', None)
 
     # Attempt to convert nfreqs to int if it exists
-    nfreqs = getattr(Circuit.terminations, 'Nfreqs', None)
+    nfreqs = getattr(circuit.terminations, 'Nfreqs', None)
 
     # Check conditions and decide which function to call
     if all([fstart, fend, nfreqs]) and all(x > 0 for x in [fstart, fend, nfreqs]):
         # Linear frequency variables are available and valid
         frequencies = np.linspace(fstart, fend, int(nfreqs))
-    elif all([Lfstart, Lfend, nfreqs]) and all(x > 0 for x in [Lfstart, Lfend, nfreqs]):
+    elif all([lfstart, lfend, nfreqs]) and all(x > 0 for x in [lfstart, lfend, nfreqs]):
         # Logarithmic frequency variables are available and valid
-        frequencies = np.logspace(np.log10(Lfstart), np.log10(Lfend), int(nfreqs))
+        frequencies = np.logspace(np.log10(lfstart), np.log10(lfend), int(nfreqs))
     else:
         write_empty_csv(output_file_path)
         raise ValueError("Invalid or missing frequency parameters")
         # Handle cases where the necessary variables are not available or are invalid
 
     results = []
-    for i, f in enumerate(frequencies):
+    for f in frequencies:
         try:
-            results.append(copy.deepcopy(Circuit.solve(f)))
+            results.append(copy.deepcopy(circuit.solve(f)))
         except ValueError as e:
             write_empty_csv(output_file_path)
             print(f"Error solving circuit: {e} at frequency {f} Hz")
             sys.exit(1)
-            
-    with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
-        write_header(Circuit, csvfile)  # Pass the open file object
+
+    with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
+        write_header(circuit, csvfile)  # Pass the open file object
         write_data(frequencies, results, csvfile)
         csvfile.close()
     align_and_overwrite_csv(output_file_path)
