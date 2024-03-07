@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Analysis and Implementation Report on Electrical Circuit Analysis Program}
+\author{[Your Name]}
+\date{[Date]}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This report outlines the development process of an electrical circuit analysis program, as specified 
+in the structured programming coursework. It aims to detail the problem analysis, design decisions, 
+and testing strategies that align with the provided marking rubric.
+
+\section{Analysis of the Problem}
+The main objective of the assignment is to create a program that analyzes 
+electrical circuits using ABCD matrix analysis, with functionalities to read an 
+input file, perform the analysis, and output the results in a specified format.
+
+\subsection{Sub-tasks Identification}
+\begin{itemize}
+    \item Parsing the input file to extract circuit components and specifications.
+    \item Implementing the ABCD matrix analysis for circuit analysis.
+    \item Generating output files with the analysis results.
+    \item Extending the program to include additional features such as exponent prefixes and decibel calculations.
+\end{itemize}
+
+\section{Design and Implementation}
+This section breaks down the program into functions, classes, data structures, and arrays, detailing how each contributes to the overall solution.
+
+\subsection{Outline of Functions and Classes}
+The program is structured into several key components:
+\begin{lstlisting}[language=Python]
+# net_parser.py: Parses the input file and extracts circuit information.
+# circuit.py: Contains classes and functions for circuit analysis.
+# csv_writer.py: Manages the creation of the output file with analysis results.
+# main.py: The main driver script that utilizes the above modules.
+\end{lstlisting}
+
+\subsubsection{Data Structures and Arrays}
+The program utilizes lists and dictionaries to store circuit components and their connections, enabling efficient access and manipulation during analysis.
+
+\section{Testing Strategy}
+Comprehensive testing is vital to ensure the correctness and reliability of the program. 
+The testing strategy covers unit tests for individual functions and integration tests for the overall program functionality.
+
+\subsection{Function Testing}
+Each function within the modules has associated tests to verify its expected behavior, particularly focusing on edge cases and error handling.
+
+\subsection{Complete Program Testing}
+Integration testing ensures that the program modules work together seamlessly, with tests designed to cover a variety of circuit configurations.
+
+\section{Conclusion}
+This report outlines the analytical approach and design considerations for the structured programming coursework on electrical circuit analysis.
+ The detailed breakdown of functions, data structures, and testing strategies aims to provide clarity on the program's development process and adherence to the marking rubric.
+
+\end{document}

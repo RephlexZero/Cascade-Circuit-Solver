@@ -15,6 +15,7 @@ magnitude_multiplier = {
 
 
 def parse_net_file_to_circuit(file_path):
+
     circuit = Circuit()
     section_open = None
     sections_count = {'CIRCUIT': 0, 'TERMS': 0, 'OUTPUT': 0}
