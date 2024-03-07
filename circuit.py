@@ -152,19 +152,22 @@ class Circuit:
                 case 'Iout':
                     output.value = self.terminations.I2
                 case 'Pin':
-                    output.value = self.terminations.V1 * self.terminations.I1
+                    output.value = self.terminations.V1 * np.conjugate(self.terminations.I1)
                 case 'Pout':
-                    output.value = self.terminations.V2 * self.terminations.I2
+                    output.value = self.terminations.V2 * np.conjugate(self.terminations.I2)
                 case 'Zin':
                     output.value = self.terminations.ZI
                 case 'Zout':
                     output.value = self.terminations.ZO
                 case 'Av':
                     output.value = self.terminations.V2 / self.terminations.V1
+                    output.unit = 'L'
                 case 'Ai':
                     output.value = self.terminations.I2 / self.terminations.I1
+                    output.unit = 'L'
                 case 'Ap':
                     output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(self.terminations.I2/self.terminations.I1)
+                    output.unit = 'L'
                     # TODO: Fix power calculations
                     raise ValueError(f"Unknown output parameter: {output.name}")
         return self.outputs

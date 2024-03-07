@@ -1,4 +1,0 @@
-Error solving circuit: ('ABCD matrix is not invertible. Cannot calculate outputs.', array([[-97547170.40600951+0.00000000e+00j,
-                0.        -3.60750601e+10j],
-       [        0.        +2.63768111e+05j,
-        -97547170.40600954+0.00000000e+00j]])) at frequency 8367348.571428572 Hz
