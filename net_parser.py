@@ -1,15 +1,18 @@
 import re
 from circuit import Circuit
 
+
 class MalformedInputError(Exception):
     pass
 
+
 magnitude_multiplier = {
-    '': 1, 'k': 1e3, 
-    'M': 1e6, 'G': 1e9, 
+    '': 1, 'k': 1e3,
+    'M': 1e6, 'G': 1e9,
     'm': 1e-3, 'u': 1e-6,
     'µ': 1e-6, 'n': 1e-9
 }
+
 
 def parse_net_file_to_circuit(file_path):
     circuit = Circuit()
@@ -68,8 +71,8 @@ def parse_net_file_to_circuit(file_path):
 
     return circuit
 
-def process_circuit_line(line, circuit):
 
+def process_circuit_line(line, circuit):
     pattern = r"""
     ^                           # Start of the string
     (?=                         # Start of a positive lookahead for 'n1'
@@ -98,8 +101,8 @@ def process_circuit_line(line, circuit):
         \b                      # Word boundary to ensure a full match
     )                           # End of lookahead
     .+                          # Ensure the entire string is matched
-    """                         # End of the pattern
-    
+    """  # End of the pattern
+
     regex = re.compile(pattern, re.VERBOSE)
 
     match = regex.search(line)
@@ -113,9 +116,10 @@ def process_circuit_line(line, circuit):
 
         # Extract only the necessary components
         component_data = {k: data[k] for k in ('component', 'n1', 'n2', 'value')}
-        circuit.add_component(**component_data) 
+        circuit.add_component(**component_data)
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
+
 
 def process_terms_line(line, circuit):
     terms_pattern = re.compile(r"""
@@ -144,6 +148,7 @@ def process_terms_line(line, circuit):
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
 
+
 def process_output_line(line, circuit):
     # Updated regex pattern to accurately parse the input lines
     pattern = r"""
@@ -157,11 +162,11 @@ def process_output_line(line, circuit):
         (?P<unit>[AVWOhms]*) # Capture the unit
         $                   # End of the line
     """
-    
+
     # Compile the regex with VERBOSE flag to allow whitespace and comments
     regex = re.compile(pattern, re.VERBOSE)
     match = regex.match(line)
-    
+
     if match:
         name = match.group('name')
         is_db = bool(match.group('is_db'))

@@ -5,6 +5,7 @@ import numpy as np
 from csv_writer import write_header, write_data, write_empty_csv, align_and_overwrite_csv
 from net_parser import parse_net_file_to_circuit, MalformedInputError
 
+
 def main():
     try:
         circuit = parse_net_file_to_circuit(input_file_path)
@@ -52,6 +53,7 @@ def main():
         write_data(frequencies, results, csvfile)
         csvfile.close()
     align_and_overwrite_csv(output_file_path)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

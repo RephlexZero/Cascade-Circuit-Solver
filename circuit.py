@@ -1,11 +1,12 @@
 import numpy as np
 from functools import reduce
 
+
 class Component:
     def __init__(self, type, n1, n2, value):
         self.type = type  # R, L, C, G
-        self.n1 = n1      # Node 1
-        self.n2 = n2      # Node 2
+        self.n1 = n1  # Node 1
+        self.n2 = n2  # Node 2
         self.value = value  # Value of the component
 
     def get_abcd_matrix(self, s=0):
@@ -18,7 +19,7 @@ class Component:
                 Z = self.value
                 if is_shunt:
                     abcd_matrix = np.array([[1, 0],
-                                            [1/Z, 1]])
+                                            [1 / Z, 1]])
                 else:
                     abcd_matrix = np.array([[1, Z],
                                             [0, 1]])
@@ -26,7 +27,7 @@ class Component:
                 sL = s * self.value  # sL for inductive impedance
                 if is_shunt:
                     abcd_matrix = np.array([[1, 0],
-                                            [1/sL, 1]])
+                                            [1 / sL, 1]])
                 else:
                     abcd_matrix = np.array([[1, sL],
                                             [0, 1]])
@@ -36,7 +37,7 @@ class Component:
                     abcd_matrix = np.array([[1, 0],
                                             [sC, 1]])
                 else:
-                    abcd_matrix = np.array([[1, 1/sC],
+                    abcd_matrix = np.array([[1, 1 / sC],
                                             [0, 1]])
             case 'G':  # Conductance
                 Y = self.value
@@ -44,7 +45,7 @@ class Component:
                     abcd_matrix = np.array([[1, 0],
                                             [Y, 1]])
                 else:
-                    abcd_matrix = np.array([[1, 1/Y],
+                    abcd_matrix = np.array([[1, 1 / Y],
                                             [0, 1]])
             case _:  # Unknown component type
                 raise ValueError(f"Unknown component type: {self.type}")
@@ -72,17 +73,17 @@ class Terminations:
 
         self.Fstart = None
         self.Fend = None
-        
+
         self.LFstart = None
         self.LFend = None
-        
+
         self.Nfreqs = None
 
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
-        
+
         self.ZI = (A * self.RL + B) / (C * self.RL + D)
-        
+
         # Check that VT and RS are provided, or IN and GS are provided.
         if self.VT is not None and self.RS is not None:
             self.ZO = (D * self.RS + B) / (C * self.RS + A)
@@ -96,13 +97,12 @@ class Terminations:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
 
         input_vector = np.array([[self.V1], [self.I1]])
-        
 
         ABCD_inv = np.linalg.inv(ABCD)
-            
+
         output_vector = ABCD_inv @ input_vector
         self.V2, self.I2 = output_vector.flatten()
-        
+
         # TODO: Move calculate_outputs to the output class
 
 
@@ -161,7 +161,8 @@ class Circuit:
                     output.value = self.terminations.I2 / self.terminations.I1
                     output.unit = 'L'
                 case 'Ap':
-                    output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(self.terminations.I2/self.terminations.I1)
+                    output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(
+                        self.terminations.I2 / self.terminations.I1)
                     output.unit = 'L'
                 case _:
                     raise ValueError(f"Unknown output parameter: {output.name}")

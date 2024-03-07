@@ -2,11 +2,12 @@ import csv
 import numpy as np
 
 magnitude_multiplier = {
-    '': 1, 'k': 1e3, 
-    'M': 1e6, 'G': 1e9, 
+    '': 1, 'k': 1e3,
+    'M': 1e6, 'G': 1e9,
     'm': 1e-3, 'u': 1e-6,
     'µ': 1e-6, 'n': 1e-9
 }
+
 
 def write_header(Circuit, csv_file):
     writer = csv.writer(csv_file)
@@ -17,7 +18,7 @@ def write_header(Circuit, csv_file):
         if output.is_db:
             names.append(f'|{output.name}|')
             names.append(f'/_{output.name}')
-            
+
             units.append(f'dB{output.magnitude}{output.unit}')
             units.append('Rads')
         else:
@@ -29,8 +30,8 @@ def write_header(Circuit, csv_file):
     writer.writerow(units)
     csv_file.flush()
 
+
 def write_data(frequencies, results, csv_file):
-    
     writer = csv.writer(csv_file)
 
     for i, f in enumerate(frequencies):
@@ -49,14 +50,17 @@ def write_data(frequencies, results, csv_file):
                 row.append('{:.3e}'.format(np.imag(value)))
         row.append('')
         writer.writerow(row)
-    csv_file.flush() 
+    csv_file.flush()
+
 
 def write_empty_csv(output_file_path):
     with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
         csvfile.close()
 
+
 from tempfile import NamedTemporaryFile
 import shutil
+
 
 def align_and_overwrite_csv(csv_file_path):
     """
