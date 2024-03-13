@@ -5,13 +5,23 @@ For files ./Model_files/b_Pi_03_model.csv and ./User_files/b_Pi_03.csv filecmp r
 Working on 12 lines
 Line 1 is OK
 Line 2 is OK
-Line 3 is OK
-Line 4 is OK
-Line 5 is OK
-Line 6 is OK
-Line 7 is OK
-Line 8 is OK
-Line 9 is OK
-Line 10 is OK
-Line 11 is OK
-Line 12 is OK
+Line 3 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 4 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 5 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 6 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 7 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 8 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 9 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 10 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 11 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 12 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250

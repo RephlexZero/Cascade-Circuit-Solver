@@ -102,7 +102,7 @@ def process_circuit_line(line, circuit):
         \b                      # Word boundary to ensure a full match
     )                           # End of lookahead
     .+                          # Ensure the entire string is matched
-    """  # End of the pattern
+    """
 
     regex = re.compile(pattern, re.VERBOSE)
 
@@ -114,10 +114,13 @@ def process_circuit_line(line, circuit):
         data['n2'] = int(data['n2'])
         data['value'] = float(data['value'])
         data['value'] *= magnitude_multiplier.get(data['magnitude'], 1)
+        
+        if data['n1'] == data['n2']:
+            raise MalformedInputError(f"Invalid component: {line}")
+        if 0 not in (data['n1'], data['n2']) and abs(data['n1'] - data['n2']) != 1:
+            raise MalformedInputError(f"Invalid component: {line}")
 
-        # Extract only the necessary components
-        component_data = {k: data[k] for k in ('component', 'n1', 'n2', 'value')}
-        circuit.add_component(**component_data)
+        circuit.add_component(data['component'], data['n1'], data['n2'], data['value'])
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
 
@@ -151,7 +154,6 @@ def process_terms_line(line, circuit):
 
 
 def process_output_line(line, circuit):
-    # Updated regex pattern to accurately parse the input lines
     pattern = r"""
         ^                   # Start of the line
         (?P<name>\w+)       # Capture the name (parameter)
@@ -164,7 +166,6 @@ def process_output_line(line, circuit):
         $                   # End of the line
     """
 
-    # Compile the regex with VERBOSE flag to allow whitespace and comments
     regex = re.compile(pattern, re.VERBOSE)
     match = regex.match(line)
 

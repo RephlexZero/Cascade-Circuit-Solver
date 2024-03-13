@@ -1,6 +1,16 @@
+{'type': 'R', 'n1': 1, 'n2': 2, 'value': 8.55}
+{'type': 'R', 'n1': 2, 'n2': 0, 'value': 141.9}
+{'type': 'R', 'n1': 2, 'n2': 3, 'value': 8.55}
+{'type': 'L', 'n1': 3, 'n2': 4, 'value': 0.00159}
+{'type': 'C', 'n1': 4, 'n2': 0, 'value': 3.18e-09}
+{'type': 'L', 'n1': 4, 'n2': 0, 'value': 7.96e-06}
+{'type': 'C', 'n1': 4, 'n2': 5, 'value': 6.37e-07}
+{'type': 'R', 'n1': 5, 'n2': 0, 'value': 150.5}
+{'type': 'G', 'n1': 5, 'n2': 6, 'value': 0.02677}
+{'type': 'R', 'n1': 6, 'n2': 0, 'value': 150.5}
 Traceback (most recent call last):
-  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 72, in <module>
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 96, in <module>
     main()
-  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 40, in main
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 43, in main
     raise ValueError("Invalid or missing frequency parameters")
 ValueError: Invalid or missing frequency parameters

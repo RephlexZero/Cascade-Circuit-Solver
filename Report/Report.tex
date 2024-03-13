@@ -1,9 +1,24 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
+
+% Packages
 \usepackage[utf8]{inputenc}
-\usepackage{geometry}
-\usepackage{listings}
-\usepackage{color}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{glossaries}
+\usepackage{listings}
+\usepackage{xcolor} % Extended color functionalities
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows}
+\usepackage{float}
+\usepackage{subcaption}
+
+\hypersetup{colorlinks=true, linkcolor=blue}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -16,7 +31,7 @@
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\footnotesize,
+    basicstyle=\ttfamily\footnotesize,
     breakatwhitespace=false,         
     breaklines=true,                 
     captionpos=b,                    
@@ -32,12 +47,46 @@
 \lstset{style=mystyle}
 
 \title{Analysis and Implementation Report on Electrical Circuit Analysis Program}
-\author{[Your Name]}
-\date{[Date]}
+
+\author{Jake Stewart, JS3910}
+\date{\today}
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        \Huge
+        \textbf{}
+
+        \vspace{0.5cm}
+        \LARGE
+        Design and Implementation Report on Electrical Circuit Analysis Program\\
+        EE20084 - Structured Programming
+        
+        \vspace{1.5cm}
+
+        \textbf{Jake Stewart}\\
+        \textbf{JS3910}\\
+        \vspace{0.8cm}
+
+        \vfill
+        \includegraphics[width=0.4\textwidth]{university_logo.png}
+
+        \Large
+        Electrical and Electronic Engineering\\
+        University of Bath\\
+        United Kingdom\\
+        \today
+        
+
+    \end{center}
+\end{titlepage}
+
+\newpage
+
+\tableofcontents
 
 \section{Introduction}
 This report outlines the development process of an electrical circuit analysis program, as specified 
@@ -46,44 +95,64 @@ and testing strategies that align with the provided marking rubric.
 
 \section{Analysis of the Problem}
 The main objective of the assignment is to create a program that analyzes 
-electrical circuits using ABCD matrix analysis, with functionalities to read an 
-input file, perform the analysis, and output the results in a specified format.
+electrical circuits using two-port ABCD matrix analysis, with functionalities to read an 
+input ".net" file, perform the analysis calculations, and output the results in the specified CSV format.
 
 \subsection{Sub-tasks Identification}
 \begin{itemize}
-    \item Parsing the input file to extract circuit components and specifications.
-    \item Implementing the ABCD matrix analysis for circuit analysis.
+    \item Parsing the input file to extract circuit components, terminations, and desired outputs.
+    \item Malformed input file handling.
+    \item Translating those components into a matrix representation for analysis.
+    \item Calculatinng the ABCD matrix for the circuit.
+    \item Applying the ABCD matrix to the input and output terminations to obtain the desired results.
+    \item Logic error handling and exception raising.
     \item Generating output files with the analysis results.
     \item Extending the program to include additional features such as exponent prefixes and decibel calculations.
 \end{itemize}
 
-\section{Design and Implementation}
-This section breaks down the program into functions, classes, data structures, and arrays, detailing how each contributes to the overall solution.
+\newpage
+\section{Module realisation and design decisions}
+This section breaks down the program into modules, classes and functions, and explains the design decisions made for each.\\
+The program is divided into four modules, each with a specific role:
+\begin{itemize}
+    \item \texttt{net\_parser.py}: Parses the input file and extracts circuit information.
+    \item \texttt{circuit.py}: Contains classes and functions for circuit analysis.
+    \item \texttt{csv\_writer.py}: Manages the creation and formatting of the output file with analysis results.
+    \item \texttt{main.py}: The main driver script that utilizes the above modules.
+\end{itemize}
 
-\subsection{Outline of Functions and Classes}
-The program is structured into several key components:
-\begin{lstlisting}[language=Python]
-# net_parser.py: Parses the input file and extracts circuit information.
-# circuit.py: Contains classes and functions for circuit analysis.
-# csv_writer.py: Manages the creation of the output file with analysis results.
-# main.py: The main driver script that utilizes the above modules.
-\end{lstlisting}
+\subsection*{Input File Parsing}
+The parsing of the input file is a critical initial step for the circuit analysis program,
+ involving several key tasks to correctly interpret or sanatise the provided data for circuit components,
+  terminations, and desired outputs. The process is outlined as follows:
 
-\subsubsection{Data Structures and Arrays}
-The program utilizes lists and dictionaries to store circuit components and their connections, enabling efficient access and manipulation during analysis.
+\begin{enumerate}
+    \item \textbf{Reading the File:} Open and read the contents of the '.net' file, paying special attention to lines starting with the hash symbol (\#) as comments and thus skipping them during processing.
+    \item \textbf{Identifying Blocks:} Systematically identify the three main blocks within the file: CIRCUIT, TERMS, and OUTPUT, each of which provides essential data for the circuit analysis.
+    \item \textbf{Extracting Component Data:} Within the CIRCUIT block, extract details of each component, including node connections and component values (resistance, inductance, capacitance, or conductance).
+    \item \textbf{Source and Load Termination:} From the TERMS block, determine the source and load characteristics, including type (Thevenin or Norton) and values.
+    \item \textbf{Output Requirements:} In the OUTPUT block, capture the required output variables and formats, ensuring the program knows what results to calculate and how to format them.
+    \item \textbf{Error Handling:} Implement robust error handling to manage potential issues in the input file, such as missing blocks, incorrect formatting, or unsupported component types.
+    \item \textbf{Storing Data:} Efficiently store the extracted information in the Circuit class module, to the respective component, termination, and output sub-classes.
+\end{enumerate}
 
-\section{Testing Strategy}
-Comprehensive testing is vital to ensure the correctness and reliability of the program. 
-The testing strategy covers unit tests for individual functions and integration tests for the overall program functionality.
+This structured approach ensures that the program can accurately interpret and process the wide range of circuit definitions it may encounter.
 
-\subsection{Function Testing}
-Each function within the modules has associated tests to verify its expected behavior, particularly focusing on edge cases and error handling.
+\subsection**{Circuit Analysis}
 
-\subsection{Complete Program Testing}
-Integration testing ensures that the program modules work together seamlessly, with tests designed to cover a variety of circuit configurations.
+\subsection*{Circuit Realization and Solving}
+To realize and solve the electrical circuit defined in the input file, a systematic approach towards constructing and analyzing the circuit using the ABCD matrix method is as follows:
 
-\section{Conclusion}
-This report outlines the analytical approach and design considerations for the structured programming coursework on electrical circuit analysis.
- The detailed breakdown of functions, data structures, and testing strategies aims to provide clarity on the program's development process and adherence to the marking rubric.
+\begin{enumerate}
+    \item \textbf{Circuit Representation:} Construct an internal representation of the circuit from the parsed data, an array of component objects, and the source and load terminations. This can then be sorted based on the node connections to facilitate the ABCD matrix construction.
+    \item \textbf{Matrix Construction:} Implement functions to calculate the ABCD matrices for individual circuit elements (resistors, inductors, capacitors, and any series or parallel combinations thereof).
+    \item \textbf{Cascade Handling:} Develop a method to handle the cascading of components in the circuit, allowing for the multiplication reduction down to an individual ABCD matrix to represent the entire circuit's behavior.
+    \item \textbf{Termination Analysis:} Apply the source and load terminations as defined in the TERMS block to the overall circuit matrix to determine input/output impedance.
+    \item \textbf{Solving the Circuit:} Utilize the inversion of the ABCD matrix of the whole circuit to solve for the desired output variables such as input/output impedance, voltage gain, and power gain.
+    \item \textbf{Error and Exception Handling:} Implement comprehensive error checking and exception handling to ensure accurate results even in cases of complex or unconventional circuit designs.
+\end{enumerate}
+
+This detailed, step-by-step approach ensures a robust and flexible circuit analysis tool capable of handling a wide variety of circuit configurations and output requirements.
+
 
 \end{document}

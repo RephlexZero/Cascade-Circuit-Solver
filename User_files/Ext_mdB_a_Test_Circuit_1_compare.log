@@ -1,0 +1,27 @@
+Command is:python main.py ./User_files/Ext_mdB_a_Test_Circuit_1.net ./User_files/Ext_mdB_a_Test_Circuit_1.csv >./User_files/Ext_mdB_a_Test_Circuit_1_run.log 2>&1
+OS returns 0 from execution of command
+For files ./Model_files/Ext_mdB_a_Test_Circuit_1_model.csv and ./User_files/Ext_mdB_a_Test_Circuit_1.csv filecmp returns same=False
+			Detailed testing:
+Working on 12 lines
+Line 1 is OK
+Line 2 is OK
+Line 3 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 4 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 5 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 6 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 7 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 8 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 9 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 10 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 11 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538
+Line 12 contains different number of floats, model has 45, user has 44
+Line length differs, model file line has 539 character while user file has 538

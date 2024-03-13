@@ -4,32 +4,24 @@ For files ./Model_files/a_Test_Circuit_1dB_model.csv and ./User_files/a_Test_Cir
 			Detailed testing:
 Working on 12 lines
 Line 1 is OK
-Error found in line 2 from character 211
-L1=<        Hz,        dBV,       Rads,        dBV,       Rads,        dBA,       Rads,          A,          A,        dBW,       Rads,       Ohms,       Ohms,          W,          W,       Ohms,       Ohms,         dB,       Rads,          L,          L>
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------^
-L2=<        Hz,        dBV,       Rads,        dBV,       Rads,        dBA,       Rads,          A,          A,        dBW,       Rads,       Ohms,       Ohms,          W,          W,       Ohms,       Ohms,        dBL,       Rads,          L,          L>
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------^
-Line 3 variable 3 differs, model=-147, user=-139.6
-Line 3 variable 4 differs, model=3.137, user=-3.138
-Line 3 variable 9 differs, model=-10.29, user=-20.57
-Line 3 variable 17 differs, model=-148.9, user=-141.6
-Line 3 variable 18 differs, model=3.133, user=3.141
-Line length differs, model file line has 251 character while user file has 253
-Line 4 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 5 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 6 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 7 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 8 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 9 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 10 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 11 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
-Line 12 variable 9 differs, model=-10.29, user=-20.57
-Line length differs, model file line has 251 character while user file has 253
+Line 2 is OK
+Line 3 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 4 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 5 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 6 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 7 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 8 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 9 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 10 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 11 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250
+Line 12 contains different number of floats, model has 21, user has 20
+Line length differs, model file line has 251 character while user file has 250

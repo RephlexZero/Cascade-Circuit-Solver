@@ -8,8 +8,8 @@
             "program": "${workspaceFolder}/AutoTest_08.py",
             "args": [
                 "main.py",
-                "10e-8",
-                "10e-8"
+                "10e-14",
+                "10e-14"
             ],
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/.venv/bin/python"

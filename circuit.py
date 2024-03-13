@@ -9,7 +9,7 @@ class Circuit:
         self.terminations = Terminations()
 
         self.frequency = None
-        self.s = None
+        self.s = np.cdouble(0)
 
         self.ABCD = None
 
@@ -43,14 +43,17 @@ class Circuit:
                     output.value = self.terminations.ZO
                 case 'Av':
                     output.value = self.terminations.V2 / self.terminations.V1
-                    output.unit = 'L'
+                    if not output.is_db:
+                        output.unit = 'L'
                 case 'Ai':
                     output.value = self.terminations.I2 / self.terminations.I1
-                    output.unit = 'L'
+                    if not output.is_db:
+                        output.unit = 'L'
                 case 'Ap':
                     output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(
                         self.terminations.I2 / self.terminations.I1)
-                    output.unit = 'L'
+                    if not output.is_db:
+                        output.unit = 'L'
                 case _:
                     raise ValueError(f"Unknown output parameter: {output.name}")
         return self.outputs
@@ -69,10 +72,24 @@ class Circuit:
         if len(circuit_matrices) == 0:
             self.ABCD = np.eye(2)
         else:
-            self.ABCD = reduce(lambda x, y: x @ y, circuit_matrices)
+            self.ABCD = reduce(np.matmul, circuit_matrices)
 
     def sort_components(self):
-        self.components = sorted(self.components, key=lambda x: (x.n1, x.n2))
+        def custom_sort_key(component):
+            # Extract n1 and n2, ignoring zeros
+            numbers = [n for n in [component.n1, component.n2] if n != 0]
+            
+            # Handle different cases based on the number of nonzero elements
+            if len(numbers) == 0:  # Both numbers are zero
+                return (0, 0)
+            elif len(numbers) == 1:  # Only one nonzero number
+                return (numbers[0], 0)
+            else:
+                # Both numbers are nonzero; sort them to find the lowest and then the other
+                numbers_sorted = sorted(numbers)
+                return (numbers_sorted[0], numbers_sorted[1])
+
+        self.components = sorted(self.components, key=custom_sort_key)
 
 class Component:
     def __init__(self, type, n1, n2, value):
@@ -82,7 +99,7 @@ class Component:
         self.n2 = n2
         self.value = value
 
-    def get_abcd_matrix(self, s=0):
+    def get_abcd_matrix(self, s):
         is_shunt = self.n1 == 0 or self.n2 == 0
 
         match self.type:
@@ -95,7 +112,7 @@ class Component:
                     abcd_matrix = np.array([[1, Z],
                                             [0, 1]])
             case 'L':  # Inductor
-                sL = s * self.value  # sL for inductive impedance
+                sL = s * self.value
                 if is_shunt:
                     abcd_matrix = np.array([[1, 0],
                                             [1 / sL, 1]])
@@ -103,7 +120,7 @@ class Component:
                     abcd_matrix = np.array([[1, sL],
                                             [0, 1]])
             case 'C':  # Capacitor
-                sC = s * self.value  # sC for capacitive admittance, inverse of impedance
+                sC = s * self.value
                 if is_shunt:
                     abcd_matrix = np.array([[1, 0],
                                             [sC, 1]])
@@ -120,9 +137,7 @@ class Component:
                                             [0, 1]])
             case _:  # Unknown component type
                 raise ValueError(f"Unknown component type: {self.type}")
-
         return abcd_matrix
-
 
 class Terminations:
     def __init__(self):
@@ -151,8 +166,8 @@ class Terminations:
         self.Nfreqs = None
 
     def calculate_outputs(self, ABCD):
-        A, B, C, D = ABCD[0][0], ABCD[0][1], ABCD[1][0], ABCD[1][1]
-
+        A, B, C, D = ABCD.flatten()
+        
         if self.RL:
             self.ZI = (A * self.RL + B) / (C * self.RL + D)
         else:
@@ -172,7 +187,7 @@ class Terminations:
         input_vector = np.array([[self.V1], [self.I1]])
 
         ABCD_inv = np.linalg.inv(ABCD)
-
+        
         output_vector = ABCD_inv @ input_vector
         self.V2, self.I2 = output_vector.flatten()
 

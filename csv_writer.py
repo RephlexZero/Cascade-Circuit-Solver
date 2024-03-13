@@ -40,7 +40,10 @@ def write_data(frequencies, results, csv_file):
             output.value = output.value / magnitude_multiplier.get(output.magnitude, 1)
             # Convert the value to scientific notation (3dp)
             if output.is_db:
-                mag = 20 * np.log10(np.abs(output.value))
+                if output.name in ['Pin','Pout','Zin','Zout']:
+                    mag = 10 * np.log10(np.abs(output.value))
+                else:
+                    mag = 20 * np.log10(np.abs(output.value))
                 phase = np.angle(output.value)
                 row.append('{:.3e}'.format(mag))  # Format using 'E' for scientific notation
                 row.append('{:.3e}'.format(phase))
@@ -48,7 +51,7 @@ def write_data(frequencies, results, csv_file):
                 value = output.value  # Extract the value
                 row.append('{:.3e}'.format(np.real(value)))  # Format using 'E' for scientific notation
                 row.append('{:.3e}'.format(np.imag(value)))
-        row.append('')
+        #row.append('')
         writer.writerow(row)
     csv_file.flush()
 
@@ -92,6 +95,8 @@ def align_and_overwrite_csv(csv_file_path):
             aligned_row = [cell.rjust(max_widths[i] + 2) for i, cell in enumerate(row)]
             # Only pad the first column by one space
             aligned_row[0] = aligned_row[0][1:]
+            # Remove trailing spaces from the last column
+            aligned_row[-1] = aligned_row[-1].rstrip()
             writer.writerow(aligned_row)
 
     # Replace the original file with the temp file
