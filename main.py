@@ -18,8 +18,6 @@ def main():
         sys.exit(1)
 
     circuit.sort_components()
-    for component in circuit.components:
-        print(component.__dict__)
 
     # Attempt to retrieve linear frequency start and end
     fstart = getattr(circuit.terminations, 'Fstart', None)
@@ -58,30 +56,6 @@ def main():
         write_data(frequencies, results, csvfile)
         csvfile.close()
     align_and_overwrite_csv(output_file_path)
-    plot_csv('./Model_files/a_Test_Circuit_1_model.csv')
-
-def plot_csv(csv_file_path):
-    # Load the CSV data into a DataFrame
-    df = pd.read_csv(csv_file_path)  # Adjust the file name as necessary
-
-    # Strip leading and trailing spaces from column names
-    df.columns = df.columns.str.strip()
-
-    # Create a single figure and axis for all plots
-    plt.figure()  # Adjust figure size as needed
-
-    # Plot each column against the frequency on the same figure
-    for column in df.columns[1:]:  # Skip the first column (frequency) for the x-axis
-        plt.plot(df['Freq'], df[column], label=column)
-
-    plt.xlabel('Frequency (Hz)')
-    plt.ylabel('Value')
-    plt.title('Parameters vs Frequency')
-    plt.legend()
-    plt.grid(True)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.savefig(f'{csv_file_path}.png')
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
