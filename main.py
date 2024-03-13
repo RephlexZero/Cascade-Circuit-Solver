@@ -1,9 +1,6 @@
-import csv
 import sys
 import copy
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 
 from csv_writer import write_header, write_data, write_empty_csv, align_and_overwrite_csv
 from net_parser import parse_net_file_to_circuit, MalformedInputError
@@ -18,6 +15,8 @@ def main():
         sys.exit(1)
 
     circuit.sort_components()
+    for component in circuit.components:
+        print(component.__dict__)
 
     # Attempt to retrieve linear frequency start and end
     fstart = getattr(circuit.terminations, 'Fstart', None)

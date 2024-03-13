@@ -148,7 +148,7 @@ def process_terms_line(line, circuit):
             term = match.group('term')
             magnitude = match.group('magnitude')
             value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
-            setattr(circuit.terminations, term, value)
+            circuit.set_termination(term, value)
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
 

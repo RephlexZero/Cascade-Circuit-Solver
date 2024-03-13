@@ -51,7 +51,7 @@ def write_data(frequencies, results, csv_file):
                 value = output.value  # Extract the value
                 row.append('{:.3e}'.format(np.real(value)))  # Format using 'E' for scientific notation
                 row.append('{:.3e}'.format(np.imag(value)))
-        #row.append('')
+        row.append('')
         writer.writerow(row)
     csv_file.flush()
 

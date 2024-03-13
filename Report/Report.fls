@@ -1,7 +1,7 @@
-PWD /home/jake/Documents/EEE/Cascade Circuit Solver/Report
+PWD /home/jake/Documents/EEE/Cascade-Circuit-Solver/Report
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/jake/Documents/EEE/Cascade Circuit Solver/Report/Report.tex
+INPUT /home/jake/Documents/EEE/Cascade-Circuit-Solver/Report/Report.tex
 OUTPUT Report.log
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls
@@ -1234,6 +1234,10 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
+INPUT /usr/share/texmf-dist/tex/latex/base/omscmr.fd
+INPUT /usr/share/texmf-dist/tex/latex/base/omscmr.fd
+INPUT /usr/share/texmf-dist/tex/latex/base/omscmr.fd
+INPUT /usr/share/texmf-dist/tex/latex/base/omscmr.fd
 INPUT Report.aux
 INPUT ./Report.out
 INPUT ./Report.out
@@ -1243,4 +1247,5 @@ INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb
+INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb
