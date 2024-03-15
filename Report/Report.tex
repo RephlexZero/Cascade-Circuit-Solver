@@ -152,7 +152,9 @@ Central to circuit analysis, this module employs:
 \subsubsection*{Net File Parser Module (\texttt{net\_parser.py})}
 Responsible for interpreting the circuit definition file, it utilizes:
 \begin{itemize}
-    \item \textbf{Regular Expressions (Regex):} For identifying component definitions and extracting pertinent information.
+    \item \textbf{Regular Expressions (Regex):} For identifying component definitions and extracting pertinent information. 
+    This is especially useful as it can allow for optional fields,flexible use of whitespace and has extremely robust pattern matching,
+    this also lets us define the correct form of a line for each section in the input file, playing nicely into exception raising when a line doesn't get a match.
     \item \textbf{Lists and Dictionaries:} To organize components, terminations, and output specifications for subsequent processing.
 \end{itemize}
 
@@ -165,6 +167,7 @@ Manages output file creation, employing:
 \end{itemize}
 
 \subsection{Functions and methods overview}
+This section provides an overview of the primary functions and methods within the program's modules, detailing their purpose and functionality.
 
 \subsection*{Input File Parsing}
 The parsing of the input file is a critical initial step for the circuit analysis program,
@@ -175,7 +178,7 @@ The parsing of the input file is a critical initial step for the circuit analysi
     \item \textbf{Reading the File:} Open and read the contents of the '.net' file line-by-line, paying special attention to lines starting with the hash symbol (\#) as comments and thus skipping them during processing.
     \item \textbf{Identifying Blocks:} Systematically identify the three main blocks within the file: CIRCUIT, TERMS, and OUTPUT, each of which provides essential data for the circuit analysis.
     \item \textbf{Extracting Component Data:} Within the CIRCUIT block, extract details of each component, including node connections and component values (resistance, inductance, capacitance, or conductance).
-    \item \textbf{Source and Load Termination:} From the TERMS block, determine the source and load characteristics, including type (Thevenin or Norton) and values.
+    \item \textbf{Source and Load Termination:} From the TERMS block, determine the terminal connections provided for the source and load terminations, along with their respective values if available.
     \item \textbf{Output Requirements:} In the OUTPUT block, capture the required output variables and formats, ensuring the program knows what results to calculate and how to format them.
     \item \textbf{Error Handling:} Implement robust error handling to manage potential issues in the input file, such as missing/duplicate blocks, incorrect formatting, or unsupported component types/values.
     \item \textbf{Pattern Matching:} Utilize regular expressions to identify and extract the required data from the input file, to help with resilience and flexibility in handling different input file formats.\\
@@ -193,6 +196,7 @@ To realize and solve the electrical circuit defined in the input file, a systema
     \item \textbf{Matrix Construction:} Implement functions to calculate the ABCD matrices for individual circuit elements (resistors, inductors, capacitors, and any series or parallel combinations thereof).
     \item \textbf{Cascade Handling:} A method to create a new array of 2x2 sub-ABCD matricies from the components object array, allowing for the multiplication reduction down to an individual ABCD matrix to represent the entire circuit's behavior.
     \item \textbf{Termination Analysis:} Apply the source and load terminations as defined in the TERMS block to the overall circuit matrix to determine input/output impedance and thus Vin, Iin, Vout, and Iout.
+    This requires that there are different methods for if the source is of Thevenin or Norton type to determine Vin/Iin.
     \item \textbf{Solving the Circuit:} Utilize the inversion of the ABCD matrix of the whole circuit to solve for the desired output variables such as input/output impedance, voltage gain, and power gain.
     \item \textbf{Error and Exception Handling:} Implement comprehensive error checking and exception handling to print an empty output file with an error message if the circuit analysis fails at any stage.
     \item \textbf{Result storage:} Repeat the above and store the results for each frequency iteration in an array, to be passed to the CSV writer for output file generation.
@@ -210,4 +214,50 @@ The final step in the program is to generate the output file with the calculated
     This function should be able to operate on any CSV file.
     \item \textbf{Error Handling:} Implement error handling to write an empty output file with an error message if the output file generation fails at any stage.
 \end{enumerate}
+
+\subsection*{Extension Tasks}
+All of the extension tasks rely on the input file parsing being versatile enough to encompass the 
+additional features, the approach to if the output is in dB or has additional exponent prefixes will be to store that to the output 
+array and then convert the results to dB + Phase in the CSV writer and/or apply the exponent prefix.
+
+ Similar to determining if the source is of Thevenin or Norton type, the program will need to differentiate between if the frequency sweep is linear or logarithmic,
+ which can also be done with a simple check of which sufficient values were provided by the input.\\
+
+As for input values, the exponent will be converted on the spot with the input parser, this means that internally, all calculations are standardised to the base unit for consistency.
+
+For all the above tasks, the input parser will pick them all up with regular expressions, these parameters being optional and the program will be able to handle them if they are present or not.
+\section{Testing Methodology}
+
+Testing is an integral part of the development process, ensuring that each component of the program functions correctly and as expected. For this project, testing is focused on ensuring the accuracy and reliability of the electrical circuit analysis program, particularly in the calculation functions and input file parsing. The methodology employs a combination of Python doctests for function-level testing and manual testing with modified input files for regex and error handling validation.
+
+\subsection{Python Doctests}
+Doctests are a convenient way to embed tests in the documentation strings (docstrings) of Python functions. They are ideal for testing individual functions, especially those involved in calculations, data manipulation, and specific logic implementations. Important functions within modules like \texttt{circuit.py} and \texttt{net\_parser.py} will be tested to confirm their correctness. For instance:
+
+\begin{itemize}
+    \item In \texttt{circuit.py}, doctests will validate the ABCD matrix calculations for different circuit components, ensuring that the matrix operations produce the expected outcomes.
+    \item In \texttt{net\_parser.py}, doctests will test the component parsing logic, ensuring that circuit components are accurately extracted from input strings.
+\end{itemize}
+
+These tests are executed automatically as part of the documentation review process, offering a quick and integrated way to validate function outputs against expected results.
+
+\subsection{Regex and Error Handling Testing}
+For regex testing and error handling, a manual approach is adopted due to the complexity and variability of input files. This involves creating a set of modified example input files that specifically target edge cases, malformed inputs, and unusual component arrangements. The aim is to:
+
+\begin{itemize}
+    \item Ensure that the regex patterns correctly match and extract component information, even in the presence of variations in spacing, line endings, and format deviations.
+    \item Validate that the program can gracefully handle errors in the input file, such as missing blocks, unsupported component types, or incorrect formatting, by raising appropriate exceptions or producing meaningful error messages.
+\end{itemize}
+
+This manual testing approach is crucial for assessing the robustness and reliability of the input parsing and error handling mechanisms of the program.\\
+
+Besides the testing, edge cases will be handled with exception raising, and the program will be able to handle any input file that is in the correct format, and will raise an exception if it is not thanks to the regex, but also functions will
+have checks against invalid inputs, such as negative or zero frequencies, partially defined sources and will raise exceptions if these are encountered.
+
+\section{Conclusion}
+The combination of doctests and manual testing provides a comprehensive testing strategy that
+ covers both function-level correctness and the overall robustness of the 
+ program against malformed or unexpected inputs. By ensuring that each component 
+ functions as expected and that the program can handle errors gracefully, this 
+ testing methodology supports the development of a reliable and accurate
+  electrical circuit analysis tool.
 \end{document}

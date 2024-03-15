@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2024.2.29)  13 MAR 2024 16:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2024.2.29)  15 MAR 2024 11:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -761,7 +761,7 @@ Package hyperref Info: Link coloring ON on input line 54.
 \c@lstlisting=\count354
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-<university_logo.png, id=31, 687.56876pt x 230.8625pt>
+<university_logo.png, id=47, 687.56876pt x 230.8625pt>
 File: university_logo.png Graphic file (type png)
 <use university_logo.png>
 Package pdftex.def Info: university_logo.png  used on input line 75.
@@ -789,7 +789,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--129
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.132 
+l.129 
        [1]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 133.
@@ -799,23 +799,33 @@ File: omscmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 145.
- [2] [3] [4] (./Report.aux)
+ [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 223--225
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
+
+ []
+
+[5] (./Report.aux)
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: D5AFF3F70F025A7A5E55BE630C6F174B;1051.
+(rerunfilecheck)             Checksum: C653856CFE095573D4A678120B3D68F0;1650.
  ) 
 Here is how much of TeX's memory you used:
- 28887 strings out of 477985
- 536039 string characters out of 5840058
- 1863388 words of memory out of 5000000
- 48565 multiletter control sequences out of 15000+600000
+ 28897 strings out of 477985
+ 536155 string characters out of 5840058
+ 1864388 words of memory out of 5000000
+ 48569 multiletter control sequences out of 15000+600000
  517219 words of font info for 51 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 94i,5n,131p,2311b,528s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,5n,131p,2311b,505s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/jake/.texlive/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (5 pages, 127195 bytes).
+Output written on Report.pdf (6 pages, 134061 bytes).
 PDF statistics:
- 142 PDF objects out of 1000 (max. 8388607)
- 116 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
- 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 168 PDF objects out of 1000 (max. 8388607)
+ 141 compressed objects within 2 object streams
+ 44 named destinations out of 1000 (max. 500000)
+ 98 words of extra memory for PDF output out of 10000 (max. 10000000)
 
