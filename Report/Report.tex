@@ -1,24 +1,12 @@
-\documentclass[a4paper]{article}
-
-% Packages
-\usepackage[utf8]{inputenc}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\usepackage{fancyhdr}
-\usepackage{glossaries}
+\usepackage{textcomp}
+\usepackage{xcolor}
 \usepackage{listings}
-\usepackage{xcolor} % Extended color functionalities
-\usepackage{graphicx} % Required for inserting images
-\usepackage{tikz}
-\usetikzlibrary{automata, positioning, arrows}
-\usepackage{float}
-\usepackage{subcaption}
-
-\hypersetup{colorlinks=true, linkcolor=blue}
+\usepackage{hyperref}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -46,52 +34,38 @@
 
 \lstset{style=mystyle}
 
-\title{Analysis and Implementation Report on Electrical Circuit Analysis Program}
-
-\author{Jake Stewart, JS3910}
-\date{\today}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
 
 \begin{document}
 
-\begin{titlepage}
-    \begin{center}
-        \vspace*{1cm}
+\title{Cascade Circuit Analyser Design report\\
+{\footnotesize \textsuperscript{*}EE20084 - Structured Programming}
+}
 
-        \Huge
-        \textbf{}
+\author{\IEEEauthorblockN{Jake Stewart}
+\IEEEauthorblockA{\textit{Department of Electrical and Electronic Engineering} \\
+\textit{University of Bath}\\
+Bath, United Kingdom \\
+email: js3910@bath.ac.uk}
+}
+\maketitle
 
-        \vspace{0.5cm}
-        \LARGE
-        Design and Implementation Report on Electrical Circuit Analysis Program\\
-        EE20084 - Structured Programming
-        
-        \vspace{1.5cm}
+\begin{abstract}
+This document outlines the design approach used to solve the terminal inputs and outputs to a generalised two-port cascade
+circuit by method of ABCD matrix analysis. The program is designed to be modular, flexible and robust, with a thorough testing process
+embedded.
+\end{abstract}
 
-        \textbf{Jake Stewart}\\
-        \textbf{JS3910}\\
-        \vspace{0.8cm}
-
-        \vfill
-        \includegraphics[width=0.4\textwidth]{university_logo.png}
-
-        \Large
-        Electrical and Electronic Engineering\\
-        University of Bath\\
-        United Kingdom\\
-        \today
-        
-
-    \end{center}
-\end{titlepage}
-
-\newpage
+\begin{IEEEkeywords}
+circuit analysis, Python, doctest, regex, software testing
+\end{IEEEkeywords}
 
 \tableofcontents
-
-\section{Introduction}
-This report outlines the development process of an electrical circuit analysis program, as specified 
-in the structured programming coursework. It aims to detail the problem analysis, design decisions, 
-and testing strategies that align with the provided marking rubric.
 
 \section{Analysis of the Problem}
 The main objective of the assignment is to create a program that analyzes 
