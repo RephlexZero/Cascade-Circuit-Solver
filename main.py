@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from csv_writer import write_header, write_data, write_empty_csv, align_and_overwrite_csv
+from csv_writer import write_header, write_data_line, write_empty_csv, align_and_overwrite_csv
 from net_parser import parse_net_file_to_circuit, MalformedInputError
 
 
@@ -18,7 +18,8 @@ def main():
         sys.exit(1)
 
     circuit.sort_components()
-
+    for component in circuit.components:
+        print(f"n1={component.n1} n2={component.n2} {component.type}={component.value}")
     # Attempt to retrieve linear frequency start and end
     fstart = getattr(circuit.terminations, 'Fstart', None)
     fend = getattr(circuit.terminations, 'Fend', None)
@@ -42,18 +43,17 @@ def main():
         raise ValueError("Invalid or missing frequency parameters")
         # Handle cases where the necessary variables are not available or are invalid
 
-    results = []
-    for f in frequencies:
-        try:
-            results.append(copy.deepcopy(circuit.solve(f)))
-        except ValueError as e:
-            write_empty_csv(output_file_path)
-            print(f"Error solving circuit: {e} at frequency {f} Hz")
-            sys.exit(1)
-
     with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
         write_header(circuit, csvfile)  # Pass the open file object
-        write_data(frequencies, results, csvfile)
+        for f in frequencies:
+            try:
+                circuit.solve(f)
+                write_data_line(circuit, csvfile)
+            except ValueError as e:
+                csvfile.close()
+                write_empty_csv(output_file_path)
+                print(f"Error solving circuit: {e} at frequency {f} Hz")
+                sys.exit(1)
         csvfile.close()
     align_and_overwrite_csv(output_file_path)
 

@@ -22,6 +22,8 @@ def write_header(Circuit, csv_file):
             units.append(f'dB{output.magnitude}{output.unit}')
             units.append('Rads')
         else:
+            if output.name in ['Av', 'Ai', 'Ap']:
+                output.unit = 'L'
             names.append(f'Re({output.name})')
             names.append(f'Im({output.name})')
             for _ in range(2):
@@ -31,28 +33,26 @@ def write_header(Circuit, csv_file):
     csv_file.flush()
 
 
-def write_data(frequencies, results, csv_file):
+def write_data_line(circuit, csv_file):
     writer = csv.writer(csv_file)
-
-    for i, f in enumerate(frequencies):
-        row = ['{:.3e}'.format(f)]
-        for output in results[i]:  # Assuming 'outputs' is a key in the dict
-            output.value = output.value / magnitude_multiplier.get(output.magnitude, 1)
-            # Convert the value to scientific notation (3dp)
-            if output.is_db:
-                if output.name in ['Pin','Pout','Zin','Zout']:
-                    mag = 10 * np.log10(np.abs(output.value))
-                else:
-                    mag = 20 * np.log10(np.abs(output.value))
-                phase = np.angle(output.value)
-                row.append('{:.3e}'.format(mag))  # Format using 'E' for scientific notation
-                row.append('{:.3e}'.format(phase))
+    row = ['{:.3e}'.format(circuit.frequency)]
+    for output in circuit.outputs:  # Assuming 'outputs' is a key in the dict
+        output.value = output.value / magnitude_multiplier.get(output.magnitude, 1)
+        # Convert the value to scientific notation (3dp)
+        if output.is_db:
+            if output.name in ['Pin','Pout','Zin','Zout']:
+                mag = 10 * np.log10(np.abs(output.value))
             else:
-                value = output.value  # Extract the value
-                row.append('{:.3e}'.format(np.real(value)))  # Format using 'E' for scientific notation
-                row.append('{:.3e}'.format(np.imag(value)))
-        #row.append('')
-        writer.writerow(row)
+                mag = 20 * np.log10(np.abs(output.value))
+            phase = np.angle(output.value)
+            row.append('{:.3e}'.format(mag))  # Format using 'E' for scientific notation
+            row.append('{:.3e}'.format(phase))
+        else:
+            value = output.value  # Extract the value
+            row.append('{:.3e}'.format(np.real(value)))  # Format using 'E' for scientific notation
+            row.append('{:.3e}'.format(np.imag(value)))
+    row.append('')
+    writer.writerow(row)
     csv_file.flush()
 
 

@@ -7,9 +7,18 @@
     "python.analysis.extraPaths": [
         "",
         "/home/jake/.vscode/extensions/joedevivo.vscode-circuitpython-0.2.0-linux-x64/stubs",
-        "/home/jake/.config/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20240307/adafruit-circuitpython-bundle-py-20240307/lib"
+        "/home/jake/.config/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20240416/adafruit-circuitpython-bundle-py-20240416/lib"
     ],
     "circuitpython.board.version": null,
     "python.analysis.autoImportCompletions": true,
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "hide-files.files": []
 }

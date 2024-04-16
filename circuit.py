@@ -34,26 +34,19 @@ class Circuit:
                 case 'Iout':
                     output.value = self.terminations.I2
                 case 'Pin':
-                    output.value = self.terminations.V1 * np.conjugate(self.terminations.I1)
+                    output.value = self.terminations.PI
                 case 'Pout':
-                    output.value = self.terminations.V2 * np.conjugate(self.terminations.I2)
+                    output.value = self.terminations.PO
                 case 'Zin':
                     output.value = self.terminations.ZI
                 case 'Zout':
                     output.value = self.terminations.ZO
                 case 'Av':
-                    output.value = self.terminations.V2 / self.terminations.V1
-                    if not output.is_db:
-                        output.unit = 'L'
+                    output.value = self.terminations.AV
                 case 'Ai':
-                    output.value = self.terminations.I2 / self.terminations.I1
-                    if not output.is_db:
-                        output.unit = 'L'
+                    output.value = self.terminations.AI
                 case 'Ap':
-                    output.value = (self.terminations.V2 / self.terminations.V1) * np.conj(
-                        self.terminations.I2 / self.terminations.I1)
-                    if not output.is_db:
-                        output.unit = 'L'
+                    output.value = self.terminations.AP
                 case _:
                     raise ValueError(f"Unknown output parameter: {output.name}")
         return self.outputs
@@ -71,23 +64,26 @@ class Circuit:
         circuit_matrices = [component.get_abcd_matrix(s) for component in self.components]
         if len(circuit_matrices) == 0:
             self.ABCD = np.eye(2)
-        else:
+        elif len(circuit_matrices) == 1:
+            self.ABCD = np.array(circuit_matrices)
+        elif len(circuit_matrices) > 1:
             self.ABCD = reduce(np.matmul, circuit_matrices)
 
     def sort_components(self):
         def custom_sort_key(component):
             # Extract n1 and n2, ignoring zeros
             numbers = [n for n in [component.n1, component.n2] if n != 0]
-            
             # Handle different cases based on the number of nonzero elements
-            if len(numbers) == 0:  # Both numbers are zero
-                return (0, 0)
-            elif len(numbers) == 1:  # Only one nonzero number
-                return (numbers[0], 0)
-            else:
-                # Both numbers are nonzero; sort them to find the lowest and then the other
-                numbers_sorted = sorted(numbers)
-                return (numbers_sorted[0], numbers_sorted[1])
+            match len(numbers):
+                case 0:  # Both numbers are zero
+                    return (0, 0)
+                case 1:  # Only one nonzero number
+                    return (numbers[0], 0)
+                case 2:  # Both numbers are nonzero; sort them to find the lowest and then the other
+                    numbers_sorted = sorted(numbers)
+                    return (numbers_sorted[0], numbers_sorted[1])
+                case _:
+                    raise ValueError("Invalid number of nonzero elements")
 
         self.components = sorted(self.components, key=custom_sort_key)
 
@@ -164,6 +160,13 @@ class Terminations:
         self.LFend = None
 
         self.Nfreqs = None
+        
+        self.AV = None
+        self.AI = None
+        self.AP = None
+        
+        self.PI = None
+        self.PO = None
 
     def calculate_outputs(self, ABCD):
         A, B, C, D = ABCD.flatten()
@@ -183,13 +186,20 @@ class Terminations:
             self.I1 = self.IN - self.V1 * self.GS
         else:
             raise ValueError("RL and either VT and RS or IN and GS must be provided")
-
+        
         input_vector = np.array([[self.V1], [self.I1]])
 
         ABCD_inv = np.linalg.inv(ABCD)
         
         output_vector = ABCD_inv @ input_vector
         self.V2, self.I2 = output_vector.flatten()
+        
+        self.AV = self.RL / (A * self.RL + B)
+        self.AI = 1 / (C * self.RL + D)
+        self.AP = self.AV * np.conj(self.AI)
+        
+        self.PI = self.V1 * np.conj(self.I1)
+        self.PO = self.V2 * np.conj(self.I2)
 
 class Output:
     def __init__(self, name, unit, magnitude, is_db):

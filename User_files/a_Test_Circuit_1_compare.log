@@ -5,23 +5,21 @@ For files ./Model_files/a_Test_Circuit_1_model.csv and ./User_files/a_Test_Circu
 Working on 12 lines
 Line 1 is OK
 Line 2 is OK
-Line 3 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 4 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 5 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 6 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 7 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 8 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 9 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 10 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 11 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
-Line 12 contains different number of floats, model has 21, user has 20
-Line length differs, model file line has 251 character while user file has 250
+Line 3 variable 3 differs, model=-4.487e-08, user=-1.043e-07
+Line 3 variable 4 differs, model=1.894e-10, user=-3.492e-10
+Line 3 variable 7 differs, model=-5.983e-10, user=2.328e-10
+Line 3 variable 8 differs, model=2.526e-12, user=7.276e-12
+Error found in line 3 from character 37
+L1=< 1.000e+01,  1.247e+00,  5.032e-03, -4.487e-08,  1.894e-10,  7.506e-02, -1.006e-04, -5.983e-10,  2.526e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01,  2.685e-17,  2.407e-35,  1.661e+01,  8.932e-02, -3.598e-08,  2.971e-10, -7.971e-09,  2.296e-11,>
+-----------------------------------------^
+L2=< 1.000e+01,  1.247e+00,  5.032e-03, -1.043e-07, -3.492e-10,  7.506e-02, -1.006e-04,  2.328e-10,  7.276e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01, -2.429e-17,  6.776e-19,  1.661e+01,  8.932e-02, -3.598e-08,  2.971e-10, -7.971e-09,  2.296e-11,>
+-----------------------------------------^
+Line 4 is OK
+Line 5 is OK
+Line 6 is OK
+Line 7 is OK
+Line 8 is OK
+Line 9 is OK
+Line 10 is OK
+Line 11 is OK
+Line 12 is OK
