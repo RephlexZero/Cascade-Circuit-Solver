@@ -1,8 +1,8 @@
 {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "configurations": [
         {
-            "name": "Python: Debug main.py",
+            "name": "Python: Enhanced Debug AutoTest_08.py",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/AutoTest_08.py",
@@ -12,7 +12,15 @@
                 "10e-14"
             ],
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/.venv/bin/python"
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "justMyCode": true,
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONUNBUFFERED": "1"
+            },
+            // "preLaunchTask": "check-python",
+            // "postDebugTask": "cleanup"
         }
     ]
 }

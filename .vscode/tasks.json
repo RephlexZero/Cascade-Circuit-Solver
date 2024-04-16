@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "check-python",
+            "type": "shell",
+            "command": "echo 'Checking Python dependencies...'",
+            "problemMatcher": []
+        },
+        {
+            "label": "cleanup",
+            "type": "shell",
+            "command": "echo 'Cleaning up after debug session...'",
+            "problemMatcher": []
+        }
+    ]
+}
