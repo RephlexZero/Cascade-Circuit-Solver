@@ -3,6 +3,13 @@ import numpy as np
 
 
 class Circuit:
+    """
+    Represents an electrical circuit with components, terminations, and outputs.
+
+    This class provides methods to add components, set terminations, calculate
+    the ABCD matrix and output values for given frequencies.
+    """
+
     def __init__(self):
         self.components = []
         self.outputs = []
@@ -14,6 +21,15 @@ class Circuit:
         self.ABCD = None
 
     def solve(self, f):
+        """
+        Solves the circuit for a given frequency and calculates output values.
+
+        Args:
+            f: The frequency in Hz.
+
+        Returns:
+            A list of Output objects containing the calculated values.
+        """
         self.frequency = f
         self.s = 2j * np.pi * self.frequency
         self.resolve_matrix(self.s)
@@ -52,15 +68,46 @@ class Circuit:
         return self.outputs
 
     def add_component(self, component, n1, n2, value):
+        """
+        Adds a component to the circuit.
+
+        Args:
+            component: The type of component ('R', 'L', 'C', or 'G').
+            n1: The first node number the component is connected to.
+            n2: The second node number the component is connected to.
+            value: The value of the component.
+        """
         self.components.append(Component(component, n1, n2, value))
 
     def set_termination(self, name, value):
+        """
+        Sets a termination parameter (source, load, or frequency).
+
+        Args:
+            name: The name of the termination parameter.
+            value: The value of the parameter.
+        """
         setattr(self.terminations, name, value)
 
     def add_output(self, name, unit, magnitude, is_db):
+        """
+        Adds an output parameter to be calculated.
+
+        Args:
+            name: The name of the output parameter (e.g., Vin, Zout).
+            unit: The unit of the parameter (e.g., V, A, Ohm).
+            magnitude: The magnitude prefix (e.g., k, m, '').
+            is_db: Whether the output should be expressed in dB.
+        """
         self.outputs.append(Output(name, unit, magnitude, is_db))
 
     def resolve_matrix(self, s=0):
+        """
+        Calculates the overall ABCD matrix for the circuit.
+
+        Args:
+            s: The complex frequency (optional, defaults to 0).
+        """
         circuit_matrices = [component.get_abcd_matrix(s) for component in self.components]
         if len(circuit_matrices) == 0:
             self.ABCD = np.eye(2)
@@ -70,6 +117,9 @@ class Circuit:
             self.ABCD = reduce(np.matmul, circuit_matrices)
 
     def sort_components(self):
+        """
+        Sorts components based on their node connections for consistent matrix multiplication order.
+        """
         def custom_sort_key(component):
             # Extract n1 and n2, ignoring zeros
             numbers = [n for n in [component.n1, component.n2] if n != 0]
@@ -87,15 +137,28 @@ class Circuit:
 
         self.components = sorted(self.components, key=custom_sort_key)
 
-class Component:
-    def __init__(self, type, n1, n2, value):
 
+class Component:
+    """
+    Represents an individual component in the circuit with its type, node connections, and value.
+    """
+
+    def __init__(self, type, n1, n2, value):
         self.type = type
         self.n1 = n1
         self.n2 = n2
         self.value = value
 
     def get_abcd_matrix(self, s):
+        """
+        Calculates the ABCD matrix for the component based on its type and value.
+
+        Args:
+            s: The complex frequency.
+
+        Returns:
+            The 2x2 numpy array representing the ABCD matrix.
+        """
         is_shunt = self.n1 == 0 or self.n2 == 0
 
         match self.type:
@@ -136,6 +199,9 @@ class Component:
         return abcd_matrix
 
 class Terminations:
+    """
+    Stores information about source, load, and frequency parameters for the circuit.
+    """
     def __init__(self):
         self.ZI = None
         self.ZO = None
@@ -169,6 +235,12 @@ class Terminations:
         self.PO = None
 
     def calculate_outputs(self, ABCD):
+        """
+        Calculates various output parameters based on the circuit's ABCD matrix and termination values.
+
+        Args:
+            ABCD: The 2x2 numpy array representing the circuit's ABCD matrix.
+        """
         A, B, C, D = ABCD.flatten()
         
         if self.RL:
@@ -202,6 +274,9 @@ class Terminations:
         self.PO = self.V2 * np.conj(self.I2)
 
 class Output:
+    """
+    Represents an output parameter (e.g., Vin, Zout) with its name, value, unit, and formatting options.
+    """
     def __init__(self, name, unit, magnitude, is_db):
         self.name = name  # Output parameter name, e.g., Vin, Vout, etc.
         self.value = None  # Value of the output parameter (calculated later)

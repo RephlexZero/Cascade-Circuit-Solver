@@ -5,7 +5,6 @@ For files ./Model_files/a_Test_Circuit_1Ord_model.csv and ./User_files/a_Test_Ci
 Working on 12 lines
 Line 1 is OK
 Line 2 is OK
-<<<<<<< HEAD
 Line 3 variable 3 differs, model=-4.487e-08, user=-1.043e-07
 Line 3 variable 4 differs, model=1.894e-10, user=-3.492e-10
 Line 3 variable 7 differs, model=-5.983e-10, user=2.328e-10
@@ -14,20 +13,6 @@ Error found in line 3 from character 37
 L1=< 1.000e+01,  1.247e+00,  5.032e-03, -4.487e-08,  1.894e-10,  7.506e-02, -1.006e-04, -5.983e-10,  2.526e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01,  2.685e-17,  2.407e-35,  1.661e+01,  8.932e-02, -3.598e-08,  2.971e-10, -7.971e-09,  2.296e-11,>
 -----------------------------------------^
 L2=< 1.000e+01,  1.247e+00,  5.032e-03, -1.043e-07, -3.492e-10,  7.506e-02, -1.006e-04,  2.328e-10,  7.276e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01, -2.429e-17,  6.776e-19,  1.661e+01,  8.932e-02, -3.598e-08,  2.971e-10, -7.971e-09,  2.296e-11,>
-=======
-Line 3 variable 3 differs, model=-4.487e-08, user=-1.639e-07
-Line 3 variable 4 differs, model=1.894e-10, user=-4.657e-10
-Line 3 variable 7 differs, model=-5.983e-10, user=9.313e-10
-Line 3 variable 8 differs, model=2.526e-12, user=1.637e-11
-Line 3 variable 17 differs, model=-3.598e-08, user=-1.314e-07
-Line 3 variable 18 differs, model=2.971e-10, user=1.57e-10
-Line 3 variable 19 differs, model=-7.971e-09, user=1.241e-08
-Line 3 variable 20 differs, model=2.296e-11, user=2.347e-10
-Error found in line 3 from character 37
-L1=< 1.000e+01,  1.247e+00,  5.032e-03, -4.487e-08,  1.894e-10,  7.506e-02, -1.006e-04, -5.983e-10,  2.526e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01,  2.685e-17,  2.407e-35,  1.661e+01,  8.932e-02, -3.598e-08,  2.971e-10, -7.971e-09,  2.296e-11,>
------------------------------------------^
-L2=< 1.000e+01,  1.247e+00,  5.032e-03, -1.639e-07, -4.657e-10,  7.506e-02, -1.006e-04,  9.313e-10,  1.637e-11,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01, -1.527e-16,  2.250e-18,  1.661e+01,  8.932e-02, -1.314e-07,  1.570e-10,  1.241e-08,  2.347e-10,>
->>>>>>> 612cdfebefc0a22662616d0e794c964a0ac4555c
 -----------------------------------------^
 Line 4 is OK
 Line 5 is OK

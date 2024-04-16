@@ -1,5 +1,7 @@
 import csv
 import numpy as np
+import shutil
+from tempfile import NamedTemporaryFile
 
 magnitude_multiplier = {
     '': 1, 'k': 1e3,
@@ -10,6 +12,13 @@ magnitude_multiplier = {
 
 
 def write_header(Circuit, csv_file):
+    """
+    Writes the header row with parameter names and units to the CSV file.
+
+    Args:
+        Circuit: A Circuit object containing the output information.
+        csv_file: The open file object for the CSV file.
+    """
     writer = csv.writer(csv_file)
 
     names = ['Freq']
@@ -34,6 +43,13 @@ def write_header(Circuit, csv_file):
 
 
 def write_data_line(circuit, csv_file):
+    """
+    Writes a single data row with calculated values to the CSV file, considering magnitude prefixes and dB conversion.
+
+    Args:
+        circuit: The Circuit object with the calculated output values.
+        csv_file: The open file object for the CSV file.
+    """
     writer = csv.writer(csv_file)
     row = ['{:.3e}'.format(circuit.frequency)]
     for output in circuit.outputs:  # Assuming 'outputs' is a key in the dict
@@ -57,47 +73,67 @@ def write_data_line(circuit, csv_file):
 
 
 def write_empty_csv(output_file_path):
-    with open(output_file_path, 'w', newline='') as csvfile:  # Open in write mode ('w')
-        csvfile.close()
-
-
-from tempfile import NamedTemporaryFile
-import shutil
-
-
-def align_and_overwrite_csv(csv_file_path):
     """
-    Reads a CSV file, aligns its contents for better readability, and overwrites
-    the original file with the aligned content.
+    Creates an empty CSV file at the specified path.
 
     Args:
-    - csv_file_path (str): The path to the CSV file to be read, aligned, and overwritten.
+        output_file_path: The path to create the empty CSV file.
     """
-    # Determine the maximum width of each column
+    with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:  # Open in write mode ('w')
+        csvfile.close()
+
+def read_and_process_csv(csv_file_path):
+    """
+    Reads the CSV file and determines the maximum width for each column for alignment purposes.
+
+    Args:
+        csv_file_path: The path to the CSV file.
+
+    Returns:
+        A tuple containing:
+            - rows: A list of lists representing the rows of the CSV file.
+            - max_widths: A list containing the maximum width of each column.
+    """
+    rows = []
     max_widths = []
-    with open(csv_file_path, 'r', newline='') as csvfile:
+    with open(csv_file_path, 'r', newline='', encoding='utf8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
+            rows.append(row)
             if len(max_widths) < len(row):
                 max_widths.extend([0] * (len(row) - len(max_widths)))
             for i, cell in enumerate(row):
-                # Strip +/- characters from the cell before checking its length
                 stripped_cell = cell.lstrip('-+')
                 max_widths[i] = max(max_widths[i], len(stripped_cell))
+    return rows, max_widths
 
-    # Use a temporary file to write the aligned content
-    temp_file = NamedTemporaryFile(mode='w', delete=False, newline='')
-    with open(csv_file_path, 'r', newline='') as csvfile, temp_file:
-        reader = csv.reader(csvfile)
+def write_aligned_csv(csv_file_path, rows, max_widths):
+    """
+    Writes the data to a new temporary CSV file with aligned columns and then replaces the original file.
+
+    Args:
+        csv_file_path: The path to the original CSV file.
+        rows: A list of lists representing the rows of the CSV file.
+        max_widths: A list containing the maximum width of each column.
+    """
+    with NamedTemporaryFile(mode='w', delete=False, newline='', encoding='utf8') as temp_file:
         writer = csv.writer(temp_file)
-        for row in reader:
-            # Align each cell and write the row to the temp file
+        for row in rows:
             aligned_row = [cell.rjust(max_widths[i] + 2) for i, cell in enumerate(row)]
-            # Only pad the first column by one space
             aligned_row[0] = aligned_row[0][1:]
-            # Remove trailing spaces from the last column
             aligned_row[-1] = aligned_row[-1].rstrip()
             writer.writerow(aligned_row)
-
-    # Replace the original file with the temp file
     shutil.move(temp_file.name, csv_file_path)
+
+def align_and_overwrite_csv(csv_file_path):
+    """
+    Aligns the columns of a CSV file and overwrites the original file with the aligned content.
+
+    Args:
+        csv_file_path: The path to the CSV file to be aligned.
+    """
+    try:
+        rows, max_widths = read_and_process_csv(csv_file_path)
+        write_aligned_csv(csv_file_path, rows, max_widths)
+    except (FileNotFoundError, PermissionError) as e:
+        print(f"An error occurred: {e}")

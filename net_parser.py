@@ -3,7 +3,9 @@ from circuit import Circuit
 
 
 class MalformedInputError(Exception):
-    pass
+    """
+    Custom exception class raised when the input .net file has an invalid format.
+    """
 
 
 magnitude_multiplier = {
@@ -15,12 +17,24 @@ magnitude_multiplier = {
 
 
 def parse_net_file_to_circuit(file_path):
+    """
+    Parses a .net file and creates a Circuit object.
+
+    Args:
+        file_path: The path to the .net file.
+
+    Returns:
+        A Circuit object representing the parsed circuit.
+
+    Raises:
+        MalformedInputError: If the input file format is invalid.
+    """
 
     circuit = Circuit()
     section_open = None
     sections_count = {'CIRCUIT': 0, 'TERMS': 0, 'OUTPUT': 0}
 
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="utf-8") as file:
         for line in file:
             line = line.strip()
             if line.startswith('#') or not line:
@@ -74,6 +88,16 @@ def parse_net_file_to_circuit(file_path):
 
 
 def process_circuit_line(line, circuit):
+    """
+    Processes a line from the CIRCUIT section of the .net file and adds a component to the Circuit object.
+
+    Args:
+        line: The line of text to be processed.
+        circuit: The Circuit object to add the component to.
+
+    Raises:
+        MalformedInputError: If the line has an invalid format.
+    """
     pattern = r"""
     ^                           # Start of the string
     (?=                         # Start of a positive lookahead for 'n1'
@@ -90,7 +114,7 @@ def process_circuit_line(line, circuit):
     )
     (?=                         # Start of a positive lookahead for component
         .*                      # Any character, any number of times
-        (?P<component>[RLCG])    # Capture 'R', 'L', 'C' or 'G' as component
+        (?P<component>[RLCG])   # Capture 'R', 'L', 'C' or 'G' as component
         \s*=\s*                 # Optional whitespace around '='
         (?P<value>              # Start of the 'value' capture group
             (?:-?\d+            # Optional '-' followed by one or more digits
@@ -126,6 +150,16 @@ def process_circuit_line(line, circuit):
 
 
 def process_terms_line(line, circuit):
+    """
+    Processes a line from the TERMS section of the .net file and sets termination parameters in the Circuit object.
+
+    Args:
+        line: The line of text to be processed.
+        circuit: The Circuit object to set the termination parameters in.
+
+    Raises:
+        MalformedInputError: If the line has an invalid format.
+    """
     terms_pattern = re.compile(r"""
         (?P<term>\w+)       # Term name (alphanumeric and underscore)
         \s*=\s*             # Equals sign with optional whitespace on both sides
@@ -154,6 +188,16 @@ def process_terms_line(line, circuit):
 
 
 def process_output_line(line, circuit):
+    """
+    Processes a line from the OUTPUT section of the .net file and adds an output parameter to the Circuit object.
+
+    Args:
+        line: The line of text to be processed.
+        circuit: The Circuit object to add the output parameter to.
+
+    Raises:
+        MalformedInputError: If the line has an invalid format.
+    """
     pattern = r"""
         ^                   # Start of the line
         (?P<name>\w+)       # Capture the name (parameter)

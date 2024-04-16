@@ -1,5 +1,4 @@
 import sys
-import copy
 import numpy as np
 
 from csv_writer import write_header, write_data_line, write_empty_csv, align_and_overwrite_csv
@@ -7,6 +6,9 @@ from net_parser import parse_net_file_to_circuit, MalformedInputError
 
 
 def main():
+    """
+    Parses the input file, analyzes the circuit, and writes results to a CSV file.
+    """
     try:
         circuit = parse_net_file_to_circuit(input_file_path)
     except MalformedInputError as e:
