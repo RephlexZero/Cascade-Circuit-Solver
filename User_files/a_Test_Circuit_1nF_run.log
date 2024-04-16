@@ -9,8 +9,12 @@ n1=5 n2=0 R=150.5
 n1=5 n2=6 G=0.02677
 n1=6 n2=0 R=150.5
 Traceback (most recent call last):
+<<<<<<< HEAD
   File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 73, in <module>
+=======
+  File "/home/jake/Documents/EEE/Cascade-Circuit-Solver/main.py", line 72, in <module>
+>>>>>>> 612cdfebefc0a22662616d0e794c964a0ac4555c
     main()
-  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 43, in main
+  File "/home/jake/Documents/EEE/Cascade-Circuit-Solver/main.py", line 41, in main
     raise ValueError("Invalid or missing frequency parameters")
 ValueError: Invalid or missing frequency parameters

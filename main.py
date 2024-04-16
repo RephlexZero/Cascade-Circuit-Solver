@@ -1,9 +1,6 @@
-import csv
 import sys
 import copy
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 
 from csv_writer import write_header, write_data_line, write_empty_csv, align_and_overwrite_csv
 from net_parser import parse_net_file_to_circuit, MalformedInputError

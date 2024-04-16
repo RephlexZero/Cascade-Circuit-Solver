@@ -5,6 +5,7 @@ For files ./Model_files/a_Test_Circuit_1M_model.csv and ./User_files/a_Test_Circ
 Working on 12 lines
 Line 1 is OK
 Line 2 is OK
+<<<<<<< HEAD
 Line 3 variable 3 differs, model=-3.551e-08, user=1.49e-08
 Line 3 variable 4 differs, model=1.424e-10, user=-5.821e-11
 Line 3 variable 7 differs, model=-7.103e-10, user=-1.048e-09
@@ -14,6 +15,21 @@ L1=< 1.000e+01,  1.247e+00,  5.032e-03, -3.551e-08,  1.424e-10,  7.506e-02, -1.0
 ----------------------------------------^
 L2=< 1.000e+01,  1.247e+00,  5.032e-03,  1.490e-08, -5.821e-11,  7.506e-02, -1.006e-04, -1.048e-09,  3.638e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01, -1.561e-17,  6.776e-21,  1.661e+01,  8.932e-02, -2.848e-08,  2.291e-10, -9.463e-09,  2.525e-11,>
 ----------------------------------------^
+=======
+Line 3 variable 3 differs, model=-3.551e-08, user=-1.49e-08
+Line 3 variable 4 differs, model=1.424e-10, user=-1.164e-10
+Line 3 variable 7 differs, model=-7.103e-10, user=-9.313e-10
+Line 3 variable 8 differs, model=2.848e-12, user=3.638e-12
+Line 3 variable 17 differs, model=-2.848e-08, user=-1.195e-08
+Line 3 variable 18 differs, model=2.291e-10, user=-4.514e-11
+Line 3 variable 19 differs, model=-9.463e-09, user=-1.241e-08
+Line 3 variable 20 differs, model=2.525e-11, user=3.183e-11
+Error found in line 3 from character 37
+L1=< 1.000e+01,  1.247e+00,  5.032e-03, -3.551e-08,  1.424e-10,  7.506e-02, -1.006e-04, -7.103e-10,  2.848e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01,  2.523e-17,  1.204e-35,  1.661e+01,  8.932e-02, -2.848e-08,  2.291e-10, -9.463e-09,  2.525e-11,>
+-----------------------------------------^
+L2=< 1.000e+01,  1.247e+00,  5.032e-03, -1.490e-08, -1.164e-10,  7.506e-02, -1.006e-04, -9.313e-10,  3.638e-12,  9.360e-02,  5.032e-04,  8.356e+01, -1.794e-01,  1.388e-17,  1.626e-19,  1.661e+01,  8.932e-02, -1.195e-08, -4.514e-11, -1.241e-08,  3.183e-11,>
+-----------------------------------------^
+>>>>>>> 612cdfebefc0a22662616d0e794c964a0ac4555c
 Line 4 is OK
 Line 5 is OK
 Line 6 is OK
