@@ -1,13 +1,41 @@
+"""
+This module is responsible for parsing .net files, which contain circuit definitions, 
+and converting them into Circuit objects for analysis.
+
+The `parse_net_file_to_circuit` function reads the .net file, extracts circuit components,
+terminations, and output specifications, and creates a Circuit object to represent 
+the circuit internally.
+
+Classes:
+    MalformedInputError: Custom exception for invalid .net file formats.
+
+Functions:
+    parse_net_file_to_circuit(file_path): 
+        Parses a .net file and returns a Circuit object.
+
+Helper Functions:
+    process_circuit_line(line, circuit):
+        Processes a line from the CIRCUIT section and adds a component to the circuit.
+    process_terms_line(line, circuit):
+        Processes a line from the TERMS section and sets termination parameters.
+    process_output_line(line, circuit):
+        Processes a line from the OUTPUT section and adds an output parameter.
+"""
 import re
 from circuit import Circuit
 
 
 class MalformedInputError(Exception):
     """
-    Custom exception class raised when the input .net file has an invalid format.
+    This custom exception is used to indicate that the input .net file
+    does not adhere to the expected format. It helps identify and handle
+    errors during the parsing process.
     """
 
 
+# A dictionary that maps magnitude prefixes to their corresponding numerical factors.
+# This is used to convert component values and termination parameters from their
+# string representations to numerical values with appropriate scaling.
 magnitude_multiplier = {
     '': 1, 'k': 1e3,
     'M': 1e6, 'G': 1e9,
@@ -18,68 +46,71 @@ magnitude_multiplier = {
 
 def parse_net_file_to_circuit(file_path):
     """
-    Parses a .net file and creates a Circuit object.
+    This function parses a .net file, which contains the definition of a circuit,
+    and converts it into a Circuit object that represents the circuit internally.
 
     Args:
-        file_path: The path to the .net file.
+        file_path: The path to the .net file containing the circuit definition.
 
     Returns:
-        A Circuit object representing the parsed circuit.
+        A Circuit object that represents the parsed circuit.
 
     Raises:
-        MalformedInputError: If the input file format is invalid.
+        MalformedInputError: If the input file has an invalid format or structure.
     """
 
-    circuit = Circuit()
-    section_open = None
-    sections_count = {'CIRCUIT': 0, 'TERMS': 0, 'OUTPUT': 0}
+    circuit = Circuit()  # Create an empty Circuit object to store the parsed information.
+    section_open = None  # Keeps track of the currently open section in the .net file.
+    sections_count = {'CIRCUIT': 0, 'TERMS': 0, 'OUTPUT': 0}  # Tracks how many times each section appears.
 
+    # Open the .net file in read mode and iterate over each line.
     with open(file_path, 'r', encoding="utf-8") as file:
         for line in file:
-            line = line.strip()
+            line = line.strip()  # Remove leading and trailing whitespace.
+
+            # Skip comments and empty lines.
             if line.startswith('#') or not line:
-                continue  # Skip comments and empty lines
+                continue
 
-            match line:
-                case "<CIRCUIT>":
-                    if section_open or sections_count['CIRCUIT'] > 0:
-                        raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
-                    section_open = 'CIRCUIT'
-                    sections_count['CIRCUIT'] += 1
-                case "<TERMS>":
-                    if section_open or sections_count['TERMS'] > 0:
-                        raise MalformedInputError("TERMS section opened improperly or multiple times.")
-                    section_open = 'TERMS'
-                    sections_count['TERMS'] += 1
-                case "<OUTPUT>":
-                    if section_open or sections_count['OUTPUT'] > 0:
-                        raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
-                    section_open = 'OUTPUT'
-                    sections_count['OUTPUT'] += 1
-                case "</CIRCUIT>":
-                    if section_open != 'CIRCUIT':
-                        raise MalformedInputError("CIRCUIT section closed without being opened.")
-                    section_open = None
-                case "</TERMS>":
-                    if section_open != 'TERMS':
-                        raise MalformedInputError("TERMS section closed without being opened.")
-                    section_open = None
-                case "</OUTPUT>":
-                    if section_open != 'OUTPUT':
-                        raise MalformedInputError("OUTPUT section closed without being opened.")
-                    section_open = None
-                case _:
-                    if not section_open:
-                        raise MalformedInputError("Data outside of any section.")
-                    match section_open:
-                        case 'CIRCUIT':
-                            process_circuit_line(line, circuit)
-                        case 'TERMS':
-                            process_terms_line(line, circuit)
-                        case 'OUTPUT':
-                            process_output_line(line, circuit)
+            # Check if the line indicates the start or end of a section.
+            if line == "<CIRCUIT>":
+                if section_open or sections_count['CIRCUIT'] > 0:
+                    raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
+                section_open = 'CIRCUIT'
+                sections_count['CIRCUIT'] += 1
+            elif line == "<TERMS>":
+                if section_open or sections_count['TERMS'] > 0:
+                    raise MalformedInputError("TERMS section opened improperly or multiple times.")
+                section_open = 'TERMS'
+                sections_count['TERMS'] += 1
+            elif line == "<OUTPUT>":
+                if section_open or sections_count['OUTPUT'] > 0:
+                    raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
+                section_open = 'OUTPUT'
+                sections_count['OUTPUT'] += 1
+            elif line == "</CIRCUIT>":
+                if section_open != 'CIRCUIT':
+                    raise MalformedInputError("CIRCUIT section closed without being opened.")
+                section_open = None
+            elif line == "</TERMS>":
+                if section_open != 'TERMS':
+                    raise MalformedInputError("TERMS section closed without being opened.")
+                section_open = None
+            elif line == "</OUTPUT>":
+                if section_open != 'OUTPUT':
+                    raise MalformedInputError("OUTPUT section closed without being opened.")
+                section_open = None
+            else:  # The line contains data for the currently open section.
+                if not section_open:
+                    raise MalformedInputError("Data outside of any section.")
+                if section_open == 'CIRCUIT':
+                    process_circuit_line(line, circuit)
+                elif section_open == 'TERMS':
+                    process_terms_line(line, circuit)
+                elif section_open == 'OUTPUT':
+                    process_output_line(line, circuit)
 
-    # After processing all lines, check if all sections were properly closed
+    # Ensure that all sections were properly formatted and closed.
     for section, count in sections_count.items():
         if count != 1:
             raise MalformedInputError(f"{section} section not properly formatted.")
@@ -89,15 +120,20 @@ def parse_net_file_to_circuit(file_path):
 
 def process_circuit_line(line, circuit):
     """
-    Processes a line from the CIRCUIT section of the .net file and adds a component to the Circuit object.
+    Processes a line from the CIRCUIT section of the .net file and adds a
+    component to the Circuit object.
 
     Args:
         line: The line of text to be processed.
         circuit: The Circuit object to add the component to.
 
     Raises:
-        MalformedInputError: If the line has an invalid format.
+        MalformedInputError: If the line has an invalid format or defines an invalid component.
     """
+    # Regular expression pattern for matching circuit lines:
+    #  - Extracts node numbers (n1 and n2)
+    #  - Extracts component type (R, L, C, or G)
+    #  - Extracts component value and magnitude prefix
     pattern = r"""
     ^                           # Start of the string
     (?=                         # Start of a positive lookahead for 'n1'
@@ -139,11 +175,13 @@ def process_circuit_line(line, circuit):
         data['value'] = float(data['value'])
         data['value'] *= magnitude_multiplier.get(data['magnitude'], 1)
         
+        # Check for invalid component connections
         if data['n1'] == data['n2']:
             raise MalformedInputError(f"Invalid component: {line}")
         if 0 not in (data['n1'], data['n2']) and abs(data['n1'] - data['n2']) != 1:
             raise MalformedInputError(f"Invalid component: {line}")
 
+        # Add the component to the circuit
         circuit.add_component(data['component'], data['n1'], data['n2'], data['value'])
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
@@ -151,15 +189,19 @@ def process_circuit_line(line, circuit):
 
 def process_terms_line(line, circuit):
     """
-    Processes a line from the TERMS section of the .net file and sets termination parameters in the Circuit object.
+    Processes a line from the TERMS section of the .net file and sets
+    termination parameters in the Circuit object.
 
     Args:
         line: The line of text to be processed.
         circuit: The Circuit object to set the termination parameters in.
 
     Raises:
-        MalformedInputError: If the line has an invalid format.
+        MalformedInputError: If the line has an invalid format or contains an unknown termination parameter.
     """
+    # Regular expression pattern for matching termination lines:
+    #  - Extracts term name (alphanumeric and underscore)
+    #  - Extracts term value and magnitude prefix
     terms_pattern = re.compile(r"""
         (?P<term>\w+)       # Term name (alphanumeric and underscore)
         \s*=\s*             # Equals sign with optional whitespace on both sides
@@ -189,7 +231,8 @@ def process_terms_line(line, circuit):
 
 def process_output_line(line, circuit):
     """
-    Processes a line from the OUTPUT section of the .net file and adds an output parameter to the Circuit object.
+    Processes a line from the OUTPUT section of the .net file and adds an output parameter 
+    to the Circuit object.
 
     Args:
         line: The line of text to be processed.
@@ -198,6 +241,11 @@ def process_output_line(line, circuit):
     Raises:
         MalformedInputError: If the line has an invalid format.
     """
+    # Regular expression pattern for matching output lines:
+    #  - Extracts output parameter name
+    #  - Extracts optional dB indicator
+    #  - Extracts optional magnitude prefix
+    #  - Extracts unit
     pattern = r"""
         ^                   # Start of the line
         (?P<name>\w+)       # Capture the name (parameter)
