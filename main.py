@@ -26,20 +26,13 @@ def main():
     5. Solves the circuit for each frequency and writes the results to a CSV file. 
     6. Aligns the columns in the CSV file for better readability.
     """
-    try:
-        # Parse the circuit definition from the input .net file.
-        circuit = parse_net_file_to_circuit(input_file_path)
-    except MalformedInputError as error:
-        # If there's an error during parsing, create an empty CSV file and print an error message.
-        write_empty_csv(output_file_path)
-        print(f"Error parsing input file: {error}")
-        sys.exit(1)  # Exit the program with an error code.
+    circuit = parse_net_file_to_circuit(input_file_path)
 
     # Sort the components in the circuit to ensure correct order for ABCD matrix calculations.
     circuit.sort_components()
     # Print the sorted component information (for debugging/verification).
-    for component in circuit.components:
-        print(f"n1={component.n1} n2={component.n2} {component.type}={component.value}")
+    # for component in circuit.components:
+    #     print(f"n1={component.n1} n2={component.n2} {component.type}={component.value}")
 
     # Try to retrieve linear frequency sweep parameters (start and end frequencies, number of points).
     def calculate_frequencies(circuit, linear_keys, log_keys):
@@ -98,7 +91,6 @@ if __name__ == "__main__":
     try:
         main()
     # In all exceptions, create an empty CSV file to indicate an error occurred.
-    except ValueError as e:
+    except Exception as e:
         print(f"An error occurred: {e}")
         write_empty_csv(output_file_path)
-        sys.exit(1)
