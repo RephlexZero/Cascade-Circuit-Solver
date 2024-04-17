@@ -29,10 +29,10 @@ def main():
     try:
         # Parse the circuit definition from the input .net file.
         circuit = parse_net_file_to_circuit(input_file_path)
-    except MalformedInputError as e:
+    except MalformedInputError as error:
         # If there's an error during parsing, create an empty CSV file and print an error message.
         write_empty_csv(output_file_path)
-        print(f"Error parsing input file: {e}")
+        print(f"Error parsing input file: {error}")
         sys.exit(1)  # Exit the program with an error code.
 
     # Sort the components in the circuit to ensure correct order for ABCD matrix calculations.

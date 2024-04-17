@@ -50,15 +50,6 @@ def parse_net_file_to_circuit(file_path):
     """
     This function parses a .net file, which contains the definition of a circuit,
     and converts it into a Circuit object that represents the circuit internally.
-
-    Args:
-        file_path: The path to the .net file containing the circuit definition.
-
-    Returns:
-        A Circuit object that represents the parsed circuit.
-
-    Raises:
-        MalformedInputError: If the input file has an invalid format or structure.
     """
 
     circuit = Circuit()  # Create an empty Circuit object to store the parsed information.
@@ -124,13 +115,6 @@ def process_circuit_line(line, circuit):
     """
     Processes a line from the CIRCUIT section of the .net file and adds a
     component to the Circuit object.
-
-    Args:
-        line: The line of text to be processed.
-        circuit: The Circuit object to add the component to.
-
-    Raises:
-        MalformedInputError: If the line has an invalid format or defines an invalid component.
     """
     # Regular expression pattern for matching circuit lines:
     #  - Extracts node numbers (n1 and n2)
@@ -192,13 +176,6 @@ def process_terms_line(line, circuit):
     """
     Processes a line from the TERMS section of the .net file and sets
     termination parameters in the Circuit object.
-
-    Args:
-        line: The line of text to be processed.
-        circuit: The Circuit object to set the termination parameters in.
-
-    Raises:
-        MalformedInputError: If the line has an invalid format or contains an unknown termination parameter.
     """
     # Regular expression pattern for matching termination lines:
     #  - Extracts term name (alphanumeric and underscore)
@@ -234,13 +211,6 @@ def process_output_line(line, circuit):
     """
     Processes a line from the OUTPUT section of the .net file and adds an output parameter 
     to the Circuit object.
-
-    Args:
-        line: The line of text to be processed.
-        circuit: The Circuit object to add the output parameter to.
-
-    Raises:
-        MalformedInputError: If the line has an invalid format.
     """
     # Regular expression pattern for matching output lines:
     #  - Extracts output parameter name
