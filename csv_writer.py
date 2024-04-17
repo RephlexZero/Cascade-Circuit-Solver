@@ -24,19 +24,37 @@ def write_header(circuit, csv_file):
     Writes the header rows for the CSV file. The first row lists the output parameter names,
     and the second row specifies their units, accommodating both dB and linear formats.
     """
-    writer = csv.writer(csv_file)
-    names = ['Freq']
-    units = ['Hz']
+    writer = csv.writer(csv_file)  # Create a CSV writer object for writing rows to the file.
+
+    # Initialize lists to store parameter names and units
+    names = ['Freq']  # Start with 'Freq' for frequency
+    units = ['Hz']   # Units for frequency is 'Hz'
+
+    # Iterate over each output parameter in the circuit.
     for output in circuit.outputs:
         if output.is_db:
-            names += [f'|{output.name}|', f'/_{output.name}']
-            units += [f'dB{output.magnitude}{output.unit}', 'Rads']
+            # For dB outputs, add two columns: one for magnitude (|parameter|) and one for phase (/_parameter).
+            names.append(f'|{output.name}|')
+            names.append(f'/_{output.name}')
+
+            # Specify units as dB with the corresponding magnitude prefix and unit (e.g., dBmV, dBuA).
+            units.append(f'dB{output.magnitude}{output.unit}')
+            units.append('Rads')  # Phase is expressed in radians.
         else:
-            names += [f'Re({output.name})', f'Im({output.name})']
-            units += [f'{output.magnitude}{output.unit}']*2
+            # For linear outputs, add two columns: one for the real part (Re(parameter)) and one for the imaginary part (Im(parameter)).
+            if output.name in ['Av', 'Ai', 'Ap']:  # Special case for gain parameters (unitless)
+                output.unit = 'L'
+            names.append(f'Re({output.name})')
+            names.append(f'Im({output.name})')
+
+            # Specify units with the corresponding magnitude prefix and unit (e.g., mV, uA).
+            for _ in range(2):
+                units.append(f'{output.magnitude}{output.unit}')
+
+    # Write the parameter names and units as two separate rows in the CSV file.
     writer.writerow(names)
     writer.writerow(units)
-    csv_file.flush()
+    csv_file.flush()  # Ensure the data is written to the file.
 
 def write_data_line(circuit, csv_file):
     """
@@ -89,8 +107,11 @@ def write_aligned_csv(csv_file_path, rows, max_widths):
     with NamedTemporaryFile(mode='w', delete=False, newline='', encoding='utf8') as temp_file:
         writer = csv.writer(temp_file)
         for row in rows:
-            writer.writerow([cell.rjust(max_widths[i] + 2) for i, cell in enumerate(row)])
-    shutil.move(temp_file.name, csv_file_path)
+            aligned_row = [cell.rjust(max_widths[i] + 2) for i, cell in enumerate(row)]
+            aligned_row[0] = aligned_row[0][1:]  # Remove extra space before the first element.
+            aligned_row[-1] = aligned_row[-1].rstrip()  # Remove trailing space from the last element.
+            writer.writerow(aligned_row)
+    shutil.move(temp_file.name, csv_file_path)  # Replace the original file with the aligned version.
 
 def align_and_overwrite_csv(csv_file_path):
     """

@@ -3,8 +3,8 @@ OS returns 0 from execution of command
 For files ./Model_files/c_LCR_model.csv and ./User_files/c_LCR.csv filecmp returns same=False
 			Detailed testing:
 Working on 52 lines
-Line length differs, model file line has 250 character while user file has 251
-Line length differs, model file line has 250 character while user file has 251
+Line 1 is OK
+Line 2 is OK
 Line 3 is OK
 Line 4 is OK
 Line 5 is OK
