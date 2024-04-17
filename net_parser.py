@@ -110,49 +110,80 @@ def parse_net_file_to_circuit(file_path):
 
     return circuit
 
+# Regular expression pattern for matching circuit lines:
+#  - Extracts node numbers (n1 and n2)
+#  - Extracts component type (R, L, C, or G)
+#  - Extracts component value and magnitude prefix
+component_pattern = re.compile(r"""
+^                               # Start of the string
+(?=                             # Start of a positive lookahead for 'n1'
+    .*                          # Any character, any number of times
+    \bn1\s*=\s*                 # 'n1' with optional whitespace around '='
+    (?P<n1>\d+)                 # Capture one or more digits as 'n1'
+    \b                          # Word boundary to ensure a full match
+)
+(?=                             # Start of a positive lookahead for 'n2'
+    .*                          # Any character, any number of times
+    \bn2\s*=\s*                 # 'n2' with optional whitespace around '='
+    (?P<n2>\d+)                 # Capture one or more digits as 'n2'
+    \b                          # Word boundary to ensure a full match
+)
+(?=                             # Start of a positive lookahead for component
+    .*                          # Any character, any number of times
+    (?P<component>[RLCG])       # Capture 'R', 'L', 'C' or 'G' as component
+    \s*=\s*                     # Optional whitespace around '='
+    (?P<value>                  # Start of the 'value' capture group
+        (?:-?\d+                # Optional '-' followed by one or more digits
+        (?:\.\d*)?)             # Optional decimal part
+        (?:[eE][+-]?\d+)?       # Optional exponent part
+    )                           # End of the 'value' capture group
+    \s*                         # Optional whitespace
+    (?P<magnitude>[kmunµGM]?)   # Capture magnitude prefix, if present
+    \b                          # Word boundary to ensure a full match
+)                               # End of lookahead
+.+                              # Ensure the entire string is matched
+""", re.VERBOSE)
+
+# Regular expression pattern for matching terms lines:
+#  - Extracts term name
+#  - Extracts term value
+#  - Extracts optional magnitude prefix
+terms_pattern = re.compile(r"""
+    (?P<term>\w+)                 # Term name (alphanumeric and underscore)
+    \s*=\s*                       # Equals sign with optional whitespace on both sides
+    (?P<value>                    # Start of value capture group
+        -?\d+                     # Optional negative sign and one or more digits
+        (?:\.\d*)?                # Optional decimal and fractional part
+        (?:[eE][+-]?\d+)?         # Optional exponent
+    )
+    \s*                           # Optional whitespace
+    (?P<magnitude>[kmunµGM]?)     # Optional magnitude prefix
+""", re.VERBOSE)
+
+# Regular expression pattern for matching output lines:
+#  - Extracts output parameter name
+#  - Extracts optional dB indicator
+#  - Extracts optional magnitude prefix
+#  - Extracts unit
+output_pattern = re.compile(r"""
+    ^                         # Start of the line
+    (?P<name>\w+)             # Capture the name (parameter)
+    \s*                       # Optional whitespace
+    (?P<is_db>dB)?            # Optional dB indicator
+    \s*                       # Equals sign with optional whitespace on both sides
+    (?P<magnitude>[mkMGuµn])? # Optional magnitude prefix
+    \s*                       # Optional whitespace
+    (?P<unit>[AVWOhms]*)      # Capture the unit
+    $                         # End of the line
+""", re.VERBOSE)
 
 def process_circuit_line(line, circuit):
     """
     Processes a line from the CIRCUIT section of the .net file and adds a
     component to the Circuit object.
     """
-    # Regular expression pattern for matching circuit lines:
-    #  - Extracts node numbers (n1 and n2)
-    #  - Extracts component type (R, L, C, or G)
-    #  - Extracts component value and magnitude prefix
-    pattern = r"""
-    ^                               # Start of the string
-    (?=                             # Start of a positive lookahead for 'n1'
-        .*                          # Any character, any number of times
-        \bn1\s*=\s*                 # 'n1' with optional whitespace around '='
-        (?P<n1>\d+)                 # Capture one or more digits as 'n1'
-        \b                          # Word boundary to ensure a full match
-    )
-    (?=                             # Start of a positive lookahead for 'n2'
-        .*                          # Any character, any number of times
-        \bn2\s*=\s*                 # 'n2' with optional whitespace around '='
-        (?P<n2>\d+)                 # Capture one or more digits as 'n2'
-        \b                          # Word boundary to ensure a full match
-    )
-    (?=                             # Start of a positive lookahead for component
-        .*                          # Any character, any number of times
-        (?P<component>[RLCG])       # Capture 'R', 'L', 'C' or 'G' as component
-        \s*=\s*                     # Optional whitespace around '='
-        (?P<value>                  # Start of the 'value' capture group
-            (?:-?\d+                # Optional '-' followed by one or more digits
-            (?:\.\d*)?)             # Optional decimal part
-            (?:[eE][+-]?\d+)?       # Optional exponent part
-        )                           # End of the 'value' capture group
-        \s*                         # Optional whitespace
-        (?P<magnitude>[kmunµGM]?)   # Capture magnitude prefix, if present
-        \b                          # Word boundary to ensure a full match
-    )                               # End of lookahead
-    .+                              # Ensure the entire string is matched
-    """
 
-    regex = re.compile(pattern, re.VERBOSE)
-
-    match = regex.search(line)
+    match = component_pattern.search(line)
     if match:
         data = match.groupdict()
 
@@ -177,34 +208,11 @@ def process_terms_line(line, circuit):
     Processes a line from the TERMS section of the .net file and sets
     termination parameters in the Circuit object.
     """
-    # Regular expression pattern for matching termination lines:
-    #  - Extracts term name (alphanumeric and underscore)
-    #  - Extracts term value and magnitude prefix
-    terms_pattern = re.compile(r"""
-        (?P<term>\w+)       # Term name (alphanumeric and underscore)
-        \s*=\s*             # Equals sign with optional whitespace on both sides
-        (?P<value>          # Start of value capture group
-            (-?)            # Optional sign (negative)
-            \d+             # One or more digits before the decimal point
-            \.?             # Optional decimal point
-            \d*             # Zero or more digits after the decimal point
-            (?:[eE][+-]?\d+)? # Optional scientific notation (e.g., e+10, E-10)
-        )                   # End of value capture group
-        \s*                 # Optional whitespace
-        (?P<magnitude>      # Start of magnitude prefix capture group
-            [kmunµGM]?      # Optional single character for magnitude prefix (k, m, u, n, µ, G, M)
-        )                   # End of magnitude prefix capture group
-    """, re.VERBOSE)
-
-    matches = terms_pattern.finditer(line)
-    if matches:
-        for match in matches:
-            term = match.group('term')
-            magnitude = match.group('magnitude')
-            value = float(match.group('value')) * magnitude_multiplier.get(magnitude, 1)
-            circuit.set_termination(term, value)
-    else:
-        raise MalformedInputError(f"Invalid terms line: {line}")
+    for match in terms_pattern.finditer(line):
+        term_data = match.groupdict()
+        # Extract values using groupdict and set them in the Circuit object
+        value = float(term_data['value']) * magnitude_multiplier.get(term_data['magnitude'], 1)
+        circuit.set_termination(term_data['term'], value)
 
 
 def process_output_line(line, circuit):
@@ -212,25 +220,7 @@ def process_output_line(line, circuit):
     Processes a line from the OUTPUT section of the .net file and adds an output parameter 
     to the Circuit object.
     """
-    # Regular expression pattern for matching output lines:
-    #  - Extracts output parameter name
-    #  - Extracts optional dB indicator
-    #  - Extracts optional magnitude prefix
-    #  - Extracts unit
-    pattern = r"""
-        ^                         # Start of the line
-        (?P<name>\w+)             # Capture the name (parameter)
-        \s*                       # Optional whitespace
-        (?P<is_db>dB)?            # Optional dB indicator
-        \s*                       # Equals sign with optional whitespace on both sides
-        (?P<magnitude>[mkMGuµn])? # Optional magnitude prefix
-        \s*                       # Optional whitespace
-        (?P<unit>[AVWOhms]*)      # Capture the unit
-        $                         # End of the line
-    """
-
-    regex = re.compile(pattern, re.VERBOSE)
-    match = regex.match(line)
+    match = output_pattern.match(line)
 
     if match:
         name = match.group('name')
