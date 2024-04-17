@@ -31,6 +31,8 @@ class MalformedInputError(Exception):
     does not adhere to the expected format. It helps identify and handle
     errors during the parsing process.
     """
+    def __init__(self, message):
+        super().__init__("Malformed Input: " + message)
 
 
 # A dictionary that maps magnitude prefixes to their corresponding numerical factors.
@@ -170,23 +172,16 @@ def process_circuit_line(line, circuit):
     if match:
         data = match.groupdict()
 
-        # Improved data handling
-        try:
-            data['n1'] = int(data['n1'])
-            data['n2'] = int(data['n2'])
-            data['value'] = float(data['value'])
-            data['value'] *= magnitude_multiplier.get(data['magnitude'], 1)
-        except ValueError:
-            raise MalformedInputError(f"Invalid component value or node number: {line}")
-        
-        
-        # Check for invalid component connections
+        data['n1'] = int(data['n1'])
+        data['n2'] = int(data['n2'])
+        data['value'] = float(data['value'])
+        data['value'] *= magnitude_multiplier.get(data['magnitude'], 1)
 
         # Check for invalid component connections
         if data['n1'] == data['n2']:
-            raise MalformedInputError(f"Invalid component: {line}")
-        if 0 not in (data['n1'], data['n2']) and abs(data['n1'] - data['n2']) != 1:
-            raise MalformedInputError(f"Invalid component: {line}")
+            raise MalformedInputError(f"Invalid component nodes: {line}")
+        if 0 not in [data['n1'], data['n2']] and abs(data['n1'] - data['n2']) != 1:
+            raise MalformedInputError(f"Invalid component nodes: {line}")
 
         circuit.add_component(data['component'], data['n1'], data['n2'], data['value'])
     else:

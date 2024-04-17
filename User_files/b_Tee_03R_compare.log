@@ -1,3 +1,17 @@
 Command is:python main.py ./User_files/b_Tee_03R.net ./User_files/b_Tee_03R.csv >./User_files/b_Tee_03R_run.log 2>&1
 OS returns 0 from execution of command
-For files ./Model_files/b_Tee_03R_model.csv and ./User_files/b_Tee_03R.csv filecmp returns same=True
+For files ./Model_files/b_Tee_03R_model.csv and ./User_files/b_Tee_03R.csv filecmp returns same=False
+			Detailed testing:
+Working on 12 lines
+Line length differs, model file line has 250 character while user file has 251
+Line length differs, model file line has 250 character while user file has 251
+Line 3 is OK
+Line 4 is OK
+Line 5 is OK
+Line 6 is OK
+Line 7 is OK
+Line 8 is OK
+Line 9 is OK
+Line 10 is OK
+Line 11 is OK
+Line 12 is OK
