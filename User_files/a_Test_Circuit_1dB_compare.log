@@ -5,15 +5,7 @@ For files ./Model_files/a_Test_Circuit_1dB_model.csv and ./User_files/a_Test_Cir
 Working on 12 lines
 Line 1 is OK
 Line 2 is OK
-Line 3 variable 3 differs, model=-147, user=-139.6
-Line 3 variable 4 differs, model=3.137, user=-3.138
-Line 3 variable 7 differs, model=-5.983e-10, user=2.328e-10
-Line 3 variable 8 differs, model=2.526e-12, user=7.276e-12
-Error found in line 3 from character 39
-L1=< 1.000e+01,  1.918e+00,  4.035e-03, -1.470e+02,  3.137e+00, -2.249e+01, -1.341e-03, -5.983e-10,  2.526e-12, -1.029e+01,  5.376e-03,  8.356e+01, -1.794e-01,  2.685e-17,  2.407e-35,  1.661e+01,  8.932e-02, -1.489e+02,  3.133e+00, -7.971e-09,  2.296e-11,>
--------------------------------------------^
-L2=< 1.000e+01,  1.918e+00,  4.035e-03, -1.396e+02, -3.138e+00, -2.249e+01, -1.341e-03,  2.328e-10,  7.276e-12, -1.029e+01,  5.376e-03,  8.356e+01, -1.794e-01, -2.429e-17,  6.776e-19,  1.661e+01,  8.932e-02, -1.489e+02,  3.133e+00, -7.971e-09,  2.296e-11,>
--------------------------------------------^
+Line 3 is OK
 Line 4 is OK
 Line 5 is OK
 Line 6 is OK

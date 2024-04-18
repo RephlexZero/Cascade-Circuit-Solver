@@ -24,7 +24,12 @@ calculated values and units.
 from functools import reduce
 import numpy as np
 
-
+def multiply_matrices(a, b):
+    """
+    Multiply two matrices a and b and return the result. Without using numpy.
+    
+    """
+    
 class Circuit:
     """
     Represents an electrical circuit with components, terminations, and output parameters.
@@ -69,7 +74,7 @@ class Circuit:
     def update_output_values(self):
         """Update output objects with calculated values based on terminations and ABCD matrix."""
         output_mappings = {'Zin': self.terminations.ZI, 'Zout': self.terminations.ZO, 'Vin': self.terminations.V1,
-                           'Vout': self.terminations.V2, 'Iin': self.terminations.I1, 'Iout': self.terminations.I2,
+                           'Vout': self.terminations.VO, 'Iin': self.terminations.I1, 'Iout': self.terminations.IO,
                            'Pin': self.terminations.PI, 'Pout': self.terminations.PO, 'Av': self.terminations.AV,
                            'Ai': self.terminations.AI, 'Ap': self.terminations.AP}
         for output in self.outputs:
@@ -125,33 +130,33 @@ class Component:
             case 'R':
                 Z = self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [1 / Z, 1]])
+                    abcd_matrix = [[1, 0], [1 / Z, 1]]
                 else:
-                    abcd_matrix = np.array([[1, Z], [0, 1]])
+                    abcd_matrix = [[1, Z], [0, 1]]
             case 'L':
                 sL = s * self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [1 / sL, 1]])
+                    abcd_matrix = [[1, 0], [1 / sL, 1]]
                 else:
-                    abcd_matrix = np.array([[1, sL], [0, 1]])
+                    abcd_matrix = [[1, sL], [0, 1]]
             case 'C':
                 sC = s * self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [sC, 1]])
+                    abcd_matrix = [[1, 0], [sC, 1]]
                 else:
-                    abcd_matrix = np.array([[1, 1 / sC], [0, 1]])
+                    abcd_matrix = [[1, 1 / sC], [0, 1]]
             case 'G':
                 Y = self.value
                 if is_shunt:
-                    abcd_matrix = np.array([[1, 0], [Y, 1]])
+                    abcd_matrix = [[1, 0], [Y, 1]]
                 else:
-                    abcd_matrix = np.array([[1, 1 / Y], [0, 1]])
-        return abcd_matrix
+                    abcd_matrix = [[1, 1 / Y], [0, 1]]
+        return np.array(abcd_matrix)
 
 
 class Terminations:
     """Stores information about source and load terminations and calculates output parameters."""
-    attributes = ['ZI', 'ZO', 'V1', 'V2', 'I1', 'I2', 'VT', 'RS', 'IN', 'GS', 'RL', 'AV', 'AI', 'AP', 'PI', 'PO']
+    attributes = ['ZI', 'ZO', 'VO', 'IO', 'V1', 'V2', 'I1', 'I2', 'VT', 'RS', 'IN', 'GS', 'RL', 'AV', 'AI', 'AP', 'PI', 'PO']
 
     def __init__(self):
         """Initialize Terminations with attributes set to None."""
@@ -175,15 +180,19 @@ class Terminations:
             self.I1 = self.IN - self.V1 * self.GS
         else:
             raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
+
         input_vector = np.array([[self.V1], [self.I1]])
-        ABCD_inv = np.linalg.inv(ABCD)
-        output_vector = ABCD_inv @ input_vector
+        output_vector = np.dot(np.linalg.inv(ABCD), input_vector)
+        
         self.V2, self.I2 = output_vector.flatten()
         self.AV = self.RL / (A * self.RL + B)
         self.AI = 1 / (C * self.RL + D)
-        self.AP = self.AV * np.conj(self.AI)
-        self.PI = self.V1 * np.conj(self.I1)
-        self.PO = self.V2 * np.conj(self.I2)
+        self.AP = self.AV * self.AI.conjugate()
+        self.PI = self.V1 * self.I1.conjugate()
+        self.PO = self.V2 * self.I2.conjugate()
+        self.IO = self.I1 * self.AI
+        self.VO = self.V1 * self.AV
+        
 
 
 class Output:
