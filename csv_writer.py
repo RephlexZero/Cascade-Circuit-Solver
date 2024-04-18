@@ -13,6 +13,8 @@ import shutil
 from tempfile import NamedTemporaryFile
 import numpy as np
 
+from circuit import Circuit
+
 # Maps magnitude prefixes to their numerical factors for scaling values appropriately in the CSV.
 magnitude_multiplier = {
     '': 1, 'k': 1e3, 'M': 1e6, 'G': 1e9,
@@ -64,12 +66,16 @@ def write_data_line(circuit, csv_file):
     writer = csv.writer(csv_file)
     row = ['{:.3e}'.format(circuit.frequency)]
     for output in circuit.outputs:
-        output.value /= magnitude_multiplier.get(output.magnitude, 1)
         if output.is_db:
-            mag = 10 * np.log10(np.abs(output.value)) if output.name in ['Pin', 'Pout', 'Zin', 'Zout'] else 20 * np.log10(np.abs(output.value))
+            mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)
+            if output.name in ['Pin', 'Pout', 'Zin', 'Zout']:
+                mag *= 10
+            else:
+                mag *= 20
             phase = np.angle(output.value)
             row += ['{:.3e}'.format(mag), '{:.3e}'.format(phase)]
         else:
+            output.value /= magnitude_multiplier.get(output.magnitude, 1)
             row += ['{:.3e}'.format(np.real(output.value)), '{:.3e}'.format(np.imag(output.value))]
     row.append('')
     writer.writerow(row)

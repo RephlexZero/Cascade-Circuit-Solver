@@ -31,8 +31,9 @@ def main():
     # Sort the components in the circuit to ensure correct order for ABCD matrix calculations.
     circuit.sort_components()
     # Print the sorted component information (for debugging/verification).
-    # for component in circuit.components:
-    #     print(f"n1={component.n1} n2={component.n2} {component.type}={component.value}")
+    print("Sorted components:")
+    for component in circuit.components:
+        print(f"n1={component.n1} n2={component.n2} {component.type}={component.value}")
 
     # Try to retrieve linear frequency sweep parameters (start and end frequencies, number of points).
     def calculate_frequencies(circuit, linear_keys, log_keys):

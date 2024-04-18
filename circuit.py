@@ -116,9 +116,9 @@ class Circuit:
 class Component:
     """Represents an individual circuit component such as a resistor or capacitor."""
 
-    def __init__(self, type, n1, n2, value):
+    def __init__(self, name, n1, n2, value):
         """Initialize Component with type, node connections, and value."""
-        self.type = type
+        self.type = name
         self.n1 = n1
         self.n2 = n2
         self.value = value
@@ -182,7 +182,10 @@ class Terminations:
             raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
 
         input_vector = np.array([[self.V1], [self.I1]])
-        output_vector = np.dot(np.linalg.inv(ABCD), input_vector)
+        if np.linalg.det(ABCD) == 0:
+            output_vector = np.array([[0], [0]])
+        else:
+            output_vector = np.dot(np.linalg.inv(ABCD), input_vector)
         
         self.V2, self.I2 = output_vector.flatten()
         self.AV = self.RL / (A * self.RL + B)
@@ -192,8 +195,6 @@ class Terminations:
         self.PO = self.V2 * self.I2.conjugate()
         self.IO = self.I1 * self.AI
         self.VO = self.V1 * self.AV
-        
-
 
 class Output:
     """Represents an output parameter to be calculated during circuit analysis."""
