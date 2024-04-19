@@ -68,7 +68,7 @@ def write_data_line(circuit, csv_file):
     for output in circuit.outputs:
         if output.is_db:
             mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)
-            if output.name in ['Pin', 'Pout', 'Zin', 'Zout']:
+            if output.name in ['Pin', 'Pout', 'Zin', 'Zout', 'Ap']:
                 mag *= 10
             else:
                 mag *= 20

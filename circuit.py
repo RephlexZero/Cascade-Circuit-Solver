@@ -181,18 +181,11 @@ class Terminations:
         else:
             raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
 
-        input_vector = np.array([[self.V1], [self.I1]])
-        if np.linalg.det(ABCD) == 0:
-            output_vector = np.array([[0], [0]])
-        else:
-            output_vector = np.dot(np.linalg.inv(ABCD), input_vector)
-        
-        self.V2, self.I2 = output_vector.flatten()
         self.AV = self.RL / (A * self.RL + B)
         self.AI = 1 / (C * self.RL + D)
         self.AP = self.AV * self.AI.conjugate()
         self.PI = self.V1 * self.I1.conjugate()
-        self.PO = self.V2 * self.I2.conjugate()
+        self.PO = self.PI * self.AP
         self.IO = self.I1 * self.AI
         self.VO = self.V1 * self.AV
 
