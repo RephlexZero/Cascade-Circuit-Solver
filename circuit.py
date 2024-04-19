@@ -23,12 +23,6 @@ calculated values and units.
 
 from functools import reduce
 import numpy as np
-
-def multiply_matrices(a, b):
-    """
-    Multiply two matrices a and b and return the result. Without using numpy.
-    
-    """
     
 class Circuit:
     """
