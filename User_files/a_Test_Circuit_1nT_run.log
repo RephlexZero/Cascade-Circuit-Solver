@@ -1,27 +1,13 @@
-<CIRCUIT>
-n1=1 n2=2 R=8.55 
-n1=2 n2=0 R=141.9 
-n1=2 n2=3 R=8.55 
-n1=3 n2=4 L=0.00159 
-n1=4 n2=0 C=3.18e-09 
-n1=4 n2=0 L=7.96e-06 
-n1=4 n2=5 C=6.37e-07 
-n1=5 n2=0 R=150.5 
-n1=6 n2=0 R=150.5 
-n1=5 n2=6 G=0.02677 
-</CIRCUIT>
+An error occurred: Invalid number of arguments
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 81, in <module>
+    raise ValueError("Invalid number of arguments")
+ValueError: Invalid number of arguments
 
-<OUTPUT>
-Vin V
-Vout V
-Iin A
-Iout A
-Pin W
-Zout Ohms
-Pout W
-Zin Ohms
-Av 
-Ai 
-</OUTPUT>
+During handling of the above exception, another exception occurred:
 
-An error occurred: Malformed Input: TERMS section not properly formatted.
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 91, in <module>
+    write_empty_csv(output_file_path)
+                    ^^^^^^^^^^^^^^^^
+NameError: name 'output_file_path' is not defined

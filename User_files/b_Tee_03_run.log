@@ -1,32 +1,13 @@
-<CIRCUIT>
-n1=1 n2=2 R=75.0 
-n1=2 n2=0 R=220.0 
-n1=2 n2=3 R=150.0 
-</CIRCUIT>
+An error occurred: Invalid number of arguments
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 81, in <module>
+    raise ValueError("Invalid number of arguments")
+ValueError: Invalid number of arguments
 
-<TERMS>
-VT=5
-RS=50
-RL=75
-Fstart=10.0
-Fend=10e+6
-Nfreqs=10
-</TERMS>
+During handling of the above exception, another exception occurred:
 
-<OUTPUT>
-Vin V
-Vout V
-Iin A
-Iout A
-Pin W
-Zout Ohms
-Pout W
-Zin Ohms
-Av 
-Ai 
-</OUTPUT>
-
-Sorted components:
-n1=1 n2=2 R=75.0
-n1=2 n2=0 R=220.0
-n1=2 n2=3 R=150.0
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 91, in <module>
+    write_empty_csv(output_file_path)
+                    ^^^^^^^^^^^^^^^^
+NameError: name 'output_file_path' is not defined

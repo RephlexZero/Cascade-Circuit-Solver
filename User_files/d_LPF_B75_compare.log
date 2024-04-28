@@ -1,5 +1,5 @@
 Command is:python main.py ./User_files/d_LPF_B75.net ./User_files/d_LPF_B75.csv >./User_files/d_LPF_B75_run.log 2>&1
-OS returns 0 from execution of command
+OS returns 256 from execution of command
 For files ./Model_files/d_LPF_B75_model.csv and ./User_files/d_LPF_B75.csv filecmp returns same=False
 			Detailed testing:
 Working on 52 lines

@@ -75,21 +75,15 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python main.py <input.net> <output.csv>")
-        raise ValueError("Invalid command arguments")
-
-    # Get the input and output file paths from command line arguments.
-    input_file_path = sys.argv[1]
-    output_file_path = sys.argv[2]
-
-    # Check if the input file has a .net extension and the output file has a .csv extension.
-    if not input_file_path.endswith('.net') or not output_file_path.endswith('.csv'):
-        print("Input file must be a .net file and output file must be a .csv file")
-        raise ValueError("Invalid file argument extension(s)")
-
-    # Run the main function to start the circuit analysis process.
     try:
+        args = sys.argv
+        if len(args) != 2:
+            raise ValueError("Invalid number of arguments")
+        # Get the input and output file paths from command line arguments.
+        input_file_path, output_file_path = args
+        # Check input file is .net and output file is .csv
+        if not input_file_path.endswith('.net') or not output_file_path.endswith('.csv'):
+            raise ValueError("Input file must be a .net file and output file must be a .csv file.")
         main()
     # In all exceptions, create an empty CSV file to indicate an error occurred.
     except Exception as e:

@@ -1,9 +1,13 @@
-<CIRCUIT>
-n1=1 n2=2 R=8.55 
-n1=2 n2=0 R=141.9 
-n1=2 n2=3 R=8.55 
-n1=3 n2=4 L=0.00159 
-n1=4 n2=0 C=3.18e-09 
-n1=4 n2=0 L=7.96e-06 
-n1=4 n2=5 C=6.37e-07 
-An error occurred: Malformed Input: Invalid circuit line: n1=5 n2=0 R=BREXIT
+An error occurred: Invalid number of arguments
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 81, in <module>
+    raise ValueError("Invalid number of arguments")
+ValueError: Invalid number of arguments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jake/Documents/EEE/Cascade Circuit Solver/main.py", line 91, in <module>
+    write_empty_csv(output_file_path)
+                    ^^^^^^^^^^^^^^^^
+NameError: name 'output_file_path' is not defined

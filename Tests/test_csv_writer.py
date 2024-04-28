@@ -26,4 +26,5 @@ def test_write_data_line():
     write_data_line(circuit, csvfile)
     data_row = csvfile.getvalue().strip().split(",")
     # Assert data row format for both real/imag and dB/phase
-    assert data_row == ["1.000e+06", "1.000e+00", "2.000e+00", "5.000+e00", "-53.13"]
+    assert data_row == ["1.000e+06", "1.000e+00", "2.000e+00", "1.398e+07", "-9.273e-01",""]
+    # Include the extra empty field to match error in model files

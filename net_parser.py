@@ -66,48 +66,50 @@ def parse_net_file_to_circuit(file_path):
                 continue
 
             # Check if the line indicates the start or end of a section.
-            if line == "<CIRCUIT>":
-                if section_open or sections_count['CIRCUIT'] > 0:
-                    raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
-                section_open = 'CIRCUIT'
-                sections_count['CIRCUIT'] += 1
-                print("<CIRCUIT>")
-            elif line == "<TERMS>":
-                if section_open or sections_count['TERMS'] > 0:
-                    raise MalformedInputError("TERMS section opened improperly or multiple times.")
-                section_open = 'TERMS'
-                sections_count['TERMS'] += 1
-                print("<TERMS>")
-            elif line == "<OUTPUT>":
-                if section_open or sections_count['OUTPUT'] > 0:
-                    raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
-                section_open = 'OUTPUT'
-                sections_count['OUTPUT'] += 1
-                print("<OUTPUT>")
-            elif line == "</CIRCUIT>":
-                if section_open != 'CIRCUIT':
-                    raise MalformedInputError("CIRCUIT section closed without being opened.")
-                section_open = None
-                print("</CIRCUIT>\n")
-            elif line == "</TERMS>":
-                if section_open != 'TERMS':
-                    raise MalformedInputError("TERMS section closed without being opened.")
-                section_open = None
-                print("</TERMS>\n")
-            elif line == "</OUTPUT>":
-                if section_open != 'OUTPUT':
-                    raise MalformedInputError("OUTPUT section closed without being opened.")
-                section_open = None
-                print("</OUTPUT>\n")
-            else:  # The line contains data for the currently open section.
-                if not section_open:
-                    raise MalformedInputError("Data outside of any section.")
-                if section_open == 'CIRCUIT':
-                    process_circuit_line(line, circuit)
-                elif section_open == 'TERMS':
-                    process_terms_line(line, circuit)
-                elif section_open == 'OUTPUT':
-                    process_output_line(line, circuit)
+            match line:
+                case "<CIRCUIT>":
+                    if section_open or sections_count['CIRCUIT'] > 0:
+                        raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
+                    section_open = 'CIRCUIT'
+                    sections_count['CIRCUIT'] += 1
+                    print("<CIRCUIT>")
+                case "<TERMS>":
+                    if section_open or sections_count['TERMS'] > 0:
+                        raise MalformedInputError("TERMS section opened improperly or multiple times.")
+                    section_open = 'TERMS'
+                    sections_count['TERMS'] += 1
+                    print("<TERMS>")
+                case "<OUTPUT>":
+                    if section_open or sections_count['OUTPUT'] > 0:
+                        raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
+                    section_open = 'OUTPUT'
+                    sections_count['OUTPUT'] += 1
+                    print("<OUTPUT>")
+                case "</CIRCUIT>":
+                    if section_open != 'CIRCUIT':
+                        raise MalformedInputError("CIRCUIT section closed without being opened.")
+                    section_open = None
+                    print("</CIRCUIT>\n")
+                case "</TERMS>":
+                    if section_open != 'TERMS':
+                        raise MalformedInputError("TERMS section closed without being opened.")
+                    section_open = None
+                    print("</TERMS>\n")
+                case "</OUTPUT>":
+                    if section_open != 'OUTPUT':
+                        raise MalformedInputError("OUTPUT section closed without being opened.")
+                    section_open = None
+                    print("</OUTPUT>\n")
+                case _:
+                    match section_open:
+                        case None:
+                            raise MalformedInputError("Data outside of any section.")
+                        case 'CIRCUIT':
+                            process_circuit_line(line, circuit)
+                        case 'TERMS':
+                            process_terms_line(line, circuit)
+                        case 'OUTPUT':
+                            process_output_line(line, circuit)
 
     # Ensure that all sections were properly formatted and closed.
     for section, count in sections_count.items():
