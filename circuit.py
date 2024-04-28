@@ -150,12 +150,32 @@ class Component:
 
 class Terminations:
     """Stores information about source and load terminations and calculates output parameters."""
-    attributes = ['ZI', 'ZO', 'VO', 'IO', 'V1', 'V2', 'I1', 'I2', 'VT', 'RS', 'IN', 'GS', 'RL', 'AV', 'AI', 'AP', 'PI', 'PO']
 
     def __init__(self):
         """Initialize Terminations with attributes set to None."""
-        for attr in self.attributes:
-            setattr(self, attr, None)
+        self.ZI = None
+        self.ZO = None
+        self.VO = None
+        self.IO = None
+        self.V1 = None
+        self.V2 = None
+        self.I1 = None
+        self.I2 = None
+        self.VT = None
+        self.RS = None
+        self.IN = None
+        self.GS = None
+        self.RL = None
+        self.AV = None
+        self.AI = None
+        self.AP = None
+        self.PI = None
+        self.PO = None
+        self.Fstart = None
+        self.Fend = None
+        self.LFstart = None
+        self.LFend = None
+        self.Nfreqs = None
 
     def calculate_outputs(self, ABCD):
         """Calculate output parameters based on the circuit's ABCD matrix and termination values."""
