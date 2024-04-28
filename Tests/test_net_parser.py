@@ -2,7 +2,7 @@
 
 from typing import assert_type
 import pytest
-from net_parser import parse_net_file_to_circuit, MalformedInputError
+from net_parser import parse_net_file_to_circuit, MalformedInputError, process_circuit_line
 from circuit import Circuit, Component
 
 def test_parse_valid_net_file():
@@ -28,10 +28,36 @@ def test_parse_valid_net_file():
     assert circuit.terminations.VT == 5
     assert circuit.terminations.RS == 50
     assert circuit.terminations.RL == 75
+    # Vin mV, Vin dBmV, Vout V, Vout dBV, Iin uA
+    output = circuit.outputs[0]
+    assert output.name == "Vin"
+    assert output.unit == "V"
+    assert output.magnitude == "m"
+    assert output.is_db is False
+    output = circuit.outputs[1]
+    assert output.name == "Vin"
+    assert output.unit == "V"
+    assert output.magnitude == "m"
+    assert output.is_db is True
+    output = circuit.outputs[2]
+    assert output.name == "Vout"
+    assert output.unit == "V"
+    assert output.magnitude == ""
+    assert output.is_db is False
+    output = circuit.outputs[3]
+    assert output.name == "Vout"
+    assert output.unit == "V"
+    assert output.magnitude == ""
+    assert output.is_db is True
+    output = circuit.outputs[4]
+    assert output.name == "Iin"
+    assert output.unit == "A"
+    assert output.magnitude == "u"
+    assert output.is_db is False
 
 def test_parse_invalid_circuit_line():
     with pytest.raises(MalformedInputError, match="Invalid circuit line"):
-        parse_net_file_to_circuit("tests/data/invalid_circuit.net")
+        process_circuit_line("")
 
 def test_parse_invalid_terms_line():
     with pytest.raises(MalformedInputError, match="Invalid terms line"):
