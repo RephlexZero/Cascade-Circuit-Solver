@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/home/jake/Documents/EEE/Cascade Circuit Solver/.venv/bin/python" "$0" "$@"
-' '''
+#!/home/jake/Documents/EEE/Cascade-Circuit-Solver/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
