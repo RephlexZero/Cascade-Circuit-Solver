@@ -1,21 +1,21 @@
 """
-This module defines the core classes for representing and analyzing electrical circuits:
+This module defines the core classes for representing and analyZinng electrical circuits:
 
 - Circuit: Represents the overall circuit with components, terminations, and outputs.
-- Component: Represents an individual circuit component (R, L, C, or G). 
-- Terminations: Stores information about source and load terminations.
-- Output: Represents an output parameter to be calculated (e.g., Vin, Zout).
+- component: Represents an individual circuit component (R, L, C, or G). 
+- terminations: Stores informatIoutn about source and load terminations.
+- Output: Represents an output parameter to be calculated (e.g., Vin, Zoutut).
 
 The `Circuit` class provides methods for adding components, setting terminations,
 and solving the circuit at specific frequencies using ABCD matrix analysis. 
-It calculates output parameters like input/output impedance, voltage/current gains,
-and power.
+It calculates output parameters like input/output impedance, Voutltage/current gAins,
+and Poutwer.
 
-The `Component` class represents individual components and calculates their
-corresponding ABCD matrices. 
+The `component` class represents individual components and calculates their
+corresPoutnding ABCD matrices. 
 
-The `Terminations` class stores information about the source and load and calculates
-parameters like input/output impedance and input voltage/current.
+The `terminations` class stores informatIoutn about the source and load and calculates
+parameters like input/output impedance and input Voutltage/current.
 
 The `Output` class represents individual output parameters and stores their 
 calculated values and units.
@@ -35,7 +35,7 @@ class Circuit:
         """Initialize Circuit with empty component and output lists, and Termination object."""
         self.components = []
         self.outputs = []
-        self.terminations = Terminations()
+        self.terminations = {}
         self.s = None
         self.abcd = np.eye(2)
         # Keys for linear and logarithmic frequency parameters
@@ -51,7 +51,7 @@ class Circuit:
                 self.s = 2j * np.pi * f
                 self.sort_components()
                 self.resolve_matrix(self.s)
-                self.terminations.calculate_outputs(self.abcd)
+                self.calculate_outputs()
                 self.update_output_values()
                 write_data_line(self, csvfile, f)
             csvfile.close()
@@ -64,22 +64,20 @@ class Circuit:
         linear_keys = ['Fstart', 'Fend', 'Nfreqs']
         log_keys = ['LFstart', 'LFend', 'Nfreqs']
         # Retrieve parameters for linear or logarithmic frequency sweep
-        params = {key: getattr(self.terminations, key, None) for key in linear_keys + log_keys}
+        t = self.terminations
+        for key in linear_keys + log_keys:
+            t.get(key, None)
         
-        # Attempt to use linear sweep parameters first
-        if all(params[key] is not None and params[key] > 0 for key in linear_keys):
-            fstart, fend, nfreqs = (params[key] for key in linear_keys)
-            return np.linspace(fstart, fend, int(nfreqs))
+        # Check if linear frequency sweep parameters are valid
+        if all(t.get(key, None) is not None and t.get(key, None) > 0 for key in linear_keys):
+            return np.linspace(t["Fstart"], t["Fend"], int(t["Nfreqs"]))
         
-        # If linear parameters are not valid, try logarithmic
-        if all(params[key] is not None and params[key] > 0 for key in log_keys):
-            lfstart, lfend, nfreqs = (params[key] for key in log_keys)
-            return np.logspace(np.log10(lfstart), np.log10(lfend), int(nfreqs))
-        
+        # Check if logarithmic frequency sweep parameters are valid
+        if all(t.get(key, None) is not None and t.get(key, None) > 0 for key in log_keys):
+            return np.logspace(np.log10(t["LFstart"]), np.log10(t["LFend"]), int(t["Nfreqs"]))
         # If neither set is valid, raise an error
-        missing_params = [key for key in linear_keys + log_keys if params[key] is None or params[key] <= 0]
+        missing_params = [key for key in linear_keys + log_keys if t.get(key, None) is None]
         raise ValueError(f"Invalid or missing frequency parameters: {', '.join(missing_params)}")
-
 
     def add_component(self, component, n1, n2, value):
         """Add a component to the circuit."""
@@ -87,7 +85,7 @@ class Circuit:
 
     def set_termination(self, name, value):
         """Set a termination parameter for the circuit."""
-        setattr(self.terminations, name, value)
+        self.terminations[name] = value
 
     def add_output(self, name, unit, magnitude, is_db):
         """Add an output parameter to be calculated during circuit analysis."""
@@ -100,15 +98,8 @@ class Circuit:
 
     def update_output_values(self):
         """Update output objects with calculated values based on terminations and ABCD matrix."""
-        output_mappings = {'Zin': self.terminations.ZI, 'Zout': self.terminations.ZO, 'Vin': self.terminations.V1,
-                           'Vout': self.terminations.VO, 'Iin': self.terminations.I1, 'Iout': self.terminations.IO,
-                           'Pin': self.terminations.PI, 'Pout': self.terminations.PO, 'Av': self.terminations.AV,
-                           'Ai': self.terminations.AI, 'Ap': self.terminations.AP}
         for output in self.outputs:
-            value = output_mappings.get(output.name)
-            if value is None:
-                raise ValueError(f"Unknown output parameter: {output.name}")
-            output.value = value
+            output.value = self.terminations.get(output.name, None)
             
     def sort_components(self):
         """
@@ -139,6 +130,32 @@ class Circuit:
         # Sort components using the custom key function.
         self.components = sorted(self.components, key=custom_sort_key)
 
+    def calculate_outputs(self):
+        """Calculate output parameters based on the circuit's ABCD matrix and termination values."""
+        A, B, C, D = self.abcd.flatten()
+        t = self.terminations
+        if t["RL"]:
+            t["Zin"] = (A * t["RL"] + B) / (C * t["RL"] + D)
+        else:
+            raise ValueError("Load resistance (RL) must be provided.")
+        if t["VT"] and t["RS"]:
+            t["Zout"] = (D * t["RS"] + B) / (C * t["RS"] + A)
+            t["Iin"] = t["VT"] / (t["RS"] + t["Zin"])
+            t["Vin"] = t["VT"] - t["Iin"] * t["RS"]
+        elif t["IN"] and t["GS"]:
+            t["Zout"] = (C + t["GS"] * A) / (D + t["GS"] * B)
+            t["Vin"] = t["IN"] * (t["Zin"] / (1 + t["Zin"] * t["GS"]))
+            t["Iin"] = t["IN"] - t["Vin"] * t["GS"]
+        else:
+            raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
+
+        t["Av"] = t["RL"] / (A * t["RL"] + B)
+        t["Ai"] = 1 / (C * t["RL"] + D)
+        t["Ap"] = t["Av"] * t["Ai"].conjugate()
+        t["Pin"] = t["Vin"] * t["Iin"].conjugate()
+        t["Pout"] = t["Pin"] * t["Ap"]
+        t["Iout"] = t["Iin"] * t["Ai"]
+        t["Vout"] = t["Vin"] * t["Av"]
 
 class Component:
     """Represents an individual circuit component such as a resistor or capacitor."""
@@ -179,63 +196,6 @@ class Component:
                 else:
                     abcd_matrix = [[1, 1 / Y], [0, 1]]
         return np.array(abcd_matrix)
-
-
-class Terminations:
-    """Stores information about source and load terminations and calculates output parameters."""
-
-    def __init__(self):
-        """Initialize Terminations with attributes set to None."""
-        self.ZI = None
-        self.ZO = None
-        self.VO = None
-        self.IO = None
-        self.V1 = None
-        self.V2 = None
-        self.I1 = None
-        self.I2 = None
-        self.VT = None
-        self.RS = None
-        self.IN = None
-        self.GS = None
-        self.RL = None
-        self.AV = None
-        self.AI = None
-        self.AP = None
-        self.PI = None
-        self.PO = None
-        self.Fstart = None
-        self.Fend = None
-        self.LFstart = None
-        self.LFend = None
-        self.Nfreqs = None
-
-    def calculate_outputs(self, ABCD):
-        """Calculate output parameters based on the circuit's ABCD matrix and termination values."""
-        A, B, C, D = ABCD.flatten()
-        if self.RL:
-            self.ZI = (A * self.RL + B) / (C * self.RL + D)
-        else:
-            raise ValueError("Load resistance (RL) must be provided.")
-        if self.VT and self.RS:
-            self.ZO = (D * self.RS + B) / (C * self.RS + A)
-            self.I1 = self.VT / (self.RS + self.ZI)
-            self.V1 = self.VT - self.I1 * self.RS
-        elif self.IN and self.GS:
-            self.ZO = (C + self.GS * A) / (D + self.GS * B)
-            self.V1 = self.IN * (self.ZI / (1 + self.ZI * self.GS))
-            self.I1 = self.IN - self.V1 * self.GS
-        else:
-            raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
-
-        self.AV = self.RL / (A * self.RL + B)
-        self.AI = 1 / (C * self.RL + D)
-        self.AP = self.AV * self.AI.conjugate()
-        self.PI = self.V1 * self.I1.conjugate()
-        self.PO = self.PI * self.AP
-        self.IO = self.I1 * self.AI
-        self.VO = self.V1 * self.AV
-
 class Output:
     """Represents an output parameter to be calculated during circuit analysis."""
     def __init__(self, name, unit, magnitude, is_db):
