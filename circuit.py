@@ -23,6 +23,7 @@ calculated values and units.
 
 from functools import reduce
 import numpy as np
+from csv_writer import write_header, write_data_line, align_and_overwrite_csv
     
 class Circuit:
     """
@@ -35,18 +36,50 @@ class Circuit:
         self.components = []
         self.outputs = []
         self.terminations = Terminations()
-        self.frequency = None
         self.s = None
-        self.ABCD = None
+        self.abcd = np.eye(2)
+        # Keys for linear and logarithmic frequency parameters
 
-    def solve(self, f):
+    def solve(self, output_file_path):
         """Analyze the circuit at a given frequency and calculate output parameters."""
-        self.frequency = f
-        self.s = 2j * np.pi * self.frequency
-        self.resolve_matrix(self.s)
-        self.terminations.calculate_outputs(self.ABCD)
-        self.update_output_values()
-        return self.outputs
+            # Open the output CSV file in write mode.
+        with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
+            # Write the header rows with parameter names and units.
+            write_header(self, csvfile)
+            frequencies = self.calculate_frequencies()
+            for f in frequencies:
+                self.s = 2j * np.pi * f
+                self.sort_components()
+                self.resolve_matrix(self.s)
+                self.terminations.calculate_outputs(self.abcd)
+                self.update_output_values()
+                write_data_line(self, csvfile, f)
+            csvfile.close()
+        # Align the columns in the CSV file for better readability.
+        align_and_overwrite_csv(output_file_path)
+
+
+    def calculate_frequencies(self):
+        """Calculate the frequency range based on linear or logarithmic frequency sweep parameters."""
+        linear_keys = ['Fstart', 'Fend', 'Nfreqs']
+        log_keys = ['LFstart', 'LFend', 'Nfreqs']
+        # Retrieve parameters for linear or logarithmic frequency sweep
+        params = {key: getattr(self.terminations, key, None) for key in linear_keys + log_keys}
+        
+        # Attempt to use linear sweep parameters first
+        if all(params[key] is not None and params[key] > 0 for key in linear_keys):
+            fstart, fend, nfreqs = (params[key] for key in linear_keys)
+            return np.linspace(fstart, fend, int(nfreqs))
+        
+        # If linear parameters are not valid, try logarithmic
+        if all(params[key] is not None and params[key] > 0 for key in log_keys):
+            lfstart, lfend, nfreqs = (params[key] for key in log_keys)
+            return np.logspace(np.log10(lfstart), np.log10(lfend), int(nfreqs))
+        
+        # If neither set is valid, raise an error
+        missing_params = [key for key in linear_keys + log_keys if params[key] is None or params[key] <= 0]
+        raise ValueError(f"Invalid or missing frequency parameters: {', '.join(missing_params)}")
+
 
     def add_component(self, component, n1, n2, value):
         """Add a component to the circuit."""
@@ -60,10 +93,10 @@ class Circuit:
         """Add an output parameter to be calculated during circuit analysis."""
         self.outputs.append(Output(name, unit, magnitude, is_db))
 
-    def resolve_matrix(self, s=0):
+    def resolve_matrix(self, s):
         """Calculate the overall ABCD matrix of the circuit for a given complex frequency."""
         circuit_matrices = [component.get_abcd_matrix(s) for component in self.components]
-        self.ABCD = reduce(np.matmul, circuit_matrices, np.eye(2))
+        self.abcd = reduce(np.matmul, circuit_matrices, np.eye(2))
 
     def update_output_values(self):
         """Update output objects with calculated values based on terminations and ABCD matrix."""
@@ -119,7 +152,7 @@ class Component:
 
     def get_abcd_matrix(self, s):
         """Calculate and return the ABCD matrix for the component based on its type and value."""
-        is_shunt = self.n1 == 0 or self.n2 == 0
+        is_shunt = 0 in [self.n1, self.n2]
         match self.type:
             case 'R':
                 Z = self.value
@@ -205,7 +238,6 @@ class Terminations:
 
 class Output:
     """Represents an output parameter to be calculated during circuit analysis."""
-
     def __init__(self, name, unit, magnitude, is_db):
         """Initialize Output with name, unit, magnitude, and dB flag."""
         self.name = name

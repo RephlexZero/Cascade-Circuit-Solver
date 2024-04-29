@@ -1,5 +1,5 @@
 Command is:python main.py ./User_files/e_Ladder_100.net ./User_files/e_Ladder_100.csv >./User_files/e_Ladder_100_run.log 2>&1
-OS returns 256 from execution of command
+OS returns 0 from execution of command
 For files ./Model_files/e_Ladder_100_model.csv and ./User_files/e_Ladder_100.csv filecmp returns same=False
 			Detailed testing:
 Working on 152 lines

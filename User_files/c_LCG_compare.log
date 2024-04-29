@@ -1,5 +1,5 @@
 Command is:python main.py ./User_files/c_LCG.net ./User_files/c_LCG.csv >./User_files/c_LCG_run.log 2>&1
-OS returns 256 from execution of command
+OS returns 0 from execution of command
 For files ./Model_files/c_LCG_model.csv and ./User_files/c_LCG.csv filecmp returns same=False
 			Detailed testing:
 Working on 52 lines

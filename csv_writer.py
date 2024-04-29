@@ -13,8 +13,6 @@ import shutil
 from tempfile import NamedTemporaryFile
 import numpy as np
 
-from circuit import Circuit
-
 # Maps magnitude prefixes to their numerical factors for scaling values appropriately in the CSV.
 magnitude_multiplier = {
     '': 1, 'k': 1e3, 'M': 1e6, 'G': 1e9,
@@ -58,13 +56,13 @@ def write_header(circuit, csv_file):
     writer.writerow(units)
     csv_file.flush()  # Ensure the data is written to the file.
 
-def write_data_line(circuit, csv_file):
+def write_data_line(circuit, csv_file, f):
     """
     Writes a data row with calculated output values at the current frequency, formatted for magnitude and phase,
     handling special cases for power and impedance in dB scale, and ensuring magnitude prefixes are correctly applied.
     """
     writer = csv.writer(csv_file)
-    row = ['{:.3e}'.format(circuit.frequency)]
+    row = ['{:.3e}'.format(f)]
     for output in circuit.outputs:
         if output.is_db:
             mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)
@@ -87,6 +85,8 @@ def write_empty_csv(output_file_path):
     or to reset the file in case of errors during data handling.
     """
     with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
+        # Write an empty row to the CSV file to ensure it is not left blank.
+        csvfile.write('')
         csvfile.close()
 
 def read_and_process_csv(csv_file_path):

@@ -1,5 +1,5 @@
 Command is:python main.py ./User_files/a_Test_Circuit_1M.net ./User_files/a_Test_Circuit_1M.csv >./User_files/a_Test_Circuit_1M_run.log 2>&1
-OS returns 256 from execution of command
+OS returns 0 from execution of command
 For files ./Model_files/a_Test_Circuit_1M_model.csv and ./User_files/a_Test_Circuit_1M.csv filecmp returns same=False
 			Detailed testing:
 Working on 12 lines

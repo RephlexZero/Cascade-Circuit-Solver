@@ -1,6 +1,5 @@
 # tests/test_csv_writer.py
 
-import pytest
 from csv_writer import write_header, write_data_line
 from circuit import Circuit, Output
 import io
