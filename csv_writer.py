@@ -39,7 +39,7 @@ def write_header(circuit, csv_file):
             if output.name in ['Av', 'Ai', 'Ap']:  # Special case for gain parameters (unitless)
                 output.unit = 'L'
             names.extend([f'{f"Re({output.name})":>11}', f'{f"Im({output.name})":>11}'])
-            units.extend([f'{output.magnitude}{output.unit:>11}' for _ in range(2)])
+            units.extend([f'{f"{output.magnitude}{output.unit}":>11}' for _ in range(2)])
 
     # Write header rows to the CSV
     writer.writerow(names)

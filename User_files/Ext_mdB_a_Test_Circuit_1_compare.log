@@ -4,7 +4,7 @@ For files ./Model_files/Ext_mdB_a_Test_Circuit_1_model.csv and ./User_files/Ext_
 			Detailed testing:
 Working on 12 lines
 Line 1 is OK
-Line length differs, model file line has 538 character while user file has 550
+Line 2 is OK
 Line 3 variable 3 differs, model=61.92, user=1918
 Line 3 variable 11 differs, model=97.51, user=-2.249e+07
 Line 3 variable 17 differs, model=-124.5, user=-184500

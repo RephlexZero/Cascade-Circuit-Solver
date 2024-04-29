@@ -1,6 +1,5 @@
 import cProfile
 import glob
-import os
 import main
 
 input_file_list = glob.glob('./User_files/*.net')

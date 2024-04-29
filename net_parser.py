@@ -69,32 +69,32 @@ def parse_net_file_to_circuit(file_path):
                     if section_open:
                         raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
                     section_open = 'CIRCUIT'
-                    print("<CIRCUIT>")
+                    # print("<CIRCUIT>")
                 case "<TERMS>":
                     if section_open:
                         raise MalformedInputError("TERMS section opened improperly or multiple times.")
                     section_open = 'TERMS'
-                    print("<TERMS>")
+                    # print("<TERMS>")
                 case "<OUTPUT>":
                     if section_open:
                         raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
                     section_open = 'OUTPUT'
-                    print("<OUTPUT>")
+                    # print("<OUTPUT>")
                 case "</CIRCUIT>":
                     if section_open != 'CIRCUIT':
                         raise MalformedInputError("CIRCUIT section closed without being opened.")
                     section_open = None
-                    print("</CIRCUIT>\n")
+                    # print("</CIRCUIT>\n")
                 case "</TERMS>":
                     if section_open != 'TERMS':
                         raise MalformedInputError("TERMS section closed without being opened.")
                     section_open = None
-                    print("</TERMS>\n")
+                    # print("</TERMS>\n")
                 case "</OUTPUT>":
                     if section_open != 'OUTPUT':
                         raise MalformedInputError("OUTPUT section closed without being opened.")
                     section_open = None
-                    print("</OUTPUT>\n")
+                    # print("</OUTPUT>\n")
                 case _:
                     match section_open:
                         case 'CIRCUIT':
@@ -178,7 +178,7 @@ def process_circuit_line(line, circuit):
 
         circuit.add_component(data['component'], data['n1'], data['n2'],
                               data['value'] * magnitude_multiplier.get(data['magnitude'], 1))
-        print(f"n1={data['n1']} n2={data['n2']} {data['component']}={data['value']} {data['magnitude']}")
+        # print(f"n1={data['n1']} n2={data['n2']} {data['component']}={data['value']} {data['magnitude']}")
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
 
@@ -195,7 +195,7 @@ def process_terms_line(line, circuit):
             # Extract values using groupdict and set them in the Circuit object
             value = float(term_data['value']) * magnitude_multiplier.get(term_data['magnitude'], 1)
             circuit.set_termination(term_data['term'], value)
-            print(f"{term_data['term']}={term_data['value']}{term_data['magnitude']}")
+            # print(f"{term_data['term']}={term_data['value']}{term_data['magnitude']}")
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
 
@@ -213,6 +213,6 @@ def process_output_line(line, circuit):
         unit = match.group('unit') if match.group('unit') else ''
 
         circuit.add_output(name, unit, magnitude, is_db)
-        print(f"{name} {'dB' if is_db else ''}{magnitude}{unit}")
+        # print(f"{name} {'dB' if is_db else ''}{magnitude}{unit}")
     else:
         raise MalformedInputError(f"Invalid output line: {line}")
