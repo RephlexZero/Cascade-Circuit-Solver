@@ -9,8 +9,6 @@ Functions:
 """
 
 import csv
-import shutil
-from tempfile import NamedTemporaryFile
 import numpy as np
 
 # Maps magnitude prefixes to their numerical factors for scaling values appropriately in the CSV.
@@ -26,35 +24,26 @@ def write_header(circuit, csv_file):
     """
     writer = csv.writer(csv_file)  # Create a CSV writer object for writing rows to the file.
 
-    # Initialize lists to store parameter names and units
-    names = ['Freq']  # Start with 'Freq' for frequency
-    units = ['Hz']   # Units for frequency is 'Hz'
+    # Initialize lists to store parameter names and units with consistent formatting
+    names = [f'{"Freq":>10}']
+    units = [f'{"Hz":>10}']  # Units for frequency is 'Hz'
 
     # Iterate over each output parameter in the circuit.
     for output in circuit.outputs:
         if output.is_db:
-            # For dB outputs, add two columns: one for magnitude (|parameter|) and one for phase (/_parameter).
-            names.append(f'|{output.name}|')
-            names.append(f'/_{output.name}')
-
-            # Specify units as dB with the corresponding magnitude prefix and unit (e.g., dBmV, dBuA).
-            units.append(f'dB{output.magnitude}{output.unit}')
-            units.append('Rads')  # Phase is expressed in radians.
+            # For dB outputs, add two columns: one for magnitude and one for phase.
+            names.extend([f'{f"|{output.name}|":>11}', f'{f"/_{output.name}":>11}'])
+            units.extend([f'{f"dB{output.magnitude}{output.unit}":>11}', f'{"Rads":>11}'])
         else:
-            # For linear outputs, add two columns: one for the real part (Re(parameter)) and one for the imaginary part (Im(parameter)).
+            # For linear outputs, add two columns: one for the real part and one for the imaginary part.
             if output.name in ['Av', 'Ai', 'Ap']:  # Special case for gain parameters (unitless)
                 output.unit = 'L'
-            names.append(f'Re({output.name})')
-            names.append(f'Im({output.name})')
+            names.extend([f'{f"Re({output.name})":>11}', f'{f"Im({output.name})":>11}'])
+            units.extend([f'{output.magnitude}{output.unit:>11}' for _ in range(2)])
 
-            # Specify units with the corresponding magnitude prefix and unit (e.g., mV, uA).
-            for _ in range(2):
-                units.append(f'{output.magnitude}{output.unit}')
-
-    # Write the parameter names and units as two separate rows in the CSV file.
+    # Write header rows to the CSV
     writer.writerow(names)
     writer.writerow(units)
-    csv_file.flush()  # Ensure the data is written to the file.
 
 def write_data_line(circuit, csv_file, f):
     """
@@ -62,7 +51,7 @@ def write_data_line(circuit, csv_file, f):
     handling special cases for power and impedance in dB scale, and ensuring magnitude prefixes are correctly applied.
     """
     writer = csv.writer(csv_file)
-    row = ['{:.3e}'.format(f)]
+    row = [f'{f:>10.3e}']
     for output in circuit.outputs:
         if output.is_db:
             mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)
@@ -71,13 +60,12 @@ def write_data_line(circuit, csv_file, f):
             else:
                 mag *= 20
             phase = np.angle(output.value)
-            row += ['{:.3e}'.format(mag), '{:.3e}'.format(phase)]
+            row.extend([f'{mag:>11.3e}', f'{phase:>11.3e}'])
         else:
             output.value /= magnitude_multiplier.get(output.magnitude, 1)
-            row += ['{:.3e}'.format(np.real(output.value)), '{:.3e}'.format(np.imag(output.value))]
+            row.extend([f'{output.value.real:>11.3e}', f'{output.value.imag:>11.3e}'])
     row.append('')
     writer.writerow(row)
-    csv_file.flush()
 
 def write_empty_csv(output_file_path):
     """
@@ -85,44 +73,4 @@ def write_empty_csv(output_file_path):
     or to reset the file in case of errors during data handling.
     """
     with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
-        # Write an empty row to the CSV file to ensure it is not left blank.
         csvfile.write('')
-        csvfile.close()
-
-def read_and_process_csv(csv_file_path):
-    """
-    Reads the CSV file and calculates the maximum width for each column to prepare for alignment.
-    This helps ensure that the data is visually coherent and easier to analyze.
-    """
-    rows, max_widths = [], []
-    with open(csv_file_path, 'r', newline='', encoding='utf8') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            rows.append(row)
-            if len(max_widths) < len(row):
-                max_widths.extend([0] * (len(row) - len(max_widths)))
-            for i, cell in enumerate(row):
-                max_widths[i] = max(max_widths[i], len(cell.lstrip('-+')))
-    return rows, max_widths
-
-def write_aligned_csv(csv_file_path, rows, max_widths):
-    """
-    Writes aligned data to a temporary file and replaces the original file. This is crucial for maintaining a
-    uniform format across the CSV, which facilitates easier data interpretation and analysis.
-    """
-    with NamedTemporaryFile(mode='w', delete=False, newline='', encoding='utf8') as temp_file:
-        writer = csv.writer(temp_file)
-        for row in rows:
-            aligned_row = [cell.rjust(max_widths[i] + 2) for i, cell in enumerate(row)]
-            aligned_row[0] = aligned_row[0][1:]  # Remove extra space before the first element.
-            aligned_row[-1] = aligned_row[-1].rstrip()  # Remove trailing space from the last element.
-            writer.writerow(aligned_row)
-    shutil.move(temp_file.name, csv_file_path)  # Replace the original file with the aligned version.
-
-def align_and_overwrite_csv(csv_file_path):
-    """
-    Aligns columns in a CSV file and overwrites the original file with the aligned version.
-    Ensures that the data layout is consistent and aesthetically pleasing for any users of the data.
-    """
-    rows, max_widths = read_and_process_csv(csv_file_path)
-    write_aligned_csv(csv_file_path, rows, max_widths)

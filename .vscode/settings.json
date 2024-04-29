@@ -7,7 +7,7 @@
     "python.analysis.extraPaths": [
         "",
         "/home/jake/.vscode/extensions/joedevivo.vscode-circuitpython-0.2.0-linux-x64/stubs",
-        "/home/jake/.config/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20240428/adafruit-circuitpython-bundle-py-20240428/lib"
+        "/home/jake/.config/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20240429/adafruit-circuitpython-bundle-py-20240429/lib"
     ],
     "circuitpython.board.version": null,
     "python.analysis.autoImportCompletions": true,
@@ -25,5 +25,9 @@
         "Tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "editor.tokenColorCustomizations": {
+        "comments": "",
+        "textMateRules": []
+    }
 }

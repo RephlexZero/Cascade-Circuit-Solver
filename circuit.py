@@ -23,7 +23,7 @@ calculated values and units.
 
 from functools import reduce
 import numpy as np
-from csv_writer import write_header, write_data_line, align_and_overwrite_csv
+from csv_writer import write_header, write_data_line
     
 class Circuit:
     """
@@ -54,10 +54,6 @@ class Circuit:
                 self.calculate_outputs()
                 self.update_output_values()
                 write_data_line(self, csvfile, f)
-            csvfile.close()
-        # Align the columns in the CSV file for better readability.
-        align_and_overwrite_csv(output_file_path)
-
 
     def calculate_frequencies(self):
         """Calculate the frequency range based on linear or logarithmic frequency sweep parameters."""
@@ -66,17 +62,18 @@ class Circuit:
         # Retrieve parameters for linear or logarithmic frequency sweep
         t = self.terminations
         for key in linear_keys + log_keys:
-            t.get(key, None)
+            t[key] = t.get(key, None)
         
         # Check if linear frequency sweep parameters are valid
-        if all(t.get(key, None) is not None and t.get(key, None) > 0 for key in linear_keys):
+        if all(t[key] is not None and t[key] > 0 for key in linear_keys):
             return np.linspace(t["Fstart"], t["Fend"], int(t["Nfreqs"]))
-        
+            
         # Check if logarithmic frequency sweep parameters are valid
-        if all(t.get(key, None) is not None and t.get(key, None) > 0 for key in log_keys):
+        if all(t[key] is not None and t[key] > 0 for key in log_keys):
             return np.logspace(np.log10(t["LFstart"]), np.log10(t["LFend"]), int(t["Nfreqs"]))
+        
         # If neither set is valid, raise an error
-        missing_params = [key for key in linear_keys + log_keys if t.get(key, None) is None]
+        missing_params = [key for key in linear_keys + log_keys if t.get(key) is None]
         raise ValueError(f"Invalid or missing frequency parameters: {', '.join(missing_params)}")
 
     def add_component(self, component, n1, n2, value):
@@ -94,7 +91,7 @@ class Circuit:
     def resolve_matrix(self, s):
         """Calculate the overall ABCD matrix of the circuit for a given complex frequency."""
         circuit_matrices = [component.get_abcd_matrix(s) for component in self.components]
-        self.abcd = reduce(np.matmul, circuit_matrices, np.eye(2))
+        self.abcd = reduce(np.dot, circuit_matrices, np.eye(2))
 
     def update_output_values(self):
         """Update output objects with calculated values based on terminations and ABCD matrix."""
@@ -195,6 +192,8 @@ class Component:
                     abcd_matrix = [[1, 0], [Y, 1]]
                 else:
                     abcd_matrix = [[1, 1 / Y], [0, 1]]
+            case _:
+                raise ValueError(f"Invalid component type: {self.type}")
         return np.array(abcd_matrix)
 class Output:
     """Represents an output parameter to be calculated during circuit analysis."""

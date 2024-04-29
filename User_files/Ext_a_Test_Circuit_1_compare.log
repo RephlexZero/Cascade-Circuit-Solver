@@ -4,7 +4,7 @@ For files ./Model_files/Ext_a_Test_Circuit_1_model.csv and ./User_files/Ext_a_Te
 			Detailed testing:
 Working on 12 lines
 Line 1 is OK
-Line 2 is OK
+Line length differs, model file line has 250 character while user file has 254
 Line 3 variable 11 differs, model=-100, user=-165700
 Line 3 variable 19 differs, model=-160, user=-162
 Error found in line 3 from character 135

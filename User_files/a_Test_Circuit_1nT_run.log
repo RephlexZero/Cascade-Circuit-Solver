@@ -24,4 +24,4 @@ Av
 Ai 
 </OUTPUT>
 
-An error occurred: Malformed Input: TERMS section not properly formatted.
+An error occurred: Invalid or missing frequency parameters: Fstart, Fend, Nfreqs, LFstart, LFend, Nfreqs

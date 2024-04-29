@@ -54,8 +54,6 @@ def parse_net_file_to_circuit(file_path):
 
     circuit = Circuit()  # Create an empty Circuit object to store the parsed information.
     section_open = None  # Keeps track of the currently open section in the .net file.
-    sections_count = {'CIRCUIT': 0, 'TERMS': 0, 'OUTPUT': 0}  # Tracks how many times each section appears.
-
     # Open the .net file in read mode and iterate over each line.
     with open(file_path, 'r', encoding="utf-8") as file:
         for line in file:
@@ -68,22 +66,19 @@ def parse_net_file_to_circuit(file_path):
             # Check if the line indicates the start or end of a section.
             match line:
                 case "<CIRCUIT>":
-                    if section_open or sections_count['CIRCUIT'] > 0:
+                    if section_open:
                         raise MalformedInputError("CIRCUIT section opened improperly or multiple times.")
                     section_open = 'CIRCUIT'
-                    sections_count['CIRCUIT'] += 1
                     print("<CIRCUIT>")
                 case "<TERMS>":
-                    if section_open or sections_count['TERMS'] > 0:
+                    if section_open:
                         raise MalformedInputError("TERMS section opened improperly or multiple times.")
                     section_open = 'TERMS'
-                    sections_count['TERMS'] += 1
                     print("<TERMS>")
                 case "<OUTPUT>":
-                    if section_open or sections_count['OUTPUT'] > 0:
+                    if section_open:
                         raise MalformedInputError("OUTPUT section opened improperly or multiple times.")
                     section_open = 'OUTPUT'
-                    sections_count['OUTPUT'] += 1
                     print("<OUTPUT>")
                 case "</CIRCUIT>":
                     if section_open != 'CIRCUIT':
@@ -102,20 +97,14 @@ def parse_net_file_to_circuit(file_path):
                     print("</OUTPUT>\n")
                 case _:
                     match section_open:
-                        case None:
-                            raise MalformedInputError("Data outside of any section.")
                         case 'CIRCUIT':
                             process_circuit_line(line, circuit)
                         case 'TERMS':
                             process_terms_line(line, circuit)
                         case 'OUTPUT':
                             process_output_line(line, circuit)
-
-    # Ensure that all sections were properly formatted and closed.
-    for section, count in sections_count.items():
-        if count != 1:
-            raise MalformedInputError(f"{section} section not properly formatted.")
-
+                        case _:
+                            raise MalformedInputError(f"Data found outside of a section: {line}")
     return circuit
 
 # Regular expression pattern for matching circuit lines:
