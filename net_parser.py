@@ -22,7 +22,7 @@ Helper Functions:
         Processes a line from the OUTPUT section and adds an output parameter.
 """
 import re
-from circuit import Circuit
+from circuit import Circuit, Component
 
 
 class MalformedInputError(Exception):
@@ -174,19 +174,20 @@ def process_circuit_line(line, circuit):
             raise MalformedInputError(f"Invalid terms line, not fully valid: {line}")
         data = match.groupdict()
 
-        data['n1'] = int(data['n1'])
-        data['n2'] = int(data['n2'])
-        data['value'] = float(data['value'])
+        n1 = int(data["n1"])
+        n2 = int(data["n2"])
+        component = data['component']
+        magnitude = data["magnitude"]
+        value = float(data["value"]) * magnitude_multiplier.get(magnitude, 1)
 
         # Check for invalid component connections
-        if data['n1'] == data['n2']:
+        if n1 == n2:
             raise MalformedInputError(f"Invalid component nodes: {line}")
-        if 0 not in [data['n1'], data['n2']] and abs(data['n1'] - data['n2']) != 1:
+        if 0 not in [n1, n2] and abs(n1 - n2) != 1:
             raise MalformedInputError(f"Invalid component nodes: {line}")
 
-        circuit.add_component(data['component'], data['n1'], data['n2'],
-                              data['value'] * magnitude_multiplier.get(data['magnitude'], 1))
-        # print(f"n1={data['n1']} n2={data['n2']} {data['component']}={data['value']} {data['magnitude']}")
+        circuit.add_component(n1, n2, component, value)
+        # print(f"n1={n1} n2={n2} {component}={value} {magnitude}")
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
 
@@ -204,10 +205,12 @@ def process_terms_line(line, circuit):
     if matches:
         for match in matches:
             term_data = match.groupdict()
-            # Extract values using groupdict and set them in the Circuit object
-            value = float(term_data['value']) * magnitude_multiplier.get(term_data['magnitude'], 1)
-            circuit.set_termination(term_data['term'], value)
-            # print(f"{term_data['term']}={term_data['value']}{term_data['magnitude']}")
+            name = term_data['term']
+            magnitude = term_data['magnitude']
+            value = float(term_data['value']) * magnitude_multiplier.get(magnitude, 1)
+            
+            circuit.set_termination(name, value)
+            # print(f"{name}={value}{magnitude}")
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
 
@@ -219,10 +222,11 @@ def process_output_line(line, circuit):
     match = output_pattern.match(line)
 
     if match:
-        name = match.group('name')
-        is_db = bool(match.group('is_db'))
-        magnitude = match.group('magnitude') if match.group('magnitude') else ''
-        unit = match.group('unit') if match.group('unit') else ''
+        output_data = match.groupdict()
+        name = output_data['name']
+        is_db = bool(output_data['is_db'])
+        magnitude = output_data['magnitude'] if output_data['magnitude'] else ''
+        unit = output_data['unit'] if output_data['unit'] else ''
 
         circuit.add_output(name, unit, magnitude, is_db)
         # print(f"{name} {'dB' if is_db else ''}{magnitude}{unit}")

@@ -76,7 +76,7 @@ class Circuit:
         missing_params = [key for key in linear_keys + log_keys if t.get(key) is None]
         raise ValueError(f"Invalid or missing frequency parameters: {', '.join(missing_params)}")
 
-    def add_component(self, component, n1, n2, value):
+    def add_component(self, n1, n2, component, value):
         """Add a component to the circuit."""
         self.components.append(Component(component, n1, n2, value))
 

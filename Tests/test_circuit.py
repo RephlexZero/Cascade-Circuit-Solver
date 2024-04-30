@@ -4,14 +4,14 @@ import pytest
 from circuit import Circuit
 import numpy as np
 
-@pytest.mark.parametrize("component_type, n1, n2, value", [
-    ('R', 1, 2, 100),
-    ('C', 2, 3, 1e-6),
-    ('L', 4, 5, 1e-3)
+@pytest.mark.parametrize("n1, n2, component_type, value", [
+    (1, 2, 'R', 100),
+    (2, 3, 'C', 1e-6),
+    (4, 5, 'L', 1e-3)
 ])
-def test_add_component(component_type, n1, n2, value):
+def test_add_component(n1, n2, component_type, value):
     circuit = Circuit()
-    circuit.add_component(component_type, n1, n2, value)
+    circuit.add_component(n1, n2, component_type, value)
     component = circuit.components[0]
     assert component.type == component_type
     assert component.n1 == n1
@@ -20,13 +20,13 @@ def test_add_component(component_type, n1, n2, value):
 
 @pytest.mark.parametrize("inputs, expected", [
     ([
-        ('B', 3, 2, None),
-        ('C', 4, 5, None),
-        ('A', 0, 1, None),
-        ('C', 5, 4, None),
-        ('D', 5, 6, None),
-        ('D', 6, 5, None),
-        ('A', 1, 0, None)
+        (3, 2, 'B', None),
+        (4, 5, 'C', None),
+        (0, 1, 'A', None),
+        (5, 4, 'C', None),
+        (5, 6, 'D', None),
+        (6, 5, 'D', None),
+        (1, 0, 'A', None)
      ],
      ['A', 'A', 'B', 'C', 'C', 'D', 'D'])
 ])
@@ -39,9 +39,9 @@ def test_sort_components(inputs, expected):
 
 def test_resolve_matrix_simple_circuit():
     circuit = Circuit()
-    circuit.add_component('R', 1, 2, 50)
-    circuit.add_component('C', 2, 0, 1e-9)
-    circuit.add_component('L', 2, 3, 1e-3)
+    circuit.add_component(1, 2, 'R', 50)
+    circuit.add_component(2, 0, 'C', 1e-9)
+    circuit.add_component(2, 3, 'L', 1e-3)
 
     # Calculate combined ABCD matrix manually
     frequency = 1j  # Imaginary unit for jω
