@@ -131,23 +131,28 @@ class Circuit:
         """Calculate output parameters based on the circuit's ABCD matrix and termination values."""
         A, B, C, D = self.abcd.flatten()
         t = self.terminations
-        if t["RL"]:
-            t["Zin"] = (A * t["RL"] + B) / (C * t["RL"] + D)
+        RL = t.get("RL", None)
+        VT = t.get("VT", None)
+        RS = t.get("RS", None)
+        IN = t.get("IN", None)
+        GS = t.get("GS", None)
+        if RL:
+            t["Zin"] = (A * RL + B) / (C * RL + D)
         else:
             raise ValueError("Load resistance (RL) must be provided.")
-        if t["VT"] and t["RS"]:
-            t["Zout"] = (D * t["RS"] + B) / (C * t["RS"] + A)
-            t["Iin"] = t["VT"] / (t["RS"] + t["Zin"])
-            t["Vin"] = t["VT"] - t["Iin"] * t["RS"]
-        elif t["IN"] and t["GS"]:
-            t["Zout"] = (C + t["GS"] * A) / (D + t["GS"] * B)
-            t["Vin"] = t["IN"] * (t["Zin"] / (1 + t["Zin"] * t["GS"]))
-            t["Iin"] = t["IN"] - t["Vin"] * t["GS"]
+        if VT and RS:
+            t["Zout"] = (D * RS + B) / (C * RS + A)
+            t["Iin"] = VT / (RS + t["Zin"])
+            t["Vin"] = VT - t["Iin"] * RS
+        elif IN and GS:
+            t["Zout"] = (C + GS * A) / (D + GS * B)
+            t["Vin"] = IN * (t["Zin"] / (1 + t["Zin"] * GS))
+            t["Iin"] = IN - t["Vin"] * GS
         else:
             raise ValueError("Either Thevenin (VT and RS) or Norton (IN and GS) source parameters must be provided.")
 
-        t["Av"] = t["RL"] / (A * t["RL"] + B)
-        t["Ai"] = 1 / (C * t["RL"] + D)
+        t["Av"] = RL / (A * RL + B)
+        t["Ai"] = 1 / (C * RL + D)
         t["Ap"] = t["Av"] * t["Ai"].conjugate()
         t["Pin"] = t["Vin"] * t["Iin"].conjugate()
         t["Pout"] = t["Pin"] * t["Ap"]
