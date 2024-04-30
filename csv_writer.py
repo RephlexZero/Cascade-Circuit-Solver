@@ -45,13 +45,13 @@ def write_header(circuit, csv_file):
     writer.writerow(names)
     writer.writerow(units)
 
-def write_data_line(circuit, csv_file, f):
+def write_data_line(circuit, csv_file, frequency):
     """
     Writes a data row with calculated output values at the current frequency, formatted for magnitude and phase,
     handling special cases for power and impedance in dB scale, and ensuring magnitude prefixes are correctly applied.
     """
     writer = csv.writer(csv_file)
-    row = [f'{f:>10.3e}']
+    row = [f'{frequency:>10.3e}']
     for output in circuit.outputs:
         if output.is_db:
             mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)

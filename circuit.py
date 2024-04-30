@@ -53,7 +53,7 @@ class Circuit:
                 self.resolve_matrix(self.s)
                 self.calculate_outputs()
                 self.update_output_values()
-                write_data_line(self, csvfile, f)
+                write_data_line(self, csvfile,f)
 
     def calculate_frequencies(self):
         """Calculate the frequency range based on linear or logarithmic frequency sweep parameters."""
@@ -67,7 +67,7 @@ class Circuit:
         # Check if linear frequency sweep parameters are valid
         if all(t[key] is not None and t[key] > 0 for key in linear_keys):
             return np.linspace(t["Fstart"], t["Fend"], int(t["Nfreqs"]))
-            
+
         # Check if logarithmic frequency sweep parameters are valid
         if all(t[key] is not None and t[key] > 0 for key in log_keys):
             return np.logspace(np.log10(t["LFstart"]), np.log10(t["LFend"]), int(t["Nfreqs"]))

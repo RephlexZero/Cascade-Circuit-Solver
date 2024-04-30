@@ -1,4 +1,4 @@
-# tests/test_net_parser.py
+# Tests/test_net_parser.py
 
 import pytest
 from net_parser import parse_net_file_to_circuit, MalformedInputError, process_circuit_line, process_terms_line, process_output_line
@@ -22,12 +22,12 @@ def test_parse_valid_net_file():
     assert component.n2 == 5
     assert component.value == 637e-9
     # LFstart=10.0 LFend=10e+6 Nfreqs=10 VT=5 RS=50 RL=75
-    assert circuit.terminations.LFstart == 10.0
-    assert circuit.terminations.LFend == 10e+6
-    assert circuit.terminations.Nfreqs == 10
-    assert circuit.terminations.VT == 5
-    assert circuit.terminations.RS == 50
-    assert circuit.terminations.RL == 75
+    assert circuit.terminations["LFstart"] == 10.0
+    assert circuit.terminations["LFend"] == 10e+6
+    assert circuit.terminations["Nfreqs"] == 10
+    assert circuit.terminations["VT"] == 5
+    assert circuit.terminations["RS"] == 50
+    assert circuit.terminations["RL"] == 75
     # Vin mV, Vin dBmV, Vout V, Vout dBV, Iin uA
     output = circuit.outputs[0]
     assert output.name == "Vin"
