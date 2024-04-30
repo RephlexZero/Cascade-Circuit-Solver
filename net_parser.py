@@ -39,10 +39,8 @@ class MalformedInputError(Exception):
 # This is used to convert component values and termination parameters from their
 # string representations to numerical values with appropriate scaling.
 magnitude_multiplier = {
-    '': 1, 'k': 1e3,
-    'M': 1e6, 'G': 1e9,
-    'm': 1e-3, 'u': 1e-6,
-    'µ': 1e-6, 'n': 1e-9
+    '': 1, 'k': 1e3, 'M': 1e6, 'G': 1e9, 'T': 1e12, 'P': 1e15,
+    'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9, 'p': 1e-12, 'f': 1e-15
 }
 
 
@@ -107,36 +105,41 @@ def parse_net_file_to_circuit(file_path):
                             raise MalformedInputError(f"Data found outside of a section: {line}")
     return circuit
 
+def make_regex_list(l):
+    """
+    This function takes a list of strings and returns a regex pattern that matches any of the strings.
+    """
+    return '|'.join(map(str, map(re.escape, l)))
+
+magnitudes = make_regex_list(["k", "M", "G", "T", "m", "u", "µ", "n", "p", "f"])
 # Regular expression pattern for matching circuit lines:
 #  - Extracts node numbers (n1 and n2)
 #  - Extracts component type (R, L, C, or G)
 #  - Extracts component value and magnitude prefix
-component_pattern = re.compile(r"""
-^                                  # Start of the string
-    (?=.*\bn1\s*=\s*(?P<n1>\d+)\b)     # Positive lookahead for 'n1'
-    (?=.*\bn2\s*=\s*(?P<n2>\d+)\b)     # Positive lookahead for 'n2'
-    (?=.*(?P<component>[RLCG])
-\s*=\s*
-(?P<value>-?\d+(?:.\d*)?(?:[eE][+-]?\d+)?)\s*(?P<magnitude>[kmunµGM]?)\b) # Lookahead for the component, value, and magnitude
-.+ # Consume the entire string
-$ # End of the string
+components = make_regex_list(["R", "L", "C", "G"])
+component_pattern = re.compile(rf"""
+    (n1\s*=\s*(?P<n1>\d+))\s*                   # Node 1 number
+    (n2\s*=\s*(?P<n2>\d+))\s*                   # Node 2 number
+    ((?P<component>{components})                # Component type
+    \s*=\s*                                     # Equals sign with optional whitespace on both sides
+    (?P<value>-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?) # Scientific notation number
+    \s*                                         # Optional whitespace
+    (?P<magnitude>{magnitudes})?)               # Optional magnitude prefix
 """, re.VERBOSE)
 
 # Regular expression pattern for matching terms lines:
 #  - Extracts term name
 #  - Extracts term value
 #  - Extracts optional magnitude prefix
-terms_pattern = re.compile(r"""
+# Creating a non-capturing group with an alternation structure for the terms
+terms = make_regex_list(["Fstart", "Fend", "LFstart", "LFend", "Nfreqs", "VT", "RS", "RL", "IN", "GS"])
+terms_pattern = re.compile(rf"""
     \s*
-    (?P<term>\w+)                 # Term name (alphanumeric and underscore)
-    \s*=\s*                       # Equals sign with optional whitespace on both sides
-    (?P<value>                    # Start of value capture group
-        -?\d+                     # Optional negative sign and one or more digits
-        (?:\.\d*)?                # Optional decimal and fractional part
-        (?:[eE][+-]?\d+)?         # Optional exponent
-    )
-    \s*                           # Optional whitespace
-    (?P<magnitude>[kmunµGM]?)     # Optional magnitude prefix
+    (?P<term>{terms})                           # Only matches specified terms
+    \s*=\s*                                     # Equals sign with optional whitespace on both sides
+    (?P<value>-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?) # Scientific notation number
+    \s*                                         # Optional whitespace
+    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
 """, re.VERBOSE)
 
 # Regular expression pattern for matching output lines:
@@ -144,16 +147,18 @@ terms_pattern = re.compile(r"""
 #  - Extracts optional dB indicator
 #  - Extracts optional magnitude prefix
 #  - Extracts unit
-output_pattern = re.compile(r"""
-    ^                         # Start of the line
-    (?P<name>\w+)             # Capture the name (parameter)
-    \s*                       # Optional whitespace
-    (?P<is_db>dB)?            # Optional dB indicator
-    \s*                       # Equals sign with optional whitespace on both sides
-    (?P<magnitude>[mkMGuµn])? # Optional magnitude prefix
-    \s*                       # Optional whitespace
-    (?P<unit>[AVWOhms]*)      # Capture the unit
-    $                         # End of the line
+outputs = make_regex_list(["Vout", "Iout", "Vin", "Iin", "Zin", "Zout", "Pin", "Pout", "Av", "Ai", "Ap"])
+units = make_regex_list(["V", "A", "W", "Ohms"])
+output_pattern = re.compile(rf"""
+    ^                                           # Start of the line
+    (?P<name>{outputs})                         # Capture the name (parameter)
+    \s*                                         # Optional whitespace
+    (?P<is_db>dB)?                              # Optional dB indicator
+    \s*                                         # Equals sign with optional whitespace on both sides
+    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
+    \s*                                         # Optional whitespace
+    (?P<unit>{units})?                          # Capture the unit
+    $                                           # End of the line
 """, re.VERBOSE)
 
 def process_circuit_line(line, circuit):
@@ -162,8 +167,11 @@ def process_circuit_line(line, circuit):
     component to the Circuit object.
     """
 
-    match = component_pattern.search(line)
+    match = component_pattern.match(line)
     if match:
+        total_matched_length = match.end() - match.start()
+        if total_matched_length != len(line):
+            raise MalformedInputError(f"Invalid terms line, not fully valid: {line}")
         data = match.groupdict()
 
         data['n1'] = int(data['n1'])
@@ -188,9 +196,13 @@ def process_terms_line(line, circuit):
     Processes a line from the TERMS section of the .net file and sets
     termination parameters in the Circuit object.
     """
-    matches = terms_pattern.finditer(line)
+    matches = list(terms_pattern.finditer(line))
+    total_matched_length = sum(match.end() - match.start() for match in matches)
+    if  total_matched_length != len(line):
+        raise MalformedInputError(f"Invalid terms line, not fully valid: {line}")
+    
     if matches:
-        for match in terms_pattern.finditer(line):
+        for match in matches:
             term_data = match.groupdict()
             # Extract values using groupdict and set them in the Circuit object
             value = float(term_data['value']) * magnitude_multiplier.get(term_data['magnitude'], 1)

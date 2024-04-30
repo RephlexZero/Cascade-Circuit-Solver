@@ -28,8 +28,8 @@ def main(input_file_path, output_file_path):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    # if len(args) != 2:
-    #     raise ValueError("Invalid number of arguments")
+    if len(args) != 2:
+        raise ValueError("Invalid number of arguments")
     # Get the input and output file paths from command line arguments.
     input_file_path, output_file_path = args[0], args[1]
     # Check input file is .net and output file is .csv
@@ -40,4 +40,5 @@ if __name__ == "__main__":
     # In all exceptions, create an empty CSV file to indicate an error occurred.
     except Exception as e:
         print(f"An error occurred: {e}")
-        write_empty_csv(output_file_path)
+        with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
+            write_empty_csv(csvfile)

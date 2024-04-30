@@ -1,30 +1,57 @@
 # Tests/test_csv_writer.py
 
-from csv_writer import write_header, write_data_line
-from circuit import Circuit, Output
 import io
+from csv_writer import write_header, write_data_line, write_empty_csv
+from circuit import Circuit, Output
+
 
 def test_write_header():
+    # Setup: create a Circuit object with specific outputs
     circuit = Circuit()
     circuit.outputs = [Output("Vout", "V", "", False),
                        Output("Iin", "A", "u", True)]
+
+    # Action: simulate writing to a CSV file
     csvfile = io.StringIO()
     write_header(circuit, csvfile)
+
+    # Fetch the written data, remove spaces, and split into lines
     header = csvfile.getvalue().replace(" ", "").split("\n")
+    
+    # Assertions: check the structure and content of the CSV header
     assert header[0].strip().split(",") == ["Freq", "Re(Vout)", "Im(Vout)", "|Iin|", "/_Iin"]
     assert header[1].strip().split(",") == ["Hz", "V", "V", "dBuA", "Rads"]
 
+
 def test_write_data_line():
+    # Setup: create a Circuit with outputs containing complex values
     circuit = Circuit()
     frequency = 1e6
     circuit.outputs = [Output("Vout", "V", "", False),
                        Output("Iin", "A", "u", True)]
     circuit.outputs[0].value = 1 + 2j
     circuit.outputs[1].value = 3 - 4j
+
+    # Action: simulate writing a data line to a CSV
     csvfile = io.StringIO()
     write_data_line(circuit, csvfile, frequency)
-    # Remove all white spaces and split by comma
+    
+    # Fetch the written data, remove spaces, and split by comma
     data_row = csvfile.getvalue().replace(" ", "").strip().split(",")
-    # Assert data row format for both real/imag and dB/phase
+
+    # Assertions: validate the data format and content
     assert data_row == ["1.000e+06", "1.000e+00", "2.000e+00", "1.398e+07", "-9.273e-01",""]
-    # Include the extra empty field to match error in model files
+    # Note: the extra empty field matches a potential formatting error in model files
+
+
+def test_write_empty_csv():
+    # Setup: simulate an empty CSV file
+    csvfile = io.StringIO()
+    write_empty_csv(csvfile)
+    
+    # Fetch the written data
+    data_row = csvfile.getvalue()
+    
+    # Assertion: check that the file remains empty after the operation
+    assert data_row == ""
+

@@ -13,8 +13,8 @@ import numpy as np
 
 # Maps magnitude prefixes to their numerical factors for scaling values appropriately in the CSV.
 magnitude_multiplier = {
-    '': 1, 'k': 1e3, 'M': 1e6, 'G': 1e9,
-    'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9
+    '': 1, 'k': 1e3, 'M': 1e6, 'G': 1e9, 'T': 1e12, 'P': 1e15,
+    'm': 1e-3, 'u': 1e-6, 'µ': 1e-6, 'n': 1e-9, 'p': 1e-12, 'f': 1e-15
 }
 
 def write_header(circuit, csv_file):
@@ -67,10 +67,8 @@ def write_data_line(circuit, csv_file, frequency):
     row.append('')
     writer.writerow(row)
 
-def write_empty_csv(output_file_path):
+def write_empty_csv(csvfile):
     """
-    Creates an empty CSV file at the specified path to ensure that the file structure is initialized properly
-    or to reset the file in case of errors during data handling.
+    Writes an empty CSV file.
     """
-    with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
-        csvfile.write('')
+    csvfile.write('')

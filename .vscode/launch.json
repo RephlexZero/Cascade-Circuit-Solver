@@ -28,8 +28,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": [
-                "User_files/a_Test_Circuit_1.net",
-                "User_files/a_Test_Circuit_1.csv"
+                "User_files/Ext_mdB_a_Test_Circuit_1.net",
+                "User_files/Ext_mdB_a_Test_Circuit_1.csv"
             ],
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/.venv/bin/python",
