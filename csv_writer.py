@@ -54,11 +54,9 @@ def write_data_line(circuit, csv_file, frequency):
     row = [f'{frequency:>10.3e}']
     for output in circuit.outputs:
         if output.is_db:
-            mag = np.log10(np.absolute(output.value)) / magnitude_multiplier.get(output.magnitude, 1)
-            if output.name in ['Pin', 'Pout', 'Zin', 'Zout', 'Ap']:
-                mag *= 10
-            else:
-                mag *= 20
+            mag = 10 * np.log10(np.absolute(output.value) / magnitude_multiplier.get(output.magnitude, 1))
+            if output.name not in ['Pin', 'Pout', 'Zin', 'Zout', 'Ap']:
+                mag *= 2
             phase = np.angle(output.value)
             row.extend([f'{mag:>11.3e}', f'{phase:>11.3e}'])
         else:

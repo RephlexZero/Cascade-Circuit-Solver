@@ -42,3 +42,4 @@ if __name__ == "__main__":
         print(f"An error occurred: {e}")
         with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
             write_empty_csv(csvfile)
+        sys.exit(1)

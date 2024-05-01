@@ -22,7 +22,7 @@ Helper Functions:
         Processes a line from the OUTPUT section and adds an output parameter.
 """
 import re
-from circuit import Circuit, Component
+from circuit import Circuit
 
 
 class MalformedInputError(Exception):
@@ -94,6 +94,7 @@ def parse_net_file_to_circuit(file_path):
                     section_open = None
                     # print("</OUTPUT>\n")
                 case _:
+                    # Process lines based on the currently open section.
                     match section_open:
                         case 'CIRCUIT':
                             process_circuit_line(line, circuit)
@@ -171,7 +172,6 @@ terms_pattern = re.compile(rf"""
     \s*                                         # Optional whitespace
     (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
 """, re.VERBOSE)
-
 
 def process_terms_line(line, circuit):
     """

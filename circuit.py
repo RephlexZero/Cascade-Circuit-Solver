@@ -42,18 +42,19 @@ class Circuit:
 
     def solve(self, output_file_path):
         """Analyze the circuit at a given frequency and calculate output parameters."""
-            # Open the output CSV file in write mode.
+        # Sort components by their nodes
+        self.sort_components()
+        # Open the output CSV file in write mode.
         with open(output_file_path, 'w', newline='', encoding='utf8') as csvfile:
             # Write the header rows with parameter names and units.
             write_header(self, csvfile)
             frequencies = self.calculate_frequencies()
             for f in frequencies:
                 self.s = 2j * np.pi * f
-                self.sort_components()
                 self.resolve_matrix(self.s)
                 self.calculate_outputs()
                 self.update_output_values()
-                write_data_line(self, csvfile,f)
+                write_data_line(self, csvfile, f)
 
     def calculate_frequencies(self):
         """Calculate the frequency range based on linear or logarithmic frequency sweep parameters."""
@@ -78,7 +79,7 @@ class Circuit:
 
     def add_component(self, n1, n2, component, value):
         """Add a component to the circuit."""
-        self.components.append(Component(component, n1, n2, value))
+        self.components.append(Circuit.Component(component, n1, n2, value))
 
     def set_termination(self, name, value):
         """Set a termination parameter for the circuit."""
@@ -86,7 +87,7 @@ class Circuit:
 
     def add_output(self, name, unit, magnitude, is_db):
         """Add an output parameter to be calculated during circuit analysis."""
-        self.outputs.append(Output(name, unit, magnitude, is_db))
+        self.outputs.append(Circuit.Output(name, unit, magnitude, is_db))
 
     def resolve_matrix(self, s):
         """Calculate the overall ABCD matrix of the circuit for a given complex frequency."""
@@ -115,7 +116,7 @@ class Circuit:
             # Handle different cases based on the number of nonzero elements
             match len(numbers):
                 case 0:  # Both numbers are zero
-                    return (0, 0)
+                    raise ValueError("Invalid component with both nodes connected to ground")
                 case 1:  # Only one nonzero number
                     return (numbers[0], 0)
                 case 2:  # Both numbers are nonzero; sort them to find the lowest and then the other
@@ -159,53 +160,52 @@ class Circuit:
         t["Iout"] = t["Iin"] * t["Ai"]
         t["Vout"] = t["Vin"] * t["Av"]
 
-class Component:
-    """Represents an individual circuit component such as a resistor or capacitor."""
+    class Component:
+        """Represents an individual circuit component such as a resistor or capacitor."""
+        def __init__(self, name, n1, n2, value):
+            """Initialize Component with type, node connections, and value."""
+            self.type = name
+            self.n1 = n1
+            self.n2 = n2
+            self.value = value
 
-    def __init__(self, name, n1, n2, value):
-        """Initialize Component with type, node connections, and value."""
-        self.type = name
-        self.n1 = n1
-        self.n2 = n2
-        self.value = value
-
-    def get_abcd_matrix(self, s):
-        """Calculate and return the ABCD matrix for the component based on its type and value."""
-        is_shunt = 0 in [self.n1, self.n2]
-        match self.type:
-            case 'R':
-                Z = self.value
-                if is_shunt:
-                    abcd_matrix = [[1, 0], [1 / Z, 1]]
-                else:
-                    abcd_matrix = [[1, Z], [0, 1]]
-            case 'L':
-                sL = s * self.value
-                if is_shunt:
-                    abcd_matrix = [[1, 0], [1 / sL, 1]]
-                else:
-                    abcd_matrix = [[1, sL], [0, 1]]
-            case 'C':
-                sC = s * self.value
-                if is_shunt:
-                    abcd_matrix = [[1, 0], [sC, 1]]
-                else:
-                    abcd_matrix = [[1, 1 / sC], [0, 1]]
-            case 'G':
-                Y = self.value
-                if is_shunt:
-                    abcd_matrix = [[1, 0], [Y, 1]]
-                else:
-                    abcd_matrix = [[1, 1 / Y], [0, 1]]
-            case _:
-                raise ValueError(f"Invalid component type: {self.type}")
-        return np.array(abcd_matrix)
-class Output:
-    """Represents an output parameter to be calculated during circuit analysis."""
-    def __init__(self, name, unit, magnitude, is_db):
-        """Initialize Output with name, unit, magnitude, and dB flag."""
-        self.name = name
-        self.value = None
-        self.unit = unit
-        self.magnitude = magnitude
-        self.is_db = is_db
+        def get_abcd_matrix(self, s):
+            """Calculate and return the ABCD matrix for the component based on its type and value."""
+            is_shunt = 0 in [self.n1, self.n2]
+            match self.type:
+                case 'R':
+                    Z = self.value
+                    if is_shunt:
+                        abcd_matrix = [[1, 0], [1 / Z, 1]]
+                    else:
+                        abcd_matrix = [[1, Z], [0, 1]]
+                case 'L':
+                    sL = s * self.value
+                    if is_shunt:
+                        abcd_matrix = [[1, 0], [1 / sL, 1]]
+                    else:
+                        abcd_matrix = [[1, sL], [0, 1]]
+                case 'C':
+                    sC = s * self.value
+                    if is_shunt:
+                        abcd_matrix = [[1, 0], [sC, 1]]
+                    else:
+                        abcd_matrix = [[1, 1 / sC], [0, 1]]
+                case 'G':
+                    Y = self.value
+                    if is_shunt:
+                        abcd_matrix = [[1, 0], [Y, 1]]
+                    else:
+                        abcd_matrix = [[1, 1 / Y], [0, 1]]
+                case _:
+                    raise ValueError(f"Invalid component type: {self.type}")
+            return np.array(abcd_matrix)
+    class Output:
+        """Represents an output parameter to be calculated during circuit analysis."""
+        def __init__(self, name, unit, magnitude, is_db):
+            """Initialize Output with name, unit, magnitude, and dB flag."""
+            self.name = name
+            self.value = None
+            self.unit = unit
+            self.magnitude = magnitude
+            self.is_db = is_db
