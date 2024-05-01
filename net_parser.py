@@ -127,40 +127,6 @@ component_pattern = re.compile(rf"""
     (?P<magnitude>{magnitudes})?)               # Optional magnitude prefix
 """, re.VERBOSE)
 
-# Regular expression pattern for matching terms lines:
-#  - Extracts term name
-#  - Extracts term value
-#  - Extracts optional magnitude prefix
-# Creating a non-capturing group with an alternation structure for the terms
-terms = make_regex_list(["Fstart", "Fend", "LFstart", "LFend", "Nfreqs", "VT", "RS", "RL", "IN", "GS"])
-terms_pattern = re.compile(rf"""
-    \s*
-    (?P<term>{terms})                           # Only matches specified terms
-    \s*=\s*                                     # Equals sign with optional whitespace on both sides
-    (?P<value>-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?) # Scientific notation number
-    \s*                                         # Optional whitespace
-    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
-""", re.VERBOSE)
-
-# Regular expression pattern for matching output lines:
-#  - Extracts output parameter name
-#  - Extracts optional dB indicator
-#  - Extracts optional magnitude prefix
-#  - Extracts unit
-outputs = make_regex_list(["Vout", "Iout", "Vin", "Iin", "Zin", "Zout", "Pin", "Pout", "Av", "Ai", "Ap"])
-units = make_regex_list(["V", "A", "W", "Ohms"])
-output_pattern = re.compile(rf"""
-    ^                                           # Start of the line
-    (?P<name>{outputs})                         # Capture the name (parameter)
-    \s*                                         # Optional whitespace
-    (?P<is_db>dB)?                              # Optional dB indicator
-    \s*                                         # Equals sign with optional whitespace on both sides
-    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
-    \s*                                         # Optional whitespace
-    (?P<unit>{units})?                          # Capture the unit
-    $                                           # End of the line
-""", re.VERBOSE)
-
 def process_circuit_line(line, circuit):
     """
     Processes a line from the CIRCUIT section of the .net file and adds a
@@ -191,6 +157,21 @@ def process_circuit_line(line, circuit):
     else:
         raise MalformedInputError(f"Invalid circuit line: {line}")
 
+# Regular expression pattern for matching terms lines:
+#  - Extracts term name
+#  - Extracts term value
+#  - Extracts optional magnitude prefix
+# Creating a non-capturing group with an alternation structure for the terms
+terms = make_regex_list(["Fstart", "Fend", "LFstart", "LFend", "Nfreqs", "VT", "RS", "RL", "IN", "GS"])
+terms_pattern = re.compile(rf"""
+    \s*
+    (?P<term>{terms})                           # Only matches specified terms
+    \s*=\s*                                     # Equals sign with optional whitespace on both sides
+    (?P<value>-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?) # Scientific notation number
+    \s*                                         # Optional whitespace
+    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
+""", re.VERBOSE)
+
 
 def process_terms_line(line, circuit):
     """
@@ -213,6 +194,25 @@ def process_terms_line(line, circuit):
             # print(f"{name}={value}{magnitude}")
     else:
         raise MalformedInputError(f"Invalid terms line: {line}")
+
+# Regular expression pattern for matching output lines:
+#  - Extracts output parameter name
+#  - Extracts optional dB indicator
+#  - Extracts optional magnitude prefix
+#  - Extracts unit
+outputs = make_regex_list(["Vout", "Iout", "Vin", "Iin", "Zin", "Zout", "Pin", "Pout", "Av", "Ai", "Ap"])
+units = make_regex_list(["V", "A", "W", "Ohms"])
+output_pattern = re.compile(rf"""
+    ^                                           # Start of the line
+    (?P<name>{outputs})                         # Capture the name (parameter)
+    \s*                                         # Optional whitespace
+    (?P<is_db>dB)?                              # Optional dB indicator
+    \s*                                         # Equals sign with optional whitespace on both sides
+    (?P<magnitude>{magnitudes})?                # Optional magnitude prefix
+    \s*                                         # Optional whitespace
+    (?P<unit>{units})?                          # Capture the unit
+    $                                           # End of the line
+""", re.VERBOSE)
 
 def process_output_line(line, circuit):
     """

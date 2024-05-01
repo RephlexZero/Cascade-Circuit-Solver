@@ -1,5 +1,5 @@
 import pytest
-from net_parser import parse_net_file_to_circuit, MalformedInputError
+from net_parser import MalformedInputError
 from net_parser import process_circuit_line, process_output_line, process_terms_line
 from circuit import Circuit
 
@@ -12,7 +12,13 @@ def sample_circuit():
     ("n1=1 n3=2 R=8.55u", MalformedInputError),
     ("n1=1 n2=3 R=8.55u", MalformedInputError),  # Assuming this is actually valid
     ("n1=1 n2=2 T=8.55u", MalformedInputError),
-    ("n1=1 n2=2 R=k8.55u", MalformedInputError)
+    ("n1=1 n2=2 R=k8.55u", MalformedInputError),
+    ("n1=1 n2=2 R=k8.55uu", MalformedInputError),
+    ("n1=1 n2=2 R=8.55K", MalformedInputError),
+    ("n1=1 n2=2 R=8.55kM", MalformedInputError),
+    ("n1=1 n2=2 R=8E10k", None),
+    ("n1=1 n2=2 R=8.5E-50", None),
+    ("n1  = 1 n2 =  2 R = 8.5E-50", None)
 ])
 def test_process_circuit_lines(sample_circuit, line, expected_exception):
     if expected_exception:
@@ -20,9 +26,7 @@ def test_process_circuit_lines(sample_circuit, line, expected_exception):
             process_circuit_line(line, sample_circuit)
     else:
         process_circuit_line(line, sample_circuit)
-        # Assertions to validate line was processed correctly could be added here
 
-# Example of using parametrization for output line testing
 @pytest.mark.parametrize("line, name, unit, magnitude, is_db", [
     ("Vin mV", "Vin", "V", "m", False),
     ("Vin dBmV", "Vin", "V", "m", True),

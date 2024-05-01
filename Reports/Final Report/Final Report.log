@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.3.25)  16 APR 2024 14:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  30 APR 2024 22:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/home/jake/Documents/EEE/Cascade Circuit Solver/Report/Report.tex"
-(/home/jake/Documents/EEE/Cascade Circuit Solver/Report/Report.tex
+**"/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex"
+(/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (./IEEEtran.cls
@@ -356,8 +356,8 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 42.
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count301
 \l__pdf_internal_box=\box57
-) (./Report.aux)
-\openout1 = `Report.aux'.
+) (./Final Report.aux)
+\openout1 = `"Final Report.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
 LaTeX Font Info:    ... okay on input line 44.
@@ -400,9 +400,9 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count308
 Package hyperref Info: Link coloring ON on input line 44.
- (./Report.out) (./Report.out)
+ (./Final Report.out) (./Final Report.out)
 \@outlinefile=\write3
-\openout3 = `Report.out'.
+\openout3 = `"Final Report.out"'.
 
 LaTeX Font Info:    Trying to load font information for U+msa on input line 57.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -411,63 +411,16 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (./Report.toc)
+) (./Final Report.toc)
 \tf@toc=\write4
-\openout4 = `Report.toc'.
+\openout4 = `"Final Report.toc"'.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 87--90
-
- []
-
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
-
-
-]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 96.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 73.
  (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 102--108
-
- []
-
-
-Underfull \hbox (badness 1424) in paragraph at lines 102--108
-\OT1/ptm/m/n/10 The or-der-ing of out-put ar-ray is then used to gen-er-ate
- []
-
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 113.
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 124.
-(/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 124.
- [2]
-Underfull \hbox (badness 10000) in paragraph at lines 198--201
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-
- []
-
-[3]
-Underfull \hbox (badness 1527) in paragraph at lines 214--215
-[]\OT1/ptm/m/n/10 Doctests of-fer an in-te-grated test-ing frame-work within
- []
-
-
-Underfull \hbox (badness 4543) in paragraph at lines 221--222
-[]\OT1/ptm/m/n/10 Automatically ex-e-cuted dur-ing doc-u-men-ta-tion re-view,
- []
-
-
-Underfull \hbox (badness 5490) in paragraph at lines 234--235
-[]\OT1/ptm/m/n/10 Comprehensive pro-gram val-i-da-tion is con-ducted via
+Underfull \hbox (badness 1917) in paragraph at lines 73--78
+\OT1/pcr/m/n/10 circuit.py\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 parse_net.py \OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 csv_writer.py\OT1/ptm/m/n/10 .
  []
 
 
@@ -481,29 +434,31 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
-] (./Report.aux)
+
+
+] (./Final Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
-Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: DE84A4AEDCF7FD0F5B91B5822CF746BF;2763.
+Package rerunfilecheck Info: File `"Final Report".out' has not changed.
+(rerunfilecheck)             Checksum: DC47C46F9E82B921C2F54FA993513B64;149.
  ) 
 Here is how much of TeX's memory you used:
- 12458 strings out of 476076
- 189884 string characters out of 5793775
- 1951187 words of memory out of 5000000
- 34358 multiletter control sequences out of 15000+600000
- 597155 words of font info for 112 fonts, out of 8000000 for 9000
+ 12366 strings out of 476076
+ 188972 string characters out of 5793775
+ 1934187 words of memory out of 5000000
+ 34319 multiletter control sequences out of 15000+600000
+ 594388 words of font info for 104 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,8n,79p,564b,545s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Report.pdf (4 pages, 117601 bytes).
+ 75i,8n,79p,309b,441s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Final Report.pdf" (1 page, 61236 bytes).
 PDF statistics:
- 182 PDF objects out of 1000 (max. 8388607)
- 158 compressed objects within 2 object streams
- 51 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 PDF objects out of 1000 (max. 8388607)
+ 32 compressed objects within 1 object stream
+ 4 named destinations out of 1000 (max. 500000)
+ 9 words of extra memory for PDF output out of 10000 (max. 10000000)
 

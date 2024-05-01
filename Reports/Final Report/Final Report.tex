@@ -1,0 +1,78 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\begin{document}
+
+\title{Cascade Circuit Analyser Final Report\\
+{\footnotesize \textsuperscript{*}EE20084 - Structured Programming}
+}
+
+\author{\IEEEauthorblockN{Jake Stewart}
+    \IEEEauthorblockA{\textit{Department of Electrical and Electronic Engineering} \\
+        \textit{University of Bath}\\
+        Bath, United Kingdom \\
+        email: js3910@bath.ac.uk}
+}
+\maketitle
+
+\begin{abstract}
+    This report details the design choices, implementation and testing of the Cascade Circuit Analyser program.
+    embedded.
+\end{abstract}
+
+\begin{IEEEkeywords}
+    circuit analysis, Python, pytest, regex, software testing
+\end{IEEEkeywords}
+
+\tableofcontents
+
+\section{Overview of approach}
+The program largely suck to the design specification, moulding and deviating slightly for improvements in performance
+or consiceness.
+
+The program is split into four main files, \texttt{main.py}, \texttt{circuit.py}, \texttt{parse\_net.py} and \texttt{csv\_writer.py}.
+\texttt{main.py} is the entry point of the program, and is responsible for parsing the command line arguments, reading the input file and writing the output file.
+\texttt{circuit.py} contains the \texttt{Circuit} class, which is responsible for storing the circuit data and performing the analysis.
+\texttt{parse\_net.py} contains the \texttt{parse\_netlist} function, which is responsible for parsing the netlist file and returning a list of components, a dictionary of
+terminations, and a list of outputs.
+\end{document}
