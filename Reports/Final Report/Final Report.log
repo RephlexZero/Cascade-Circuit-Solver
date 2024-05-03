@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  2 MAY 2024 21:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  3 MAY 2024 03:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -426,24 +426,20 @@ LaTeX Font Info:    Font shape `OT1/pcr/b/it' in size <10> not available
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 115--117
-[]\OT1/pcr/b/n/10 parse_net_file_to_circuit\OT1/ptm/m/n/10 : This func-tion
+[]\OT1/pcr/m/n/10 parse_net_file_to_circuit\OT1/ptm/m/n/10 : This func-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 145--146
+Underfull \hbox (badness 10000) in paragraph at lines 145--147
 []\OT1/ptm/m/n/10 This de-tailed im-ple-men-ta-tion en-sures that the
  []
 
 
-Underfull \hbox (badness 2418) in paragraph at lines 145--146
+Underfull \hbox (badness 2418) in paragraph at lines 145--147
 \OT1/pcr/m/n/10 net_parser.py \OT1/ptm/m/n/10 mod-ule ro-bustly han-dles the pars-ing
  []
 
 [2]
-Underfull \hbox (badness 3701) in paragraph at lines 181--184
-[]\OT1/pcr/m/n/10 calculate_abcd_matrix\OT1/ptm/m/n/10 : It-er-ates over the
- []
-
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -461,21 +457,21 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `"Final Report".out' has not changed.
-(rerunfilecheck)             Checksum: 8561FC579D745885AA809CC62A904C74;959.
+(rerunfilecheck)             Checksum: F1015ECB0FC16F543F12F26BBDDA8141;1085.
  ) 
 Here is how much of TeX's memory you used:
- 12398 strings out of 476076
- 189402 string characters out of 5793775
- 1951187 words of memory out of 5000000
- 34337 multiletter control sequences out of 15000+600000
+ 12400 strings out of 476076
+ 189432 string characters out of 5793775
+ 1952187 words of memory out of 5000000
+ 34338 multiletter control sequences out of 15000+600000
  596588 words of font info for 113 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,8n,79p,403b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,321b,614s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Final Report.pdf" (3 pages, 100185 bytes).
+Output written on "Final Report.pdf" (3 pages, 103305 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
- 14 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 118 PDF objects out of 1000 (max. 8388607)
+ 96 compressed objects within 1 object stream
+ 15 named destinations out of 1000 (max. 500000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

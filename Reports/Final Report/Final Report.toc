@@ -6,4 +6,5 @@
 \contentsline {subsection}{\numberline {\mbox {I-E}}\textbf {\texttt {tests}}}{1}{subsection.1.5}%
 \contentsline {section}{\numberline {II}Implementation}{2}{section.2}%
 \contentsline {subsection}{\numberline {\mbox {II-A}}\textbf {\texttt {net\_parser.py}}}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {\mbox {II-B}}\textbf {\texttt {circuit.py}}}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {\mbox {II-B}}\textbf {\texttt {circuit.py}}}{2}{subsection.2.2}%
+\contentsline {subsection}{\numberline {\mbox {II-C}}\textbf {\texttt {csv\_writer.py}}}{3}{subsection.2.3}%
