@@ -48,20 +48,20 @@
 }
 
 \author{\IEEEauthorblockN{Jake Stewart}
-    \IEEEauthorblockA{\textit{Department of Electrical and Electronic Engineering} \\
-        \textit{University of Bath}\\
-        Bath, United Kingdom \\
-        email: js3910@bath.ac.uk}
+  \IEEEauthorblockA{\textit{Department of Electrical and Electronic Engineering} \\
+    \textit{University of Bath}\\
+    Bath, United Kingdom \\
+    email: js3910@bath.ac.uk}
 }
 \maketitle
 
 \begin{abstract}
-    This report details the design choices, implementation and testing of the Cascade Circuit Analyser program.
-    embedded.
+  This report details the design choices, implementation and testing of the Cascade Circuit Analyser program.
+  embedded.
 \end{abstract}
 
 \begin{IEEEkeywords}
-    circuit analysis, Python, pytest, regex, software testing
+  circuit analysis, Python, pytest, regex, software testing
 \end{IEEEkeywords}
 
 \tableofcontents
@@ -114,138 +114,138 @@ This module is pivotal for parsing the netlist file and converting its contents 
 \begin{itemize}
   \item {\texttt{parse\_net\_file\_to\_circuit}}: This function serves as the starting point for processing the input netlist files.
         \begin{itemize}
-          \item \textbf{Functionality}: It initializes an empty circuit instance and begins reading the input file line by line. 
-          Each line is stripped of whitespace and checked for comments or emptiness, which are ignored.
-          \item \textbf{Delimiters and Section Matching}: The function uses a match case to identify section delimiters 
-          (such as headers for components, outputs, etc.). It ensures that sections are processed in a valid sequence, 
-          raising an error if an unexpected section is encountered.
-          \item \textbf{Data Handling}: Lines that do not match section delimiters are considered as data. If data appears 
-          outside of its designated section, the function raises an error. Otherwise, it is passed to specialized line processing 
-          helper functions for parsing.
+          \item \textbf{Functionality}: It initializes an empty circuit instance and begins reading the input file line by line.
+                Each line is stripped of whitespace and checked for comments or emptiness, which are ignored.
+          \item \textbf{Delimiters and Section Matching}: The function uses a match case to identify section delimiters
+                (such as headers for components, outputs, etc.). It ensures that sections are processed in a valid sequence,
+                raising an error if an unexpected section is encountered.
+          \item \textbf{Data Handling}: Lines that do not match section delimiters are considered as data. If data appears
+                outside of its designated section, the function raises an error. Otherwise, it is passed to specialized line processing
+                helper functions for parsing.
         \end{itemize}
 
-  \item \textbf{\texttt{process\_*\_line}}: These functions are tasked with processing specific types of data lines, depending on 
-  the section they belong to.
+  \item \textbf{\texttt{process\_*\_line}}: These functions are tasked with processing specific types of data lines, depending on
+        the section they belong to.
         \begin{itemize}
-          \item \textbf{Data Extraction}: Each line of data is matched against a tailored regex pattern that extracts necessary 
-          information and returns it in the form of a dictionary.
-          \item \textbf{Component Addition}: The extracted data dictionary is passed to the appropriate \texttt{add\_*} method 
-          of the circuit instance. This method is responsible for creating and appending a new instance of the respective Circuit 
-          Component or Output class, or updating the termination dictionary.
-          \item \textbf{Use of Regex}: Regular expressions play a crucial role in ensuring reliable and well-defined data extraction, 
-          including handling optional fields like magnitude and decibel prefixes. Magnitudes are applied immediately to standardize 
-          data storage format, with multipliers stored in a dictionary for quick access and conversion.
-          \item \textbf{Error Handling}: If a regex match fails or matches incorrectly, an error is raised to prevent incorrect data 
-          handling and ensure the integrity of the circuit data.
-          \item \textbf{Regex Development}: Regex patterns were developed and refined using \url{https://regex101.com/}, a tool that 
-          allows for meticulous testing and adjustment of regex expressions.
+          \item \textbf{Data Extraction}: Each line of data is matched against a tailored regex pattern that extracts necessary
+                information and returns it in the form of a dictionary.
+          \item \textbf{Component Addition}: The extracted data dictionary is passed to the appropriate \texttt{add\_*} method
+                of the circuit instance. This method is responsible for creating and appending a new instance of the respective Circuit
+                Component or Output class, or updating the termination dictionary.
+          \item \textbf{Use of Regex}: Regular expressions play a crucial role in ensuring reliable and well-defined data extraction,
+                including handling optional fields like magnitude and decibel prefixes. Magnitudes are applied immediately to standardize
+                data storage format, with multipliers stored in a dictionary for quick access and conversion.
+          \item \textbf{Error Handling}: If a regex match fails or matches incorrectly, an error is raised to prevent incorrect data
+                handling and ensure the integrity of the circuit data.
+          \item \textbf{Regex Development}: Regex patterns were developed and refined using \url{https://regex101.com/}, a tool that
+                allows for meticulous testing and adjustment of regex expressions.
         \end{itemize}
 \end{itemize}
 
-This detailed implementation ensures that the \texttt{net\_parser.py} module robustly handles the parsing of the netlist 
+This detailed implementation ensures that the \texttt{net\_parser.py} module robustly handles the parsing of the netlist
 file, setting a solid foundation for the subsequent circuit analysis processes.
 \subsection{\textbf{\texttt{circuit.py}}}
-The \texttt{circuit.py} module encapsulates the \texttt{Circuit} class, which is the core data structure for organizing 
-and manipulating the circuit elements and their interactions in the Cascade Circuit Analyser program. This class and its 
-methods are designed to store circuit data, compute necessary parameters, and facilitate the overall solution of the circuit 
+The \texttt{circuit.py} module encapsulates the \texttt{Circuit} class, which is the core data structure for organizing
+and manipulating the circuit elements and their interactions in the Cascade Circuit Analyser program. This class and its
+methods are designed to store circuit data, compute necessary parameters, and facilitate the overall solution of the circuit
 analysis. Below are detailed descriptions of the key methods within this class:
 
 \begin{itemize}
   \item \textbf{Initialization:}
         \begin{itemize}
-          \item \textbf{Functionality}: The constructor method, \texttt{\_\_init\_\_}, initializes the lists for storing component 
-          and output instances, and a dictionary for terminations. This setup is crucial for managing the diverse types of data that 
-          are typical in circuit analysis applications.
+          \item \textbf{Functionality}: The constructor method, \texttt{\_\_init\_\_}, initializes the lists for storing component
+                and output instances, and a dictionary for terminations. This setup is crucial for managing the diverse types of data that
+                are typical in circuit analysis applications.
         \end{itemize}
 
   \item \textbf{Adding Components:}
         \begin{itemize}
-          \item \textbf{\texttt{add\_component}}: This method accepts parameters defining a component (e.g., type, nodes, value) and 
-          creates an instance of a component class (e.g., Resistor, Capacitor). Each component class contains a method to calculate its 
-          specific ABCD matrix, which is critical for the network analysis.
-          \item \textbf{Data Organization}: Added components are organized in a list that maintains the order of their insertion, which 
-          is important for the sequential processing and analysis of the circuit.
+          \item \textbf{\texttt{add\_component}}: This method accepts parameters defining a component (e.g., type, nodes, value) and
+                creates an instance of a component class (e.g., Resistor, Capacitor). Each component class contains a method to calculate its
+                specific ABCD matrix, which is critical for the network analysis.
+          \item \textbf{Data Organization}: Added components are organized in a list that maintains the order of their insertion, which
+                is important for the sequential processing and analysis of the circuit.
         \end{itemize}
 
   \item \textbf{Setting Terminations:}
         \begin{itemize}
-          \item \textbf{\texttt{set\_termination}}: This method inputs termination values, such as source and load impedances. It 
-          updates the terminations dictionary, which is later used in matrix calculations to apply boundary conditions essential 
-          for accurate circuit analysis.
+          \item \textbf{\texttt{set\_termination}}: This method inputs termination values, such as source and load impedances. It
+                updates the terminations dictionary, which is later used in matrix calculations to apply boundary conditions essential
+                for accurate circuit analysis.
         \end{itemize}
 
   \item \textbf{Adding Outputs:}
         \begin{itemize}
-          \item \textbf{\texttt{add\_output}}: Specifies which outputs need to be calculated and recorded, such as voltages at 
-          specific nodes or overall power dissipation. This method ensures that the output specifications are stored for later use 
-          in determining what results are generated and stored.
+          \item \textbf{\texttt{add\_output}}: Specifies which outputs need to be calculated and recorded, such as voltages at
+                specific nodes or overall power dissipation. This method ensures that the output specifications are stored for later use
+                in determining what results are generated and stored.
         \end{itemize}
 
   \item \textbf{ABCD Matrix Calculation:}
         \begin{itemize}
-          \item \textbf{\texttt{calculate\_abcd\_matrix}}: This method is responsible for computing the ABCD matrices of each component 
-          at the specified frequencies. It performs matrix multiplications of individual component matrices to derive an overall ABCD 
-          matrix for the circuit at each frequency.
+          \item \textbf{\texttt{calculate\_abcd\_matrix}}: This method is responsible for computing the ABCD matrices of each component
+                at the specified frequencies. It performs matrix multiplications of individual component matrices to derive an overall ABCD
+                matrix for the circuit at each frequency.
         \end{itemize}
 
   \item \textbf{Circuit Solution Method:}
         \begin{itemize}
-          \item \textbf{\texttt{solve}}: Acts as the main computational engine of the module. It iterates over the frequency range, 
-          computes the total ABCD matrix for each frequency using \texttt{calculate\_abcd\_matrix}, and calculates the circuit's response 
-          based on the terminations. The results for each requested output are formatted and passed to the \texttt{csv\_writer.py} for 
-          output to a file.
-          \item \textbf{Efficiency and Accuracy}: The efficiency of this method directly influences the program's performance, ensuring 
-          that the calculations are done in a logical sequence based on the accurate mathematical foundations of network theory.
+          \item \textbf{\texttt{solve}}: Acts as the main computational engine of the module. It iterates over the frequency range,
+                computes the total ABCD matrix for each frequency using \texttt{calculate\_abcd\_matrix}, and calculates the circuit's response
+                based on the terminations. The results for each requested output are formatted and passed to the \texttt{csv\_writer.py} for
+                output to a file.
+          \item \textbf{Efficiency and Accuracy}: The efficiency of this method directly influences the program's performance, ensuring
+                that the calculations are done in a logical sequence based on the accurate mathematical foundations of network theory.
         \end{itemize}
 \end{itemize}
 
-This structured approach within the \texttt{circuit.py} module ensures comprehensive management and manipulation of circuit data, 
-facilitating detailed and accurate circuit analysis. The module is designed to be flexible and robust, allowing for future enhancements 
+This structured approach within the \texttt{circuit.py} module ensures comprehensive management and manipulation of circuit data,
+facilitating detailed and accurate circuit analysis. The module is designed to be flexible and robust, allowing for future enhancements
 and adjustments to the methods as new requirements or improvements are identified.
 
 \subsection{\textbf{\texttt{csv\_writer.py}}}
-The \texttt{csv\_writer.py} module is dedicated to managing the output of the circuit analysis results into a CSV file format. This 
-module plays a crucial role in ensuring data is accurately and effectively written to facilitate easy review and further processing. 
+The \texttt{csv\_writer.py} module is dedicated to managing the output of the circuit analysis results into a CSV file format. This
+module plays a crucial role in ensuring data is accurately and effectively written to facilitate easy review and further processing.
 Below, we detail the functions implemented within this module and their interactions:
 
 \begin{itemize}
   \item \textbf{Write Header:}
         \begin{itemize}
-          \item \textbf{Functionality}: This function writes the header row of the CSV file, which typically includes the names of the 
-          variables being recorded, such as frequency, voltage, current, etc.
-          \item \textbf{Dynamic Headers}: Depending on the outputs specified in the analysis, this function dynamically adjusts to include 
-          the appropriate headers, ensuring the output file matches the expected format for subsequent analysis.
+          \item \textbf{Functionality}: This function writes the header row of the CSV file, which typically includes the names of the
+                variables being recorded, such as frequency, voltage, current, etc.
+          \item \textbf{Dynamic Headers}: Depending on the outputs specified in the analysis, this function dynamically adjusts to include
+                the appropriate headers, ensuring the output file matches the expected format for subsequent analysis.
         \end{itemize}
 
   \item \textbf{Write Data Rows:}
         \begin{itemize}
-          \item \textbf{Functionality}: Following the header, this function is responsible for writing the data rows into the CSV file. 
-          Each row corresponds to a set of results computed for a particular state or condition of the circuit.
-          \item \textbf{Data Formatting}: The data is formatted in scientific notation to ensure precision, and each value is appropriately 
-          aligned and spaced to maintain a structured and readable format. This is particularly important for ensuring the data can be 
-          easily imported and manipulated in data analysis tools.
+          \item \textbf{Functionality}: Following the header, this function is responsible for writing the data rows into the CSV file.
+          \item
+          \item \textbf{Data Formatting}: The data is scaled to match the output magnitude, and formatted in scientific notation to ensure precision, and each value is appropriately
+                aligned and spaced to maintain a structured and readable format. This is particularly important for ensuring the data can be
+                easily imported and manipulated in data analysis tools.
         \end{itemize}
 
   \item \textbf{Write Empty CSV:}
         \begin{itemize}
-          \item \textbf{Error Handling}: In cases where the program encounters an error that prevents the completion of the circuit 
-          analysis, this function generates an empty CSV file.
-          \item \textbf{Indication of Failure}: The creation of an empty CSV file serves as an indication that the analysis did not 
-          proceed as expected, which can be a critical signal for automated systems or further batch processing that relies on the 
-          output data.
+          \item \textbf{Error Handling}: In cases where the program encounters an error that prevents the completion of the circuit
+                analysis, this function generates an empty CSV file.
+          \item \textbf{Indication of Failure}: The creation of an empty CSV file serves as an indication that the analysis did not
+                proceed as expected, which can be a critical signal for automated systems or further batch processing that relies on the
+                output data.
         \end{itemize}
 
   \item \textbf{Scientific Notation and Scaling:}
         \begin{itemize}
-          \item \textbf{Precision Management}: The module is designed to handle numerical data in scientific notation, allowing for a 
-          compact representation of large or small numbers without loss of precision.
-          \item \textbf{Adaptive Scaling}: Depending on the data type (e.g., voltages, currents) and the specified units (e.g., decibels 
-          for logarithmic scale results), the module scales the data appropriately. This feature is crucial for ensuring the data's 
-          usability in various analytical contexts where specific units or scales are required.
+          \item \textbf{Precision Management}: The module is designed to handle numerical data in scientific notation, allowing for a
+                compact representation of large or small numbers without loss of precision.
+          \item \textbf{Adaptive Scaling}: Depending on the data type (e.g., voltages, currents) and the specified units (e.g., decibels
+                for logarithmic scale results), the module scales the data appropriately. This feature is crucial for ensuring the data's
+                usability in various analytical contexts where specific units or scales are required.
         \end{itemize}
 \end{itemize}
 
-This module's design ensures that the results of the circuit analysis are documented in a manner that is both precise and adaptable to 
+This module's design ensures that the results of the circuit analysis are documented in a manner that is both precise and adaptable to
 various needs, facilitating easy data management and analysis post-simulation.
 
 \end{document}

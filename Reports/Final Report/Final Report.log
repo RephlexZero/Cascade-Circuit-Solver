@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  3 MAY 2024 03:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  3 MAY 2024 03:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -468,7 +468,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  75i,8n,79p,321b,614s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Final Report.pdf" (3 pages, 103305 bytes).
+Output written on "Final Report.pdf" (3 pages, 103281 bytes).
 PDF statistics:
  118 PDF objects out of 1000 (max. 8388607)
  96 compressed objects within 1 object stream
