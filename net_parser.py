@@ -149,9 +149,9 @@ def process_circuit_line(line, circuit):
 
         # Check for invalid component connections
         if n1 == n2:
-            raise MalformedInputError(f"Invalid component nodes: {line}")
+            raise MalformedInputError(f"Component forms self-loop: {line}")
         if 0 not in [n1, n2] and abs(n1 - n2) != 1:
-            raise MalformedInputError(f"Invalid component nodes: {line}")
+            raise MalformedInputError(f"Component nodes cannot be more than 1 value apart if not in shunt: {line}")
 
         circuit.add_component(n1, n2, component, value)
         # print(f"n1={n1} n2={n2} {component}={value} {magnitude}")

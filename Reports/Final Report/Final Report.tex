@@ -66,46 +66,138 @@
 
 \tableofcontents
 
-\section{Overview of approach}
-The program largely suck to the design specification, moulding and deviating slightly for improvements in performance
-or consiceness. The program is split into four main modules.
+\section{Overview}
+This section provides a brief overview of the Cascade Circuit Analyser program, outlining its purpose, functionality, and overall problem-solving structure.
+\subsection{\textbf{\texttt{main.py}}}
+This module is the entry point for the application. It is primarily responsible for:
+\begin{itemize}
+  \item Handling command line arguments.
+  \item Encapsulating the main execution logic within a try-except block to handle exceptions effectively. This ensures that any unhandled exceptions in the lower modules are caught and managed properly.
+  \item On encountering an exception, it displays the error message, creates an empty CSV file using the specified output argument, and terminates the program with a non-zero exit code to indicate an error state.
+\end{itemize}
 
-\subsection{main.py}
-This module is the entry point for the program. It handles the command line arguments and calls the main function within
-a try-except block to catch any exceptions that may be raised further down the stack. In the event of any exceptions, the
-program will print the error message, write an empty CSV file with the output file argument and exit with a non-zero exit code.
+\subsection{\textbf{\texttt{net\_parser.py}}}
+This module is crucial for interpreting the netlist file into a usable format:
+\begin{itemize}
+  \item The \texttt{parse\_net\_file\_to\_circuit} function reads the input file line-by-line, trimming whitespace and ignoring comments and empty lines.
+  \item It recognizes different sections in the input file (e.g., component definitions or configurations) by matching lines with predefined delimiters.
+  \item It validates the sequence of these sections to prevent processing errors and uses regular expressions to parse relevant data from each line.
+  \item Extracted data is then converted into dictionaries or objects and integrated into a circuit object, facilitating structured access and manipulation in later stages.
+\end{itemize}
 
-\subsection{net\_parser.py}
-This module contains one main function to identify what section each line belongs to, and three helper functions for line processing.
-The \texttt{parse\_net\_file\_to\_circuit} function reads the netlist file line by line, stripping them of whitespace, then ignoring
-empty lines and comments. It sets the current section by matching the line to the delimiters, erroring if the preceeding section is not
-correct. Lines that are not delimiters are then matched to their respective section and processed by the helper functions. The helper
-functions process the line with a regex pattern specific to each section, returning the relevant data as dictionaries and
-adding them to the circuit object for components, terminations and outputs. 
-\subsection{circuit.py}
-This module contains the Circuit class which is responsible for storing the circuit data in a structured manner. This is achieved
-with component and output nested sub-classes which contain the relevant data for each component and output. The Circuit class then
-contains a respective list for each of these classes so that their order is preserved for iteration and a dictionary for the
-termination values. The circuit class has methods to help with setting and adding components, outputs and terminations.
+\subsection{\textbf{\texttt{circuit.py}}}
+This module defines the \texttt{Circuit} class, organizing all circuit-related data:
+\begin{itemize}
+  \item The \texttt{Circuit} class is designed to store detailed information about the components, terminations, and outputs of a circuit.
+  \item It contains sub-classes for components and outputs, which help in maintaining structured and easily accessible data.
+  \item Its \texttt{solve} method plays a pivotal role by sorting components, computing the ABCD matrix for each frequency, and then writing these calculations to an output file.
+  \item This method ensures that the computations adhere to the engineering requirements specified in the output file format, handling data consistently and accurately across various simulations.
+\end{itemize}
 
-The Component sub-class contains a method to calculate the ABCD matrix for the component at a given frequency.
+\subsection{\textbf{\texttt{csv\_writer.py}}}
+Responsible for all CSV file operations, this module:
+\begin{itemize}
+  \item Implements functions to write header rows, data rows, and generate an empty CSV file in case of errors.
+  \item Ensures data is formatted in scientific notation, with precise alignment and scaling, whether for displaying results in decibels or linear formats.
+\end{itemize}
 
-The core method of this class is the \texttt{solve} method which first sorts the component list by the nodes of the components,
-opens the output file and writes the header row based off the output list. It then iterates through the frequency list, generating 
-a list of ABCD matrices from each component and multiplying them together to reduce the circuit to a single ABCD matrix. 
-This matrix is then used to calculate the termination values at that frequency, where they are subsequently stored in the 
-termination dictionary and a row is written to the output file. Once all frequencies have been iterated through, the output file is closed
-by the context manager.
+\subsection{\textbf{\texttt{tests}}}
+This directory contains all test files, including unit tests and integration tests.
+The aim was to achieve a high level of code coverage and ensure that the program functions correctly under the typical scenarios proposed in the
+example netlist files - but also extend to edge cases and cover most failure modes that I could think of.
+\section{Implementation}
+This section provides a detailed explanation of the implementation of the Cascade Circuit Analyser program, focusing on the key modules and functions that contribute to its functionality.
 
-\subsection{csv\_writer.py}
-This module contains three simple functions to write the header rows, data rows and an empty CSV in the event of an error.
-The first column is always the frequency, which is padded to 10 characters with whitespace to the left,
-all other columns are then padded to 11 characters. Each row is stored as a buffer before writing, then data is formatted in
-scientific notation to 3 decimal places and appended to the buffer. The buffer is then written to the file.
+\subsection{\textbf{\texttt{net\_parser.py}}}
+This module is pivotal for parsing the netlist file and converting its contents into a structured format that the program can manipulate and analyze. Here, we detail the key functions:
 
-The order of the columns is determined by the order of the output sub-class list in the circuit class, the header changes
-based on if the output is in decibels or not. Data is scaled by the magnitude and differentiates between values that use 
-$10$ or $20*Log_{10}$, all to match specification.
+\begin{itemize}
+  \item \textbf{\texttt{parse\_net\_file\_to\_circuit}}: This function serves as the starting point for processing the input netlist files.
+        \begin{itemize}
+          \item \textbf{Functionality}: It initializes an empty circuit instance and begins reading the input file line by line. 
+          Each line is stripped of whitespace and checked for comments or emptiness, which are ignored.
+          \item \textbf{Delimiters and Section Matching}: The function uses a match case to identify section delimiters 
+          (such as headers for components, outputs, etc.). It ensures that sections are processed in a valid sequence, 
+          raising an error if an unexpected section is encountered.
+          \item \textbf{Data Handling}: Lines that do not match section delimiters are considered as data. If data appears 
+          outside of its designated section, the function raises an error. Otherwise, it is passed to specialized line processing 
+          helper functions for parsing.
+        \end{itemize}
+
+  \item \textbf{\texttt{process\_*\_line}}: These functions are tasked with processing specific types of data lines, depending on 
+  the section they belong to.
+        \begin{itemize}
+          \item \textbf{Data Extraction}: Each line of data is matched against a tailored regex pattern that extracts necessary 
+          information and returns it in the form of a dictionary.
+          \item \textbf{Component Addition}: The extracted data dictionary is passed to the appropriate \texttt{add\_*} method 
+          of the circuit instance. This method is responsible for creating and appending a new instance of the respective Circuit 
+          Component or Output class, or updating the termination dictionary.
+          \item \textbf{Use of Regex}: Regular expressions play a crucial role in ensuring reliable and well-defined data extraction, 
+          including handling optional fields like magnitude and decibel prefixes. Magnitudes are applied immediately to standardize 
+          data storage format, with multipliers stored in a dictionary for quick access and conversion.
+          \item \textbf{Error Handling}: If a regex match fails or matches incorrectly, an error is raised to prevent incorrect data 
+          handling and ensure the integrity of the circuit data.
+          \item \textbf{Regex Development}: Regex patterns were developed and refined using \url{https://regex101.com/}, a tool that 
+          allows for meticulous testing and adjustment of regex expressions.
+        \end{itemize}
+\end{itemize}
+
+This detailed implementation ensures that the \texttt{net\_parser.py} module robustly handles the parsing of the netlist file, setting a solid foundation for the subsequent circuit analysis processes.
+\newpage
+\subsection{\textbf{\texttt{circuit.py}}}
+This module houses the \texttt{Circuit} class, which acts as a container for all the data related to the electrical circuit being analyzed. It structures the data and provides methods for manipulating it effectively. Below are elaborations on each significant method within this class:
+
+\begin{itemize}
+\item \textbf{Initialization:}
+        \begin{itemize}
+        \item The \texttt{\_\_init\_\_} method initializes empty lists for storing components, outputs, and a dictionary for 
+        terminations. This setup prepares the class to receive and organize data as it is parsed from the input file.
+        \end{itemize}
+
+\item \textbf{Adding Components:}
+        \begin{itemize}
+        \item \texttt{add\_component}: This method takes parameters that define a component, such as type (resistor, capacitor), 
+        connection nodes, and value. A new instance of the respective component class is created and appended to the component 
+        list. Each component type class has an \texttt{ABCD} method that calculates its ABCD matrix based on the component's 
+        value and the operational frequency, facilitating modular and dynamic circuit analysis.
+        \end{itemize}
+
+\item \textbf{Setting Terminations:}
+        \begin{itemize}
+        \item \texttt{set\_termination}: Inputs termination values like source and load impedance. This method populates 
+        the termination dictionary, which is later used in the matrix calculations to incorporate boundary conditions of
+            the circuit.
+        \end{itemize}
+
+\item \textbf{Adding Outputs:}
+        \begin{itemize}
+        \item \texttt{add\_output}: Specifies the outputs required from the circuit analysis, such as voltage at specific 
+        nodes or overall power. This method ensures that these specifications are stored and later used to determine what 
+        results are calculated and written to the output file.
+        \end{itemize}
+
+\item \textbf{ABCD Matrix Calculation:}
+        \begin{itemize}
+        \item \texttt{calculate\_abcd\_matrix}: Iterates over the component list, invoking the \texttt{ABCD} method of each 
+        component to compute its matrix at the given frequency. This method handles the matrix multiplication of individual
+            component matrices to form a comprehensive ABCD matrix representing the entire circuit at that frequency.
+        \end{itemize}
+
+\item \textbf{Circuit Solution Method:}
+        \begin{itemize}
+        \item \texttt{solve}: This method is the core of the circuit analysis. It iterates over a range of frequencies, 
+        calls \texttt{calculate\_abcd\_matrix} for each frequency, and uses the resulting ABCD matrix to compute the 
+        circuit's response based on the terminations. The computed values for each requested output are formatted and 
+        passed to \texttt{csv\_writer.py} for file output.
+        \item The efficiency of this method is crucial, as it impacts the overall execution time of the program. It 
+        ensures that computations are done in a logical sequence and are based on accurate mathematical foundations of network theory.
+        \end{itemize}
+\end{itemize}
+
+These methods collectively ensure that the \texttt{Circuit} class can manage data effectively, compute necessary 
+parameters accurately, and facilitate the output of these parameters in a user-defined format. Each method is 
+designed to be modular, allowing for ease of maintenance and potential future enhancements.
+
 
 
 \end{document}

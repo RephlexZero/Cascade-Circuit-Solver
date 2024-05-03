@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.16)  1 MAY 2024 15:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  2 MAY 2024 21:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/home/jake/Documents/EEE/Cascade-Circuit-Solver/Reports/Final Report/Final Report.tex"
-(/home/jake/Documents/EEE/Cascade-Circuit-Solver/Reports/Final Report/Final Report.tex
+**"/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex"
+(/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (./IEEEtran.cls
@@ -411,14 +411,39 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (./Final Report.toc)
+) (./Final Report.toc
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 2.
+ (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+))
 \tf@toc=\write4
 \openout4 = `"Final Report.toc"'.
 
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 80.
- (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
+LaTeX Font Info:    Font shape `OT1/pcr/b/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/sl' tried instead on input line 71.
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 115--117
+[]\OT1/pcr/b/n/10 parse_net_file_to_circuit\OT1/ptm/m/n/10 : This func-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
+[]\OT1/ptm/m/n/10 This de-tailed im-ple-men-ta-tion en-sures that the
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 145--146
+\OT1/pcr/m/n/10 net_parser.py \OT1/ptm/m/n/10 mod-ule ro-bustly han-dles the pars-ing
+ []
+
+[2]
+Underfull \hbox (badness 3701) in paragraph at lines 181--184
+[]\OT1/pcr/m/n/10 calculate_abcd_matrix\OT1/ptm/m/n/10 : It-er-ates over the
+ []
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -430,30 +455,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
-
-
-] (./Final Report.aux)
+[3] (./Final Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `"Final Report".out' has not changed.
-(rerunfilecheck)             Checksum: 50E457E68707A1608612C3963F7E57B7;598.
+(rerunfilecheck)             Checksum: 8561FC579D745885AA809CC62A904C74;959.
  ) 
 Here is how much of TeX's memory you used:
- 12379 strings out of 474116
- 189152 string characters out of 5750249
- 1947187 words of memory out of 5000000
- 34581 multiletter control sequences out of 15000+600000
- 595442 words of font info for 109 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 75i,8n,79p,309b,441s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Final Report.pdf" (1 page, 98524 bytes).
+ 12398 strings out of 476076
+ 189402 string characters out of 5793775
+ 1951187 words of memory out of 5000000
+ 34337 multiletter control sequences out of 15000+600000
+ 596588 words of font info for 113 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 75i,8n,79p,403b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Final Report.pdf" (3 pages, 100185 bytes).
 PDF statistics:
- 88 PDF objects out of 1000 (max. 8388607)
- 66 compressed objects within 1 object stream
- 8 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 113 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
+ 14 named destinations out of 1000 (max. 500000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 

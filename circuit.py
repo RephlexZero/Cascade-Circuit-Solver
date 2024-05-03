@@ -176,30 +176,39 @@ class Circuit:
                 case 'R':
                     Z = self.value
                     if is_shunt:
-                        abcd_matrix = [[1, 0], [1 / Z, 1]]
+                        abcd_matrix = [[1, 0],
+                                       [1 / Z, 1]]
                     else:
-                        abcd_matrix = [[1, Z], [0, 1]]
+                        abcd_matrix = [[1, Z],
+                                       [0, 1]]
                 case 'L':
                     sL = s * self.value
                     if is_shunt:
-                        abcd_matrix = [[1, 0], [1 / sL, 1]]
+                        abcd_matrix = [[1, 0],
+                                       [1 / sL, 1]]
                     else:
-                        abcd_matrix = [[1, sL], [0, 1]]
+                        abcd_matrix = [[1, sL],
+                                       [0, 1]]
                 case 'C':
                     sC = s * self.value
                     if is_shunt:
-                        abcd_matrix = [[1, 0], [sC, 1]]
+                        abcd_matrix = [[1,  0],
+                                       [sC, 1]]
                     else:
-                        abcd_matrix = [[1, 1 / sC], [0, 1]]
+                        abcd_matrix = [[1, 1 / sC],
+                                       [0, 1]]
                 case 'G':
                     Y = self.value
                     if is_shunt:
-                        abcd_matrix = [[1, 0], [Y, 1]]
+                        abcd_matrix = [[1, 0],
+                                       [Y, 1]]
                     else:
-                        abcd_matrix = [[1, 1 / Y], [0, 1]]
+                        abcd_matrix = [[1, 1 / Y],
+                                       [0, 1]]
                 case _:
                     raise ValueError(f"Invalid component type: {self.type}")
             return np.array(abcd_matrix)
+
     class Output:
         """Represents an output parameter to be calculated during circuit analysis."""
         def __init__(self, name, unit, magnitude, is_db):
