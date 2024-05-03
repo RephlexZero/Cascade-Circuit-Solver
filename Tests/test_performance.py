@@ -1,26 +1,33 @@
-# Tests/test_performance.py
-
-
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 import os
 import glob
-import threading
+import cProfile
 
 from main import main as main_function
 import csv_writer
 
+
 def test_performance():
     input_file_list = glob.glob('./User_files/*.net')
     output_file_list = [os.path.join('Tests', os.path.basename(file_path).replace('.net', '.csv')) for file_path in input_file_list]
-    
-    threads = []
+    profiles_dir = './Tests/Profiles'
+    os.makedirs(profiles_dir, exist_ok=True)
+
     for input_file, output_file in zip(input_file_list, output_file_list):
         print(f"Input file: {input_file}")
-        thread = threading.Thread(target=run_conversion, args=(input_file, output_file))
-        threads.append(thread)
-        thread.start()
+        profile_output = os.path.join(profiles_dir, f"{os.path.basename(input_file)}.prof")
+        run_conversion_with_profile(input_file, output_file, profile_output)
 
-    for thread in threads:
-        thread.join()
+
+def run_conversion_with_profile(input_file, output_file, profile_output):
+    profiler = cProfile.Profile()
+    profiler.enable()
+    run_conversion(input_file, output_file)
+    profiler.disable()
+    profiler.dump_stats(profile_output)
+
 
 def run_conversion(input_file, output_file):
     try:
@@ -36,5 +43,3 @@ def run_conversion(input_file, output_file):
         if os.path.exists(output_file):
             os.remove(output_file)
 
-if __name__ == '__main__':
-    test_performance()

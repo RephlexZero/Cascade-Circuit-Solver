@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1714702087.31003 "/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex" "Final Report.pdf" "Final Report" 1714702087.67185 0
-  "/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex" 1714702087.15084 15304 abf48b6b7061520ae34d99ad293ae08f ""
+["pdflatex"] 1714747506.77239 "/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex" "Final Report.pdf" "Final Report" 1714747507.6865 0
+  "/home/jake/Documents/EEE/Cascade Circuit Solver/Reports/Final Report/Final Report.tex" 1714747506.61694 24633 eed62553d634f88ca88693ded6318938 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1713199481 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrb7t.tfm" 1713199481 960 4ab65358b8406f30ef5496c8c096d22b ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1713199481 1292 3059476c50a24578715759f22652f3d0 ""
@@ -109,11 +109,14 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1713199481 41588 b43d3e860a4f94167ee1e725ff526a72 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1713724970.93606 5307366 7c8b2c5f25a30f46e808245b8e6cf269 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1713724949 7113000 24373fd23f499251f622a39d9140f5e9 ""
-  "Final Report.aux" 1714702087.62985 1574 9034ca107ac86cda908b1c8533841865 "pdflatex"
-  "Final Report.out" 1714702087.62985 1085 f1015ecb0fc16f543f12f26bbdda8141 "pdflatex"
-  "Final Report.tex" 1714702087.15084 15304 abf48b6b7061520ae34d99ad293ae08f ""
-  "Final Report.toc" 1714702087.63085 978 d99b1fd9bbd42bb175ab01cf24c3dd58 "pdflatex"
+  "Final Report.aux" 1714747507.64197 3827 ce38b876269c65e404399b56d851e9c9 "pdflatex"
+  "Final Report.out" 1714747507.64197 2186 b2dcfd0c1bd19748be4f39f21a55f463 "pdflatex"
+  "Final Report.tex" 1714747506.61694 24633 eed62553d634f88ca88693ded6318938 ""
+  "Final Report.toc" 1714747507.64197 1851 8565aaf36e8766a6497a8d31964efce3 "pdflatex"
   "IEEEtran.cls" 1714495533.93393 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
+  "Images/Ext_e_Ladder_400.prof.png" 1714740232.42519 43774 d597ef1d310eac16b2b3419338f0364b ""
+  "Images/Ext_mdB_a_Test_Circuit_1.prof.png" 1714740229.15115 36695 324530b85ae1c553cce6a80c196a0f6f ""
+  "Images/Record of Testing.png" 1714740439.88474 1125890 01370574f57491e7d4257fcbf2edbe29 ""
   (generated)
   "Final Report.aux"
   "Final Report.log"

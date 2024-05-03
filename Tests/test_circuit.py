@@ -1,5 +1,6 @@
-# Tests/test_circuit.py
-
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 import pytest
 from circuit import Circuit
 import numpy as np

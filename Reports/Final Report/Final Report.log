@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  3 MAY 2024 03:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2024.4.21)  3 MAY 2024 15:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -426,20 +426,93 @@ LaTeX Font Info:    Font shape `OT1/pcr/b/it' in size <10> not available
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 115--117
-[]\OT1/pcr/m/n/10 parse_net_file_to_circuit\OT1/ptm/m/n/10 : This func-tion
+[]\OT1/pcr/b/n/10 parse_net_file_to_circuit\OT1/ptm/m/n/10 : This func-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 145--147
+Underfull \hbox (badness 10000) in paragraph at lines 146--148
 []\OT1/ptm/m/n/10 This de-tailed im-ple-men-ta-tion en-sures that the
  []
 
 
-Underfull \hbox (badness 2418) in paragraph at lines 145--147
+Underfull \hbox (badness 2418) in paragraph at lines 146--148
 \OT1/pcr/m/n/10 net_parser.py \OT1/ptm/m/n/10 mod-ule ro-bustly han-dles the pars-ing
  []
 
-[2]
+[2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 284--298
+
+ []
+
+
+Underfull \hbox (badness 2401) in paragraph at lines 284--298
+\OT1/pcr/m/n/10 Tests/Profiles/ \OT1/ptm/m/n/10 di-rec-tory are in-cluded in the
+ []
+
+
+Underfull \hbox (badness 2680) in paragraph at lines 284--298
+\OT1/ptm/m/n/10 repos-i-tory - I would rec-om-mend anal-y-sis via the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 284--298
+
+ []
+
+
+Underfull \hbox (badness 6412) in paragraph at lines 284--298
+\OT1/ptm/m/n/10 test case \OT1/pcr/m/n/10 Ext_e_Ladder_400.net \OT1/ptm/m/n/10 tak-ing only
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 284--298
+
+ []
+
+
+Underfull \hbox (badness 5050) in paragraph at lines 284--298
+\OT1/ptm/m/n/10 Ext[]e[]Ladder[]400.net was the most com-plex test
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 284--298
+
+ []
+
+
+Underfull \hbox (badness 3942) in paragraph at lines 284--298
+\OT1/ptm/m/n/10 Overall mem-ory foot-print is very low as re-sults
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 301--307
+
+ []
+
+
+Underfull \hbox (badness 4266) in paragraph at lines 301--307
+\OT1/ptm/m/n/10 Other ap-po-raches used to val-i-date the pro-gram were
+ []
+
+[4] [5
+
+]
+<Images/Ext_e_Ladder_400.prof.png, id=136, 1498.59875pt x 662.475pt>
+File: Images/Ext_e_Ladder_400.prof.png Graphic file (type png)
+<use Images/Ext_e_Ladder_400.prof.png>
+Package pdftex.def Info: Images/Ext_e_Ladder_400.prof.png  used on input line 326.
+(pdftex.def)             Requested size: 516.0pt x 228.10934pt.
+<Images/Ext_mdB_a_Test_Circuit_1.prof.png, id=138, 1498.59875pt x 662.475pt>
+File: Images/Ext_mdB_a_Test_Circuit_1.prof.png Graphic file (type png)
+<use Images/Ext_mdB_a_Test_Circuit_1.prof.png>
+Package pdftex.def Info: Images/Ext_mdB_a_Test_Circuit_1.prof.png  used on input line 335.
+(pdftex.def)             Requested size: 516.0pt x 228.10934pt.
+<Images/Record of Testing.png, id=139, 2569.6pt x 1411.2725pt>
+File: Images/Record of Testing.png Graphic file (type png)
+<use Images/Record of Testing.png>
+Package pdftex.def Info: Images/Record of Testing.png  used on input line 343.
+(pdftex.def)             Requested size: 516.0pt x 283.39082pt.
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -451,27 +524,29 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3] (./Final Report.aux)
+[6
+
+ <./Images/Ext_e_Ladder_400.prof.png> <./Images/Ext_mdB_a_Test_Circuit_1.prof.png>] [7 <./Images/Record of Testing.png>] (./Final Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `"Final Report".out' has not changed.
-(rerunfilecheck)             Checksum: F1015ECB0FC16F543F12F26BBDDA8141;1085.
+(rerunfilecheck)             Checksum: B2DCFD0C1BD19748BE4F39F21A55F463;2186.
  ) 
 Here is how much of TeX's memory you used:
- 12400 strings out of 476076
- 189432 string characters out of 5793775
- 1952187 words of memory out of 5000000
- 34338 multiletter control sequences out of 15000+600000
- 596588 words of font info for 113 fonts, out of 8000000 for 9000
+ 12454 strings out of 476076
+ 190725 string characters out of 5793775
+ 1953187 words of memory out of 5000000
+ 34375 multiletter control sequences out of 15000+600000
+ 597103 words of font info for 115 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,8n,79p,321b,614s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,427b,602s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Final Report.pdf" (3 pages, 103281 bytes).
+Output written on "Final Report.pdf" (7 pages, 949955 bytes).
 PDF statistics:
- 118 PDF objects out of 1000 (max. 8388607)
- 96 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 198 PDF objects out of 1000 (max. 8388607)
+ 165 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 168 words of extra memory for PDF output out of 10000 (max. 10000000)
 

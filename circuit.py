@@ -1,3 +1,6 @@
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 """
 This module defines the core classes for representing and analyZinng electrical circuits:
 
@@ -168,13 +171,15 @@ class Circuit:
             self.n1 = n1
             self.n2 = n2
             self.value = value
+            self.is_shunt = 0 in [n1, n2]
 
         def get_abcd_matrix(self, s):
             """Calculate and return the ABCD matrix for the component based on its type and value."""
-            is_shunt = 0 in [self.n1, self.n2]
+            is_shunt = self.is_shunt
+            value = self.value
             match self.type:
                 case 'R':
-                    Z = self.value
+                    Z = value
                     if is_shunt:
                         abcd_matrix = [[1, 0],
                                        [1 / Z, 1]]
@@ -182,7 +187,7 @@ class Circuit:
                         abcd_matrix = [[1, Z],
                                        [0, 1]]
                 case 'L':
-                    sL = s * self.value
+                    sL = s * value
                     if is_shunt:
                         abcd_matrix = [[1, 0],
                                        [1 / sL, 1]]
@@ -190,7 +195,7 @@ class Circuit:
                         abcd_matrix = [[1, sL],
                                        [0, 1]]
                 case 'C':
-                    sC = s * self.value
+                    sC = s * value
                     if is_shunt:
                         abcd_matrix = [[1,  0],
                                        [sC, 1]]
@@ -198,7 +203,7 @@ class Circuit:
                         abcd_matrix = [[1, 1 / sC],
                                        [0, 1]]
                 case 'G':
-                    Y = self.value
+                    Y = value
                     if is_shunt:
                         abcd_matrix = [[1, 0],
                                        [Y, 1]]

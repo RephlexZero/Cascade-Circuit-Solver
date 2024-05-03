@@ -1,3 +1,6 @@
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 """
 This module is responsible for parsing .net files, which contain circuit definitions, 
 and converting them into Circuit objects for analysis.

@@ -1,3 +1,6 @@
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 import pytest
 from net_parser import MalformedInputError
 from net_parser import process_circuit_line, process_output_line, process_terms_line
@@ -52,9 +55,7 @@ def test_process_correct_output_lines(sample_circuit, line, name, unit, magnitud
 def test_process_incorrect_output_lines(sample_circuit, line):
     with pytest.raises(MalformedInputError):
         process_output_line(line, sample_circuit)
-    
 
-# Parametrized test for processing correct terms lines
 @pytest.mark.parametrize("line, expected_values", [
     ("LFstart=10.0 LFend=10 Nfreqs=10 VT=5 RS=50 RL=75",
      {'LFstart': 10.0, 'LFend': 10, 'Nfreqs': 10, 'VT': 5, 'RS': 50, 'RL': 75}),
@@ -67,7 +68,6 @@ def test_process_correct_terms_lines(sample_circuit, line, expected_values):
     for key, value in expected_values.items():
         assert sample_circuit.terminations.get(key) == value
 
-# Example of using parametrization to test improper term lines handling
 @pytest.mark.parametrize("line", [
     "LFstart=10.0 LFend=NaN Nfreqs=ten VT=5 RS=fifty RL=seventy-five",
     "LFstart==10.0 LFend=10 Nfreqs==10 VT==5 RS==50 RL==75",

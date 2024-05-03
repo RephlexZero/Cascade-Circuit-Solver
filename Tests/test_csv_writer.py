@@ -1,15 +1,16 @@
-# Tests/test_csv_writer.py
-
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 import io
 from csv_writer import write_header, write_data_line, write_empty_csv
-from circuit import Circuit, Output
+from circuit import Circuit
 
 
 def test_write_header():
     # Setup: create a Circuit object with specific outputs
     circuit = Circuit()
-    circuit.outputs = [Output("Vout", "V", "", False),
-                       Output("Iin", "A", "u", True)]
+    circuit.outputs = [Circuit.Output("Vout", "V", "", False),
+                       Circuit.Output("Iin", "A", "u", True)]
 
     # Action: simulate writing to a CSV file
     csvfile = io.StringIO()
@@ -22,13 +23,11 @@ def test_write_header():
     assert header[0].strip().split(",") == ["Freq", "Re(Vout)", "Im(Vout)", "|Iin|", "/_Iin"]
     assert header[1].strip().split(",") == ["Hz", "V", "V", "dBuA", "Rads"]
 
-
-def test_write_data_line():
     # Setup: create a Circuit with outputs containing complex values
     circuit = Circuit()
     frequency = 1e6
-    circuit.outputs = [Output("Vout", "V", "", False),
-                       Output("Iin", "A", "u", True)]
+    circuit.outputs = [Circuit.Output("Vout", "V", "", False),
+                       Circuit.Output("Iin", "A", "u", True)]
     circuit.outputs[0].value = 1 + 2j
     circuit.outputs[1].value = 3 - 4j
 
@@ -40,7 +39,7 @@ def test_write_data_line():
     data_row = csvfile.getvalue().replace(" ", "").strip().split(",")
 
     # Assertions: validate the data format and content
-    assert data_row == ["1.000e+06", "1.000e+00", "2.000e+00", "1.398e+07", "-9.273e-01",""]
+    assert data_row == ["1.000e+06", "1.000e+00", "2.000e+00", "1.340e+02", "-9.273e-01",""]
     # Note: the extra empty field matches a potential formatting error in model files
 
 

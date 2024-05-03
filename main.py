@@ -1,3 +1,6 @@
+# Author: Jake Stewart
+# Email: js3910@bath.ac.uk
+# License: MIT
 """
 This module is the main entry point of the circuit analysis program. 
 
@@ -8,7 +11,6 @@ Functions:
     main():
         Parses input file, analyzes the circuit, and writes results to a CSV file.
 """
-import cProfile
 import sys
 from csv_writer import write_empty_csv
 from net_parser import parse_net_file_to_circuit
@@ -37,7 +39,6 @@ if __name__ == "__main__":
     if not input_file_path.endswith('.net') or not output_file_path.endswith('.csv'):
         raise ValueError("Input file must be a .net file and output file must be a .csv file.")
     try:
-        # cProfile.run('main(input_file_path, output_file_path)', f'{input_file_path.replace(".net",".prof")}') # Uncomment to profile the code
         main(input_file_path, output_file_path)
     # In all exceptions, create an empty CSV file to indicate an error occurred.
     except Exception as e:

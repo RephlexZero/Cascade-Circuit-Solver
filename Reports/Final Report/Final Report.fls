@@ -244,6 +244,24 @@ INPUT /usr/share/texmf-dist/fonts/vf/adobe/courier/pcrbo7t.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrbo8r.tfm
 INPUT /usr/share/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
+INPUT ./Images/Ext_e_Ladder_400.prof.png
+INPUT ./Images/Ext_e_Ladder_400.prof.png
+INPUT ./Images/Ext_e_Ladder_400.prof.png
+INPUT ./Images/Ext_e_Ladder_400.prof.png
+INPUT ./Images/Ext_e_Ladder_400.prof.png
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm
+INPUT ./Images/Ext_mdB_a_Test_Circuit_1.prof.png
+INPUT ./Images/Ext_mdB_a_Test_Circuit_1.prof.png
+INPUT ./Images/Ext_mdB_a_Test_Circuit_1.prof.png
+INPUT ./Images/Ext_mdB_a_Test_Circuit_1.prof.png
+INPUT ./Images/Ext_mdB_a_Test_Circuit_1.prof.png
+INPUT ./Images/Record of Testing.png
+INPUT ./Images/Record of Testing.png
+INPUT ./Images/Record of Testing.png
+INPUT ./Images/Record of Testing.png
+INPUT ./Images/Record of Testing.png
+INPUT /usr/share/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
 INPUT Final Report.aux
 INPUT ./Final Report.out
 INPUT ./Final Report.out
